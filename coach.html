@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind OS — Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#4DF28A;--forest:#173622;--page:#EAF6EE;--ink:#0c1a12;--muted:#5d6f64;--line:#dbe9e0;--white:#fff;--radius:18px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var(--ink)}
+.wrap{max-width:860px;margin:0 auto;padding:18px 18px 70px}
+.brand{display:flex;align-items:center;gap:7px;justify-content:center;padding:12px 0 2px}
+.brand .wm{font-size:30px;font-weight:700;letter-spacing:-2px;color:var(--forest)}.brand .ii{position:relative;display:inline-block}.brand .idot{position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--green)}.brand .osbox{background:var(--green);color:#08200f;font-weight:800;font-size:15px;padding:2px 8px;border-radius:9px}
+.tagline{text-align:center;color:var(--muted);font-size:12px;margin-bottom:14px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;color:var(--muted)}
+.signout,.toggle{background:none;border:1px solid var(--line);color:var(--muted);padding:5px 11px;border-radius:20px;font-size:11.5px;cursor:pointer;text-decoration:none;font-family:inherit}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 3px 14px rgba(23,54,34,.07);margin-bottom:16px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:3px}.card .hint{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.btn{display:inline-flex;gap:6px;background:var(--green);color:var(--forest);border:none;padding:10px 15px;border-radius:11px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit}
+.btn.sm{padding:7px 12px;font-size:12.5px}
+.inp{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-family:inherit;font-size:13.5px;background:#fcfefc}
+.ckrow{display:grid;grid-template-columns:1.4fr 50px 70px 100px;gap:10px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--line);font-size:12.5px}
+.ckrow.head{font-weight:600;color:var(--muted);font-size:10.5px;text-transform:uppercase;border-bottom:2px solid var(--line)}
+.qbadge{font-weight:800;color:var(--forest)}
+.flame{font-size:12px;font-weight:700;color:#e8852b;background:#fff3e6;padding:3px 8px;border-radius:20px}
+.kpi{font-size:30px;font-weight:800;color:var(--forest)}
+.calcrow{display:flex;align-items:center;gap:12px;margin:12px 0}.calcrow label{width:110px;font-size:13px}.calcrow input{flex:1}.calcrow b{width:56px;text-align:right;color:var(--forest)}
+.copy{display:flex;gap:8px;margin-top:10px}
+#app{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#173622;color:#4DF28A;padding:10px 17px;border-radius:30px;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:50}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="wm">m<span class="ii">ı<span class="idot"></span></span>nd</span><span class="osbox">OS</span></div>
+  <div class="tagline">Coach</div>
+
+  <div id="auth" class="card" style="max-width:420px;margin:0 auto">
+    <h3>Coach sign in</h3><div class="hint">Magic link — same account as your member app.</div>
+    <input class="inp" id="email" type="email" placeholder="you@email.com" style="margin-bottom:10px">
+    <button class="btn" id="sendBtn" style="width:100%;justify-content:center">Email me a link</button>
+    <div class="hint" id="authMsg" style="text-align:center;margin-top:10px"></div>
+  </div>
+
+  <div id="app">
+    <div class="top"><span>Coach: <b id="who"></b></span><span><a class="toggle" href="index.html">↔ Personal</a> <button class="signout" id="signout">Sign out</button></span></div>
+    <div id="notCoach" class="card" style="display:none"><h3>You're not set up as a coach yet</h3><div class="hint" style="margin:0">Ask the Mind OS team to enable your coach account (concierge onboarding). Once enabled and a POD is created, your cohort appears here.</div></div>
+    <div id="coachUI" style="display:none">
+      <div class="card"><h3>📊 Live Cohort Cockpit</h3><div class="hint">Your POD members at a glance — Q4, streak, lifetime GRI.</div>
+        <div id="cockpit"></div>
+      </div>
+      <div class="card"><h3>🎟 Invite your clients</h3><div class="hint">Share this link — your clients join your POD in one tap.</div>
+        <div class="copy"><input class="inp" id="inviteLink" readonly><button class="btn" id="genInvite">Generate</button></div>
+      </div>
+      <div class="card"><h3>🧮 Earnings calculator</h3><div class="hint">$250/mo per member × 70% to you</div>
+        <div class="calcrow"><label>Members</label><input type="range" min="1" max="14" value="14" id="cmR"><b id="cm">14</b></div>
+        <div class="calcrow"><label>Cohorts</label><input type="range" min="1" max="5" value="1" id="ccR"><b id="cc">1</b></div>
+        <div style="text-align:center;background:var(--page);border-radius:14px;padding:14px;margin-top:6px"><div class="kpi" id="cout">$2,450</div><div style="font-size:12px;color:var(--muted)" id="cyr">/mo</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
+let user=null,myPods=[];
+const $=s=>document.querySelector(s);
+function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
+$('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email.';};
+$('#signout').onclick=async()=>{await sb.auth.signOut();location.reload();};
+sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
+(async()=>{const {data:{session}}=await sb.auth.getSession();if(session){user=session.user;boot();}})();
+
+async function boot(){
+  $('#auth').style.display='none';$('#app').style.display='block';$('#who').textContent=user.email;
+  const {data:m}=await sb.from('members').select('is_coach').eq('id',user.id).maybeSingle();
+  const {data:pods}=await sb.from('pods').select('id,name').eq('coach_id',user.id);
+  myPods=pods||[];
+  if(!(m&&m.is_coach)&&!myPods.length){$('#notCoach').style.display='block';return;}
+  $('#coachUI').style.display='block';
+  loadCockpit();
+  ['cmR','ccR'].forEach(id=>$('#'+id).oninput=calc);calc();
+}
+async function loadCockpit(){
+  const el=$('#cockpit');
+  if(!myPods.length){el.innerHTML='<div class="hint">No POD yet — once a POD is created for you, members show here.</div>';return;}
+  const podIds=myPods.map(p=>p.id);
+  const {data:mem}=await sb.from('pod_memberships').select('member_id').in('pod_id',podIds).eq('status','active');
+  const ids=[...new Set((mem||[]).map(x=>x.member_id))];
+  if(!ids.length){el.innerHTML='<div class="hint">No members yet — share your invite link below.</div>';return;}
+  const [{data:members},{data:q4},{data:streaks},{data:gri}]=await Promise.all([
+    sb.from('members').select('id,alias').in('id',ids),
+    sb.from('q4_scores').select('member_id,score').in('member_id',ids),
+    sb.from('streaks').select('member_id,current_streak').in('member_id',ids),
+    sb.from('member_gri').select('member_id,gri').in('member_id',ids)
+  ]);
+  const avg={};(q4||[]).forEach(r=>{(avg[r.member_id]=avg[r.member_id]||[]).push(r.score);});
+  const stk={};(streaks||[]).forEach(r=>stk[r.member_id]=r.current_streak);
+  const g={};(gri||[]).forEach(r=>g[r.member_id]=Number(r.gri));
+  let h='<div class="ckrow head"><span>Member</span><span>Q4</span><span>Streak</span><span>GRI</span></div>';
+  (members||[]).forEach(m=>{const a=avg[m.id];const q=a?Math.round(a.reduce((x,y)=>x+y,0)/a.length):'—';h+=`<div class="ckrow"><span>${m.alias||'member'}</span><span class="qbadge">${q}</span><span><span class="flame">🔥 ${stk[m.id]||0}</span></span><span>${(g[m.id]||0).toLocaleString()}</span></div>`;});
+  el.innerHTML=h;
+}
+$('#genInvite').onclick=async()=>{
+  if(!myPods.length){toast('No POD yet');return;}
+  const code=Math.random().toString(36).slice(2,9);
+  const {error}=await sb.from('invites').insert({coach_id:user.id,pod_id:myPods[0].id,code});
+  if(error){toast('⚠️ '+error.message);return;}
+  $('#inviteLink').value=location.origin+location.pathname.replace('coach.html','index.html')+'?invite='+code;
+  navigator.clipboard?.writeText($('#inviteLink').value);toast('Invite link copied!');
+};
+function calc(){const m=+$('#cmR').value,c=+$('#ccR').value;$('#cm').textContent=m;$('#cc').textContent=c;const mo=m*250*0.7*c;$('#cout').textContent='$'+mo.toLocaleString();$('#cyr').textContent='$'+(mo*12).toLocaleString()+' / year';}
+</script>
+</body>
+</html>
