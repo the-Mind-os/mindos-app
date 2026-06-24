@@ -29,6 +29,9 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 .top h1{font-size:20px;font-weight:600;letter-spacing:-.5px}.top .sub{color:var(--muted);font-size:12px}
 .tw{display:flex;align-items:center;gap:12px}
 .priv{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--forest);color:var(--forest);padding:7px 12px;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer}.priv:hover{background:var(--forest);color:var(--green)}
+.vtoggle{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:30px;padding:3px;font-size:12px;font-weight:600;flex:none}
+.vtoggle a,.vtoggle span{padding:6px 13px;border-radius:30px;cursor:pointer;color:var(--muted);text-decoration:none;transition:.15s}
+.vtoggle a:hover{color:var(--forest)}.vtoggle .on{background:var(--forest);color:#fff}
 .griH{text-align:right}.griH .n{font-size:19px;font-weight:800;color:var(--forest)}.griH small{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px}
 .badge{padding:6px 12px;border-radius:30px;font-weight:700;font-size:12px;color:#fff}
 .b-blue{background:linear-gradient(135deg,#6fb0f0,#3f7fc4)}.b-bronze{background:linear-gradient(135deg,#e2a96b,#b76a2e)}.b-silver{background:linear-gradient(135deg,#cdd6df,#8b98a6);color:#2a323a}.b-gold{background:linear-gradient(135deg,#f4d06a,#d7a229);color:#5a4408}
@@ -114,6 +117,7 @@ select.inp{appearance:auto}
     <header class="top">
       <div><h1 id="ttl">My Growth</h1><div class="sub" id="sub">Your quality-of-life command center</div></div>
       <div class="tw">
+        <div class="vtoggle" title="Switch view"><span class="on">Personal</span><a href="coach.html">Coach</a></div>
         <button class="priv" onclick="show('privM')">🔒 Data Privacy</button>
         <div class="griH"><div class="n" id="griN">0</div><small>GRI</small></div>
         <span class="badge b-blue" id="tierBadge">Blue</span>
