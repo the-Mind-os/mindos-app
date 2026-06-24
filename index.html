@@ -128,6 +128,7 @@ select.inp{appearance:auto}
       <a data-s="pods"><span class="ic">◍</span><span>Find a POD</span></a>
       <div class="navlbl">Account</div>
       <a data-s="prof"><span class="ic">☺</span><span>Profile</span></a>
+      <a data-s="refer"><span class="ic">🎁</span><span>Refer</span></a>
     </nav>
     <div class="me"><div class="av" id="avatar">M</div><div><span id="meAlias">…</span><small id="meTier">Blue</small></div></div>
     <button class="signout" id="signout">Sign out</button>
@@ -234,7 +235,7 @@ select.inp{appearance:auto}
 
       <!-- PODS -->
       <section class="screen" id="s-pods">
-        <div class="card" style="margin-bottom:18px"><h3>◍ Find a POD</h3><div class="hint">Coach-led cohorts — join any, move freely. All part of your Life Accelerator.</div></div>
+        <div class="card" style="margin-bottom:14px"><h3>◍ Find a POD</h3><div class="hint">Coach-led cohorts — join any, move freely.</div><div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="podSearch" placeholder="🔍 Search by goal, focus or coach…"><button class="btn" id="podSearchBtn">Search</button></div><div class="hint" id="podMatchHint" style="margin:10px 0 0"></div></div>
         <div class="grid g3" id="podGrid"></div>
         <div class="note" id="podEmpty" style="display:none">◍<div>No PODs listed yet — they'll appear here as coaches join.</div></div>
       </section>
@@ -268,6 +269,24 @@ select.inp{appearance:auto}
           <input type="file" id="logoFile" accept="image/png,image/svg+xml,image/webp" hidden>
           <button class="btn sm" id="logoBtn" style="margin-top:6px">Upload logo</button>
           <div class="hint" id="logoMsg" style="margin-top:8px"></div>
+        </div>
+      </section>
+
+      <!-- REFER -->
+      <section class="screen" id="s-refer">
+        <div class="brill" style="margin-bottom:16px">
+          <span class="tag">🎁 Give GRI, get GRI</span>
+          <p style="font-size:18px;margin-top:8px">Invite a friend to Mind OS. When they join, <b>you each earn +50 GRI</b>.</p>
+        </div>
+        <div class="card">
+          <h3>Your invite link</h3>
+          <div class="hint">Share it anywhere — it's tied to you, so you both get credit automatically.</div>
+          <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="refLink" readonly value="…"><button class="btn" id="copyRef">Copy</button></div>
+          <div style="display:flex;gap:8px;margin-top:10px"><a class="btn sm ghost" id="refWa" target="_blank" rel="noopener">Share on WhatsApp</a><a class="btn sm ghost" id="refMail">Share by email</a></div>
+          <div style="display:flex;gap:14px;margin-top:18px">
+            <div style="flex:1;background:var(--page);border-radius:14px;padding:16px;text-align:center"><div style="font-size:30px;font-weight:800;color:var(--forest)" id="refCount">0</div><div style="font-size:11.5px;color:var(--muted)">friends joined</div></div>
+            <div style="flex:1;background:var(--page);border-radius:14px;padding:16px;text-align:center"><div style="font-size:30px;font-weight:800;color:var(--forest)" id="refGri">0</div><div style="font-size:11.5px;color:var(--muted)">GRI earned from referrals</div></div>
+          </div>
         </div>
       </section>
 
@@ -307,7 +326,7 @@ let user=null, gri=0, streak=0, todayCount=0;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
 const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucket_list:'Bucket list'};
-const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],prof:['Profile','How the community sees you']};
+const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends — you both earn GRI']};
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
 function tierOf(g){return g<=1850?['Blue','blue',0,1850]:g<=3500?['Bronze','bronze',1850,3500]:g<=7000?['Silver','silver',3500,7000]:['Gold','gold',7000,7000];}
 function genAlias(){const a=['quiet','bright','bold','calm','swift','wise','kind','brave'],b=['summit','river','ember','meadow','harbor','grove','aurora','peak'];return a[Math.random()*8|0]+'-'+b[Math.random()*8|0]+'-'+(10+Math.random()*89|0);}
@@ -326,12 +345,14 @@ async function boot(){
   $('#gate').style.display='none';$('#app').style.display='grid';
   let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin').eq('id',user.id).maybeSingle();
   if(!m){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
-  const code=new URLSearchParams(location.search).get('invite');
-  if(code){const {data:r}=await sb.rpc('redeem_invite',{p_code:code});if(r==='joined')toast('🎉 You joined a POD!');history.replaceState({},'',location.pathname);}
+  const params=new URLSearchParams(location.search);const inv=params.get('invite');const ref=params.get('ref');
+  if(inv){const {data:r}=await sb.rpc('redeem_invite',{p_code:inv});if(r==='joined')toast('🎉 You joined a POD!');}
+  if(ref){const {data:rr}=await sb.rpc('redeem_referral',{p_code:ref});if(rr==='ok')toast('🎉 Welcome! +50 GRI for you and your friend');}
+  if(inv||ref)history.replaceState({},'',location.pathname);
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
   $('#alias').value=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';
   drawRadar();
-  await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods()]);
+  await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods(),loadRefer()]);
   initAvatar(m); initAdmin(m); initBrandLogo();
 }
 
@@ -448,7 +469,11 @@ function savePot(){clearTimeout(potT);potT=setTimeout(async()=>{const {error:e1}
 async function loadProf(){const {data}=await sb.from('member_identities').select('city,country').eq('member_id',user.id).maybeSingle();if(data&&(data.city||data.country))$('#city').value=[data.city,data.country].filter(Boolean).join(', ');}
 $('#saveProf').onclick=async()=>{const p=$('#city').value.split(',').map(x=>x.trim());await sb.from('members').update({bio:$('#bio').value,passions:$('#passions').value}).eq('id',user.id);await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});toast('Saved ✓');};
 
-async function loadPods(){const {data}=await sb.from('pods').select('id,name,focus,price_cents').eq('status','listed').limit(12);const el=$('#podGrid');el.innerHTML='';if(!data||!data.length){$('#podEmpty').style.display='flex';return;}data.forEach(p=>{const d=document.createElement('div');d.className='pod';d.innerHTML=`<div class="ph"></div><div class="bd"><h4>${p.name}</h4><div class="co">${p.focus||''}</div><div style="display:flex;justify-content:space-between;align-items:center"><b style="color:var(--forest)">$${((p.price_cents||25000)/100).toFixed(0)}<span style="font-weight:400;color:var(--muted);font-size:11px">/mo</span></b><button class="btn sm">Join</button></div></div>`;el.appendChild(d);});}
+let allPods=[], myFocus=[];
+async function loadPods(){const {data}=await sb.from('pods').select('id,name,focus,price_cents').eq('status','listed').limit(60);allPods=data||[];const {data:gi}=await sb.from('growth_items').select('title,q4_pillar').eq('member_id',user.id);const fs=[];(gi||[]).forEach(g=>{String(g.title||'').toLowerCase().split(/\W+/).forEach(w=>{if(w.length>3)fs.push(w);});if(g.q4_pillar)(PILL[g.q4_pillar]||'').toLowerCase().split(/\W+/).forEach(w=>{if(w.length>2)fs.push(w);});});myFocus=[...new Set(fs)];renderPods();}
+function podScore(p){const hay=((p.focus||'')+' '+(p.name||'')).toLowerCase();return myFocus.reduce((n,w)=>n+(w&&hay.includes(w)?1:0),0);}
+function renderPods(){const q=(($('#podSearch')&&$('#podSearch').value)||'').trim().toLowerCase();let list=allPods.map(p=>({...p,score:podScore(p)}));if(q)list=list.filter(p=>(((p.focus||'')+' '+(p.name||'')).toLowerCase().includes(q)));list.sort((a,b)=>b.score-a.score);const matched=list.filter(p=>p.score>0).length;const mh=$('#podMatchHint');if(mh)mh.innerHTML=matched?('✨ <b>'+matched+'</b> matched to your goals'):(myFocus.length?'No PODs matched your goals yet — browse all below.':'Add priorities to get goal-matched PODs.');const el=$('#podGrid');el.innerHTML='';if(!list.length){$('#podEmpty').style.display='flex';return;}$('#podEmpty').style.display='none';list.forEach(p=>{const d=document.createElement('div');d.className='pod';d.innerHTML=`<div class="ph"></div><div class="bd"><h4>${esc(p.name)}${p.score>0?' <span style="background:var(--green);color:var(--forest);font-weight:700;font-size:10px;padding:2px 7px;border-radius:20px;margin-left:4px">✨ Match</span>':''}</h4><div class="co">${esc(p.focus||'')}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><b style="color:var(--forest)">$${((p.price_cents||25000)/100).toFixed(0)}<span style="font-weight:400;color:var(--muted);font-size:11px">/mo</span></b><button class="btn sm">Join</button></div></div>`;el.appendChild(d);});}
+$('#podSearch')&&$('#podSearch').addEventListener('input',renderPods);$('#podSearchBtn')&&($('#podSearchBtn').onclick=renderPods);
 
 function openShare(){const [t]=tierOf(gri);$('#shTier').textContent=t+' Tier';$('#shStreak').textContent=streak;$('#shGri').textContent=gri.toLocaleString();show('shareM');}
 window.show=show;window.hide=hide;window.openShare=openShare;
@@ -459,6 +484,9 @@ window.burst=()=>burstXY(innerWidth/2,innerHeight/3,80);
 function burstAt(el){const r=el.getBoundingClientRect();burstXY(r.left+r.width/2,r.top+r.height/2,26);}
 function burstXY(x,y,n){const c=['#4DF28A','#27c768','#173622','#fbe7a6','#9bf7c2'];for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*9,vy:Math.random()*-9-2,g:.32,s:Math.random()*6+3,c:c[i%5],life:60+Math.random()*30,rot:Math.random()*6});if(!raf)loop();}
 function loop(){ctx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.life>0);parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.life--;p.rot+=.2;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.globalAlpha=Math.max(p.life/60,0);ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);ctx.restore();});if(parts.length)raf=requestAnimationFrame(loop);else{raf=null;ctx.clearRect(0,0,cv.width,cv.height);}}
+
+async function loadRefer(){const {data:code}=await sb.rpc('my_referral_code');const link=location.origin+'/?ref='+(code||'');$('#refLink').value=link;const msg=encodeURIComponent("I'm using Mind OS to track my growth across my whole life. Join me — we both get a boost: "+link);$('#refWa').href='https://wa.me/?text='+msg;$('#refMail').href='mailto:?subject='+encodeURIComponent('Join me on Mind OS')+'&body='+msg;const {count}=await sb.from('referrals').select('id',{count:'exact',head:true}).eq('referrer_id',user.id);$('#refCount').textContent=count||0;$('#refGri').textContent=((count||0)*50).toLocaleString();}
+$('#copyRef').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText($('#refLink').value);toast('Invite link copied!');};
 </script>
 </body>
 </html>
