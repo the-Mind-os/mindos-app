@@ -21,6 +21,10 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 .side{background:linear-gradient(180deg,#1b3f29,#0e2417);color:#cfe8d8;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100vh;z-index:10}
 .brand{display:flex;align-items:center;gap:7px;padding:10px 6px 18px}.brand .wm{font-size:28px;font-weight:700;letter-spacing:-2px;color:#fff;line-height:1}.brand .ii{position:relative;display:inline-block}.brand .idot{position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--green)}.brand .osbox{background:var(--green);color:#08200f;font-weight:800;font-size:15px;padding:2px 8px;border-radius:9px;line-height:1.2}
 .brandimg{width:100%;max-width:150px;height:auto;display:block;margin:2px 0 10px}
+.photorow{display:flex;gap:14px;align-items:flex-start;margin:14px 0 4px}
+.pphoto{width:64px;height:64px;border-radius:18px;background:var(--forest);color:var(--green);display:grid;place-items:center;font-weight:800;font-size:24px;overflow:hidden;flex:none}
+.pphoto img{width:100%;height:100%;object-fit:cover}
+.side .me .av img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 .navlbl{font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;color:#6f8f7c;padding:14px 12px 6px}
 .nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:13px;color:#cfe8d8;text-decoration:none;font-size:14.5px;cursor:pointer;transition:.18s}
 .nav a .ic{width:20px;text-align:center;font-size:16px}.nav a:hover{background:rgba(77,242,138,.10);color:#fff}.nav a.active{background:var(--green);color:var(--forest);font-weight:600;box-shadow:0 6px 18px rgba(77,242,138,.32)}
@@ -69,6 +73,11 @@ select.inp{appearance:auto}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 .chips span{background:var(--page);border:1px dashed var(--line);color:var(--forest);padding:5px 11px;border-radius:30px;font-size:12px;cursor:pointer;transition:.12s}
 .chips span:hover{background:var(--green);border-color:var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px}
+.tokbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:7px;background:#fcfefc;min-height:42px;margin-top:2px}
+.tok{display:inline-flex;align-items:center;gap:7px;background:var(--forest);color:#fff;border-radius:20px;padding:4px 7px 4px 12px;font-size:12.5px}
+.tok b{cursor:pointer;font-weight:700;opacity:.75;font-size:15px;line-height:1}.tok b:hover{opacity:1}
+.tokin{border:none;outline:none;background:transparent;flex:1;min-width:130px;font-family:inherit;font-size:13px;padding:3px}
 .pod{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}.pod .ph{height:60px;background:linear-gradient(120deg,#1d4530,#2f6344)}.pod .bd{padding:14px 16px}.pod .bd h4{font-size:14px;font-weight:600}.pod .bd .co{color:var(--muted);font-size:12px;margin:2px 0 8px}
 .note{background:rgba(77,242,138,.12);border:1px solid rgba(77,242,138,.4);border-radius:12px;padding:11px 14px;font-size:12.5px;color:var(--forest);display:flex;gap:9px;align-items:start}
 .overlay{display:none;position:fixed;inset:0;background:rgba(12,26,18,.6);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}.overlay.show{display:flex;animation:rise .25s}
@@ -179,6 +188,9 @@ select.inp{appearance:auto}
         <div class="card"><h3>⛰ Resilience — your BIT-N</h3><div class="hint">Name what holds you back: Blocks · Impulses · Triggers · Needs. Each entry earns +100 GRI.</div>
           <div id="resList"></div>
           <input class="inp" id="resTitle" placeholder="e.g. Doom-scrolling at night" style="margin:8px 0">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--forest);font-weight:600;margin:4px 0 4px"><span>How much does this block the life you want?</span><b id="resImpactV" style="color:var(--green-d)">50</b></div>
+          <input type="range" min="0" max="100" value="50" id="resImpact" style="width:100%;accent-color:var(--green-d);cursor:pointer" oninput="document.getElementById('resImpactV').textContent=this.value">
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin:2px 0 10px"><span>Barely</span><span>Completely blocks me</span></div>
           <div style="display:flex;gap:8px"><select class="inp" id="resType"><option value="block">Block</option><option value="impulse">Impulse</option><option value="trigger">Trigger</option><option value="need">Need</option></select><select class="inp" id="resPillar"><option value="mind_body">Mind &amp; Body</option><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="money">Money</option></select><button class="btn" id="addRes">Add</button></div>
         </div>
       </section>
@@ -197,13 +209,16 @@ select.inp{appearance:auto}
         <div class="card"><h3>✦ Your potential</h3><div class="hint">What makes you, you. Not sure where to start? Tap a suggestion to add it — or write your own.</div>
           <div class="plbl">Your superpower (one phrase, 20 chars)</div><input class="inp" id="sp" maxlength="20" placeholder="e.g. Turning chaos calm">
           <div class="chips" id="chips-sp"></div>
-          <div class="plbl">Core strengths</div><input class="inp" id="strengths" placeholder="Tap below or type — comma-separated">
+          <div class="plbl">Core strengths</div>
+          <div class="tokbox" id="tok-strengths"><input class="tokin" id="in-strengths" placeholder="Type and press Enter…"></div>
           <div class="chips" id="chips-strengths"></div>
-          <div class="plbl">Values &amp; intentions</div><input class="inp" id="intentions" placeholder="What you hold dear">
+          <div class="plbl">Values &amp; intentions</div>
+          <div class="tokbox" id="tok-intentions"><input class="tokin" id="in-intentions" placeholder="Type and press Enter…"></div>
           <div class="chips" id="chips-intentions"></div>
-          <div class="plbl">Natural intelligences</div><input class="inp" id="intelligences" placeholder="Where you naturally shine">
+          <div class="plbl">Natural intelligences</div>
+          <div class="tokbox" id="tok-intelligences"><input class="tokin" id="in-intelligences" placeholder="Type and press Enter…"></div>
           <div class="chips" id="chips-intelligences"></div>
-          <button class="btn sm" id="savePot" style="margin-top:14px">Save</button>
+          <div class="hint" id="potMsg" style="margin-top:12px">Saves automatically as you add ✓</div>
         </div>
       </section>
 
@@ -217,11 +232,32 @@ select.inp{appearance:auto}
       <!-- PROFILE -->
       <section class="screen" id="s-prof">
         <div class="card"><h3>☺ Profile</h3><div class="hint">Your alias is public &amp; searchable. Your name &amp; email stay sealed in the vault.</div>
+          <div class="photorow">
+            <div class="pphoto" id="pphoto">M</div>
+            <div style="flex:1">
+              <input type="file" id="avatarFile" accept="image/png,image/jpeg,image/webp" hidden>
+              <button class="btn sm" id="avatarBtn">Upload photo</button>
+              <button class="btn sm ghost" id="avatarRm" style="display:none;margin-left:6px">Remove</button>
+              <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Who can see it</div>
+              <select class="inp" id="avatarVis" style="padding:8px 10px;font-size:12.5px;max-width:230px">
+                <option value="private">Private — only you</option>
+                <option value="coach">My coach can see it</option>
+              </select>
+              <div class="hint" id="avatarMsg" style="margin:7px 0 0">🔒 Private by default — sealed, even from us. Max 5MB.</div>
+            </div>
+          </div>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Alias</div><input class="inp" id="alias" readonly>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">City &amp; country</div><input class="inp" id="city" placeholder="Austin, USA">
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">About me</div><textarea class="inp" id="bio" rows="3"></textarea>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Passions (300 chars)</div><input class="inp" id="passions" maxlength="300">
           <button class="btn sm" id="saveProf" style="margin-top:12px">Save</button>
+        </div>
+        <div class="card" id="adminLogoCard" style="display:none">
+          <h3>🛡 Company logo <span style="font-size:11px;color:var(--muted)">· admin</span></h3>
+          <div class="hint">Upload the Mind OS logo for dark surfaces (PNG, SVG or WebP). Updates app-wide.</div>
+          <input type="file" id="logoFile" accept="image/png,image/svg+xml,image/webp" hidden>
+          <button class="btn sm" id="logoBtn" style="margin-top:6px">Upload logo</button>
+          <div class="hint" id="logoMsg" style="margin-top:8px"></div>
         </div>
       </section>
 
@@ -277,14 +313,77 @@ sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 
 async function boot(){
   $('#gate').style.display='none';$('#app').style.display='grid';
-  let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower').eq('id',user.id).maybeSingle();
+  let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin').eq('id',user.id).maybeSingle();
   if(!m){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
   const code=new URLSearchParams(location.search).get('invite');
   if(code){const {data:r}=await sb.rpc('redeem_invite',{p_code:code});if(r==='joined')toast('🎉 You joined a POD!');history.replaceState({},'',location.pathname);}
-  $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();
+  $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
   $('#alias').value=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';
   drawRadar();
   await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods()]);
+  initAvatar(m); initAdmin(m); initBrandLogo();
+}
+
+// ---- Profile photo (private, owner-only via signed URLs) ----
+async function showAvatar(path){
+  if(!path){return;}
+  const {data}=await sb.storage.from('avatars').createSignedUrl(path,3600);
+  if(data&&data.signedUrl){
+    const url=data.signedUrl+'#'+Date.now();
+    $('#pphoto').innerHTML='<img src="'+url+'" alt="">';
+    $('#avatar').innerHTML='<img src="'+url+'" alt="">';
+    $('#avatarRm').style.display='';
+  }
+}
+function initAvatar(m){
+  $('#avatarVis').value=m&&m.avatar_visibility?m.avatar_visibility:'private';
+  if(m&&m.avatar_path) showAvatar(m.avatar_path);
+  $('#avatarBtn').onclick=()=>$('#avatarFile').click();
+  $('#avatarFile').onchange=async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    if(f.size>5242880){$('#avatarMsg').textContent='⚠️ Image must be under 5MB.';return;}
+    $('#avatarMsg').textContent='Uploading…';
+    const ext=(f.type.split('/')[1]||'png').replace('jpeg','jpg');
+    const path=user.id+'/avatar.'+ext;
+    const {error}=await sb.storage.from('avatars').upload(path,f,{upsert:true,contentType:f.type});
+    if(error){$('#avatarMsg').textContent='⚠️ '+error.message;return;}
+    await sb.from('members').update({avatar_path:path,avatar_visibility:$('#avatarVis').value}).eq('id',user.id);
+    await showAvatar(path);
+    $('#avatarMsg').innerHTML='🔒 Saved — private by default. Max 5MB.';
+    toast('Photo updated ✓');
+  };
+  $('#avatarVis').onchange=async()=>{await sb.from('members').update({avatar_visibility:$('#avatarVis').value}).eq('id',user.id);toast('Visibility updated ✓');};
+  $('#avatarRm').onclick=async()=>{
+    const ext0=['png','jpg','webp'];
+    await sb.storage.from('avatars').remove(ext0.map(x=>user.id+'/avatar.'+x));
+    await sb.from('members').update({avatar_path:null}).eq('id',user.id);
+    $('#pphoto').textContent=($('#alias').value||'M')[0].toUpperCase();
+    $('#avatar').textContent=($('#alias').value||'M')[0].toUpperCase();
+    $('#avatarRm').style.display='none';toast('Photo removed');
+  };
+}
+
+// ---- Admin: company logo (public branding bucket) ----
+const BRAND_LOGO_URL='https://hrftsfjjtaclqnmaurfd.supabase.co/storage/v1/object/public/branding/logo.png';
+function initBrandLogo(){
+  const img=document.querySelector('.brand .brandimg'); if(!img) return;
+  const t=new Image();
+  t.onload=()=>{img.src=BRAND_LOGO_URL+'?v='+Date.now();};
+  t.src=BRAND_LOGO_URL+'?v='+Date.now();
+}
+function initAdmin(m){
+  if(!(m&&m.is_admin)) return;
+  $('#adminLogoCard').style.display='';
+  $('#logoBtn').onclick=()=>$('#logoFile').click();
+  $('#logoFile').onchange=async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    $('#logoMsg').textContent='Uploading…';
+    const {error}=await sb.storage.from('branding').upload('logo.png',f,{upsert:true,contentType:f.type});
+    if(error){$('#logoMsg').textContent='⚠️ '+error.message;return;}
+    const img=document.querySelector('.brand .brandimg'); if(img) img.src=BRAND_LOGO_URL+'?v='+Date.now();
+    $('#logoMsg').textContent='✓ Logo updated app-wide.';
+    toast('Logo updated ✓');
+  };
 }
 
 function setGriUI(){$('#griN').textContent=gri.toLocaleString();const [t,cls,lo,hi]=tierOf(gri);$('#tierBadge').textContent=t;$('#tierBadge').className='badge b-'+cls;$('#meTier').textContent=t+' Tier';$('#tierKpi').textContent=gri.toLocaleString();$('#streakKpi').textContent=streak;$('#streakN')&&($('#streakN').textContent=streak);$('#dStreak').textContent=streak;$('#todayKpi').textContent=todayCount;const pct=hi>lo?Math.min(100,Math.round((gri-lo)/(hi-lo)*100)):100;$('#tierBar').style.width=pct+'%';$('#tierHint').textContent=t==='Gold'?'Top tier 🏆':(hi-gri).toLocaleString()+' GRI to next tier';}
@@ -300,22 +399,30 @@ async function saveQ4(){const v={};$$('[data-p]').forEach(i=>v[i.dataset.p]=+i.v
 async function loadQ4Trend(){const {data}=await sb.from('q4_snapshots').select('overall,recorded_at').eq('member_id',user.id).order('recorded_at',{ascending:false}).limit(10);const el=$('#q4trend');if(!el)return;const snaps=(data||[]).reverse();if(!snaps.length){el.innerHTML='<div class="hint" style="margin:0">No snapshots yet — save one to start your trend.</div>';return;}el.innerHTML='<div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600">Your Q4 trend</div><div style="display:flex;align-items:flex-end;gap:6px;height:74px">'+snaps.map(s=>{const h=Math.max(6,Math.round((s.overall||0)/100*60));const d=new Date(s.recorded_at);return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1"><div style="font-size:10px;font-weight:700;color:var(--forest)">${s.overall}</div><div style="width:100%;max-width:26px;height:${h}px;background:linear-gradient(180deg,var(--green),var(--green-d));border-radius:5px"></div><div style="font-size:9px;color:var(--muted)">${d.getMonth()+1}/${d.getDate()}</div></div>`;}).join('')+'</div>';}
 $('#saveQ4').onclick=saveQ4;
 const SUG={sp:['Turning chaos calm','Making people feel seen','Relentless optimism','Calm under pressure'],strengths:['Strategic','Empathetic','Resilient','Curious','Disciplined','Creative','Decisive','Patient','Driven'],intentions:['Honesty','Growth','Family','Freedom','Discipline','Kindness','Courage','Integrity','Gratitude'],intelligences:['Linguistic','Logical','Spatial','Musical','Bodily-Kinesthetic','Interpersonal','Intrapersonal','Naturalistic']};
-function renderChips(){for(const k in SUG){const c=$('#chips-'+k);if(c)c.innerHTML=SUG[k].map(s=>`<span data-k="${k}" data-v="${s}">+ ${s}</span>`).join('');}}
-document.addEventListener('click',e=>{const sp=e.target.closest('.chips span');if(!sp)return;const k=sp.dataset.k,val=sp.dataset.v;if(k==='sp'){$('#sp').value=val;return;}const inp=$('#'+k);if(!inp)return;const cur=inp.value.split(',').map(x=>x.trim()).filter(Boolean);if(!cur.includes(val))cur.push(val);inp.value=cur.join(', ');});
-renderChips();
+const POT={strengths:[],intentions:[],intelligences:[]};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function renderSugSp(){const c=$('#chips-sp');if(c)c.innerHTML=SUG.sp.map(s=>`<span data-sp="${esc(s)}">+ ${esc(s)}</span>`).join('');}
+function renderTok(cat){const box=$('#tok-'+cat),inp=$('#in-'+cat);if(!box)return;[...box.querySelectorAll('.tok')].forEach(n=>n.remove());POT[cat].forEach(v=>{const t=document.createElement('span');t.className='tok';t.innerHTML=esc(v)+' <b>×</b>';t.querySelector('b').onclick=()=>{POT[cat]=POT[cat].filter(x=>x!==v);renderTok(cat);renderSug(cat);savePot();};box.insertBefore(t,inp);});}
+function renderSug(cat){const c=$('#chips-'+cat);if(!c)return;c.innerHTML=(SUG[cat]||[]).filter(s=>!POT[cat].includes(s)).map(s=>`<span data-add="${cat}" data-v="${esc(s)}">+ ${esc(s)}</span>`).join('');}
+function addTok(cat,v){v=(v||'').trim();if(!v)return;if(!POT[cat].some(x=>x.toLowerCase()===v.toLowerCase()))POT[cat].push(v);renderTok(cat);renderSug(cat);savePot();}
+['strengths','intentions','intelligences'].forEach(cat=>{const inp=$('#in-'+cat);if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===','){e.preventDefault();addTok(cat,inp.value);inp.value='';}});});
+document.addEventListener('click',e=>{const add=e.target.closest('.chips span[data-add]');if(add){addTok(add.dataset.add,add.dataset.v);return;}const sp=e.target.closest('.chips span[data-sp]');if(sp){$('#sp').value=sp.dataset.sp;savePot();}});
+$('#sp').addEventListener('change',savePot);
+renderSugSp();
 
-async function loadHabits(){let {data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at');if(!hs||!hs.length){for(const t of ['Morning movement','Deep-work block','Gratitude note'])await sb.from('habits').insert({member_id:user.id,title:t});({data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at'));}const today=new Date().toISOString().slice(0,10);const {data:lg}=await sb.from('habit_logs').select('habit_id').eq('member_id',user.id).eq('log_date',today);const done=new Set((lg||[]).map(l=>l.habit_id));todayCount=done.size;setGriUI();const el=$('#habits');el.innerHTML='';hs.forEach(h=>{const on=done.has(h.id);const d=document.createElement('div');d.className='habit';d.innerHTML=`<div class="check ${on?'on':''}">${on?'✓':''}</div><div class="nm">${h.title}</div>`;const chk=d.querySelector('.check');chk.onclick=async()=>{if(chk.classList.contains('on'))return;chk.classList.add('on');chk.textContent='✓';const {data,error}=await sb.rpc('log_habit_today',{p_habit:h.id});if(error){toast('⚠️ '+error.message);return;}const r=Array.isArray(data)?data[0]:data;if(r){gri=Number(r.gri);streak=r.current_streak;todayCount++;setGriUI();}burstAt(chk);toast('+1 GRI 🔥');};el.appendChild(d);});}
-$('#addHabit').onclick=async()=>{const t=$('#newHabit').value.trim();if(!t)return;await sb.from('habits').insert({member_id:user.id,title:t});$('#newHabit').value='';loadHabits();};
+async function loadHabits(){let {data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at');if(!hs||!hs.length){await sb.from('habits').upsert(['Morning movement','Deep-work block','Gratitude note'].map(title=>({member_id:user.id,title})),{onConflict:'member_id,title',ignoreDuplicates:true});({data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at'));}const today=new Date().toISOString().slice(0,10);const {data:lg}=await sb.from('habit_logs').select('habit_id').eq('member_id',user.id).eq('log_date',today);const done=new Set((lg||[]).map(l=>l.habit_id));todayCount=done.size;setGriUI();const el=$('#habits');el.innerHTML='';hs.forEach(h=>{const on=done.has(h.id);const d=document.createElement('div');d.className='habit';d.innerHTML=`<div class="check ${on?'on':''}">${on?'✓':''}</div><div class="nm">${h.title}</div>`;const chk=d.querySelector('.check');chk.onclick=async()=>{if(chk.classList.contains('on'))return;chk.classList.add('on');chk.textContent='✓';const {data,error}=await sb.rpc('log_habit_today',{p_habit:h.id});if(error){toast('⚠️ '+error.message);return;}const r=Array.isArray(data)?data[0]:data;if(r){gri=Number(r.gri);streak=r.current_streak;todayCount++;setGriUI();}burstAt(chk);toast('+1 GRI 🔥');};el.appendChild(d);});}
+$('#addHabit').onclick=async()=>{const t=$('#newHabit').value.trim();if(!t)return;const {error}=await sb.from('habits').insert({member_id:user.id,title:t});if(error){toast(error.code==='23505'?'You already have that habit':'⚠️ '+error.message);return;}$('#newHabit').value='';loadHabits();};
 
-async function loadRes(){const {data}=await sb.from('resilience_entries').select('id,title,type,q4_pillar').eq('member_id',user.id).order('created_at',{ascending:false});const el=$('#resList');el.innerHTML='';(data||[]).forEach(r=>{const d=document.createElement('div');d.className='entry';d.innerHTML=`<div><div class="t">${r.title}</div><div class="m">Q4: ${PILL[r.q4_pillar]||''}</div></div><span class="tag t-${r.type}">${r.type}</span>`;el.appendChild(d);});}
-$('#addRes').onclick=async()=>{const t=$('#resTitle').value.trim();if(!t)return;const {error}=await sb.from('resilience_entries').insert({member_id:user.id,title:t,type:$('#resType').value,q4_pillar:$('#resPillar').value});if(error){toast('⚠️ '+error.message);return;}$('#resTitle').value='';await loadRes();await loadGri();burst();toast('+100 GRI 🎉');};
+async function loadRes(){const {data}=await sb.from('resilience_entries').select('id,title,type,q4_pillar,impact').eq('member_id',user.id).order('created_at',{ascending:false});const el=$('#resList');el.innerHTML='';(data||[]).forEach(r=>{const imp=r.impact??50;const d=document.createElement('div');d.className='entry';d.innerHTML=`<div style="flex:1"><div class="t">${r.title}</div><div class="m">Q4: ${PILL[r.q4_pillar]||''}</div><div style="display:flex;align-items:center;gap:8px;margin-top:7px"><div style="flex:1;max-width:170px;height:6px;border-radius:6px;background:var(--line);overflow:hidden"><div style="width:${imp}%;height:100%;background:linear-gradient(90deg,var(--green),var(--green-d))"></div></div><span style="font-size:11px;color:var(--muted)">Life impact ${imp}%</span></div></div><span class="tag t-${r.type}">${r.type}</span>`;el.appendChild(d);});}
+$('#addRes').onclick=async()=>{const t=$('#resTitle').value.trim();if(!t)return;const {error}=await sb.from('resilience_entries').insert({member_id:user.id,title:t,type:$('#resType').value,q4_pillar:$('#resPillar').value,impact:Number($('#resImpact').value)});if(error){toast('⚠️ '+error.message);return;}$('#resTitle').value='';$('#resImpact').value=50;$('#resImpactV').textContent='50';await loadRes();await loadGri();burst();toast('+100 GRI 🎉');};
 
 async function loadPrio(){const {data}=await sb.from('growth_items').select('id,title,kind,q4_pillar,priority_rank').eq('member_id',user.id).order('priority_rank',{nullsFirst:false}).order('created_at');const items=data||[];$('#dGoals').textContent=items.length;const el=$('#prioList');el.innerHTML='';items.forEach((g,i)=>{const d=document.createElement('div');d.className='entry';d.innerHTML=`<div><div class="t">${g.title}${i===0?'<span class="omgb">★ OMG</span>':''}</div><div class="m"><span class="tag t-${g.kind}">${g.kind}</span> &nbsp;Q4: ${PILL[g.q4_pillar]||''}</div></div><div class="mv"><button data-up>▲</button><button data-dn>▼</button></div>`;d.querySelector('[data-up]').onclick=()=>moveP(items,i,-1);d.querySelector('[data-dn]').onclick=()=>moveP(items,i,1);el.appendChild(d);});}
 async function moveP(items,i,dir){const j=i+dir;if(j<0||j>=items.length)return;[items[i],items[j]]=[items[j],items[i]];for(let k=0;k<items.length;k++)await sb.from('growth_items').update({priority_rank:k+1}).eq('id',items[k].id);await loadPrio();toast('★ OMG: '+items[0].title);}
 $('#addPrio').onclick=async()=>{const t=$('#prioTitle').value.trim();if(!t)return;const {count}=await sb.from('growth_items').select('id',{count:'exact',head:true}).eq('member_id',user.id);const {error}=await sb.from('growth_items').insert({member_id:user.id,title:t,kind:$('#prioKind').value,q4_pillar:$('#prioPillar').value,priority_rank:(count||0)+1});if(error){toast('⚠️ '+error.message);return;}$('#prioTitle').value='';await loadPrio();await loadGri();burst();toast('+50 GRI 🎉');};
 
-async function loadPot(){const {data}=await sb.from('potential').select('strengths,intentions,intelligences').eq('member_id',user.id).maybeSingle();if(data){$('#strengths').value=(data.strengths||[]).join(', ');$('#intentions').value=(data.intentions||[]).join(', ');$('#intelligences').value=(data.intelligences||[]).join(', ');}}
-$('#savePot').onclick=async()=>{await sb.from('members').update({superpower:$('#sp').value}).eq('id',user.id);const arr=s=>s.split(',').map(x=>x.trim()).filter(Boolean);const {error}=await sb.from('potential').upsert({member_id:user.id,strengths:arr($('#strengths').value),intentions:arr($('#intentions').value),intelligences:arr($('#intelligences').value),updated_at:new Date().toISOString()},{onConflict:'member_id'});if(error){toast('⚠️ '+error.message);return;}toast('Saved ✓');};
+async function loadPot(){const {data}=await sb.from('potential').select('strengths,intentions,intelligences').eq('member_id',user.id).maybeSingle();POT.strengths=(data&&data.strengths)||[];POT.intentions=(data&&data.intentions)||[];POT.intelligences=(data&&data.intelligences)||[];['strengths','intentions','intelligences'].forEach(c=>{renderTok(c);renderSug(c);});}
+let potT;
+function savePot(){clearTimeout(potT);potT=setTimeout(async()=>{const {error:e1}=await sb.from('members').update({superpower:$('#sp').value}).eq('id',user.id);const {error}=await sb.from('potential').upsert({member_id:user.id,strengths:POT.strengths,intentions:POT.intentions,intelligences:POT.intelligences,updated_at:new Date().toISOString()},{onConflict:'member_id'});const msg=$('#potMsg');const err=error||e1;if(err){if(msg)msg.textContent='⚠️ '+err.message;toast('⚠️ '+err.message);return;}if(msg)msg.textContent='Saved ✓ '+new Date().toLocaleTimeString();},400);}
 
 async function loadProf(){const {data}=await sb.from('member_identities').select('city,country').eq('member_id',user.id).maybeSingle();if(data&&(data.city||data.country))$('#city').value=[data.city,data.country].filter(Boolean).join(', ');}
 $('#saveProf').onclick=async()=>{const p=$('#city').value.split(',').map(x=>x.trim());await sb.from('members').update({bio:$('#bio').value,passions:$('#passions').value}).eq('id',user.id);await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});toast('Saved ✓');};
