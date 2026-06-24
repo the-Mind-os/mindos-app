@@ -67,7 +67,7 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
 let user=null,myPods=[];
-const APP_URL='https://mindos-app-one.vercel.app'; // ← change to 'https://app.mind.us' once the custom domain is attached in Vercel
+const APP_URL='https://app.mind.us'; // custom domain (live)
 const $=s=>document.querySelector(s);
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
 $('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email.';};
