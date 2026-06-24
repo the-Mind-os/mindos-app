@@ -4,223 +4,310 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mind OS — The Life Accelerator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#4DF28A;--green-d:#27c768;--forest:#173622;--page:#EAF6EE;--cream:#F5F5EE;--ink:#0c1a12;--muted:#5d6f64;--line:#dbe9e0;--white:#fff;--radius:18px}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var(--ink);-webkit-font-smoothing:antialiased}
-.wrap{max-width:780px;margin:0 auto;padding:18px 18px 80px}
-.brand{display:flex;align-items:center;gap:7px;justify-content:center;padding:12px 0 4px}
-.brand .wm{font-size:32px;font-weight:700;letter-spacing:-2px;color:var(--forest);line-height:1}
-.brand .ii{position:relative;display:inline-block}.brand .idot{position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--green)}
-.brand .osbox{background:var(--green);color:#08200f;font-weight:800;font-size:16px;padding:2px 8px;border-radius:9px;line-height:1.2}
-.tagline{text-align:center;color:var(--muted);font-size:13px;margin-bottom:18px}
-.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 3px 14px rgba(23,54,34,.07);margin-bottom:16px}
-.card h3{font-size:15px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px}
-.card .hint{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+:root{--green:#4DF28A;--green-d:#27c768;--forest:#173622;--forest2:#0e2417;--page:#EAF6EE;--cream:#F5F5EE;--ink:#0c1a12;--muted:#5d6f64;--line:#dbe9e0;--white:#fff;--shadow:0 10px 34px rgba(23,54,34,.10);--shadow-sm:0 3px 14px rgba(23,54,34,.07);--radius:20px;--t-blue:#4A90D9;--t-bronze:#C77B3B;--t-silver:#9AA7B4;--t-gold:#E3B23C}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var(--ink);font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:300}
+/* AUTH GATE */
+#gate{min-height:100vh;display:grid;place-items:center;padding:24px}
+#gate .box{max-width:400px;width:100%;text-align:center}
+.brandbig{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px}
+.brandbig .wm{font-size:40px;font-weight:700;letter-spacing:-2.5px;color:var(--forest)}.brandbig .ii{position:relative;display:inline-block}.brandbig .idot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--green)}.brandbig .osbox{background:var(--green);color:#08200f;font-weight:800;font-size:20px;padding:2px 10px;border-radius:10px}
+/* APP */
+.app{display:none;grid-template-columns:250px 1fr;min-height:100vh}
+.side{background:linear-gradient(180deg,#1b3f29,#0e2417);color:#cfe8d8;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100vh;z-index:10}
+.brand{display:flex;align-items:center;gap:7px;padding:10px 6px 18px}.brand .wm{font-size:28px;font-weight:700;letter-spacing:-2px;color:#fff;line-height:1}.brand .ii{position:relative;display:inline-block}.brand .idot{position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--green)}.brand .osbox{background:var(--green);color:#08200f;font-weight:800;font-size:15px;padding:2px 8px;border-radius:9px;line-height:1.2}
+.navlbl{font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;color:#6f8f7c;padding:14px 12px 6px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:13px;color:#cfe8d8;text-decoration:none;font-size:14.5px;cursor:pointer;transition:.18s}
+.nav a .ic{width:20px;text-align:center;font-size:16px}.nav a:hover{background:rgba(77,242,138,.10);color:#fff}.nav a.active{background:var(--green);color:var(--forest);font-weight:600;box-shadow:0 6px 18px rgba(77,242,138,.32)}
+.side .me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:11px;border-radius:14px;background:rgba(255,255,255,.05);font-size:13px}.side .me .av{width:36px;height:36px;border-radius:11px;background:var(--green);color:var(--forest);display:grid;place-items:center;font-weight:800}.side .me small{display:block;color:#8fb09c;font-size:11px}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 26px;background:rgba(245,245,238,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:8}
+.top h1{font-size:20px;font-weight:600;letter-spacing:-.5px}.top .sub{color:var(--muted);font-size:12px}
+.tw{display:flex;align-items:center;gap:12px}
+.priv{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--forest);color:var(--forest);padding:7px 12px;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer}.priv:hover{background:var(--forest);color:var(--green)}
+.griH{text-align:right}.griH .n{font-size:19px;font-weight:800;color:var(--forest)}.griH small{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px}
+.badge{padding:6px 12px;border-radius:30px;font-weight:700;font-size:12px;color:#fff}
+.b-blue{background:linear-gradient(135deg,#6fb0f0,#3f7fc4)}.b-bronze{background:linear-gradient(135deg,#e2a96b,#b76a2e)}.b-silver{background:linear-gradient(135deg,#cdd6df,#8b98a6);color:#2a323a}.b-gold{background:linear-gradient(135deg,#f4d06a,#d7a229);color:#5a4408}
+.content{padding:24px 26px 70px;max-width:1100px;width:100%}
+.screen{display:none}.screen.show{display:block;animation:rise .35s cubic-bezier(.2,.7,.3,1)}@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:1.5fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1024px){.g2,.g3{grid-template-columns:1fr}.app{grid-template-columns:72px 1fr}.brand .wm,.nav a span:not(.ic),.navlbl,.side .me div{display:none}.brand,.nav a{justify-content:center}}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm)}
+.card h3{font-size:15px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px}.card .hint{color:var(--muted);font-size:12.5px;margin-bottom:14px}
 .dark{background:linear-gradient(150deg,#1d4530,#0e2417);color:#dff3e7;border:none}.dark h3{color:var(--green)}
-.btn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:var(--forest);border:none;padding:10px 15px;border-radius:11px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
-.btn:hover{filter:brightness(1.05)}.btn:disabled{opacity:.5}
-.btn.sm{padding:7px 12px;font-size:12.5px}
-.btn.ghost{background:transparent;border:1.5px solid var(--forest);color:var(--forest)}
-.inp{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-family:inherit;font-size:13.5px;background:#fcfefc}
-.row{display:flex;align-items:center;gap:12px;margin:11px 0}
-.row .lbl{width:135px;font-size:13px;font-weight:500}
-.row input[type=range]{flex:1;-webkit-appearance:none;height:9px;border-radius:10px;background:var(--line)}
-.row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--forest);border:3px solid var(--green);cursor:pointer}
-.row .val{width:34px;text-align:right;font-weight:700;color:var(--forest)}
-.habit{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.habit:last-child{border:none}
-.check{width:27px;height:27px;border-radius:8px;border:2px solid var(--line);cursor:pointer;display:grid;place-items:center;color:transparent;font-weight:800;flex:none;transition:.15s}
-.check.on{background:var(--green);border-color:var(--green);color:var(--forest)}
-.habit .nm{flex:1;font-size:14px;font-weight:500}
-.gri{display:flex;justify-content:space-between;align-items:center}
-.gri .n{font-size:38px;font-weight:800;letter-spacing:-1.5px}
-.badge{padding:6px 13px;border-radius:30px;font-weight:700;font-size:12.5px}
-.t-blue{background:#dbeafe;color:#1e5fb4}.t-bronze{background:#f6e4d3;color:#9a5a23}.t-silver{background:#e6ebf0;color:#5a6b7a}.t-gold{background:#fbe9b8;color:#8a6608}
-.entry{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fcfefc;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.entry .t{font-size:13.5px;font-weight:600}.entry .m{font-size:11.5px;color:var(--muted)}
-.tag{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px}
-.t-goal{background:#d8f3e3;color:#10743f}.t-skill{background:#e6e9ff;color:#3b46c4}
-.t-block{background:#fde8e8;color:#b3261e}.t-impulse{background:#fff0d9;color:#9a6400}.t-trigger{background:#e8e0ff;color:#5a3fb8}.t-need{background:#dcefff;color:#1769a6}
-.omgb{background:linear-gradient(135deg,#fbe7a6,#eac46b);color:#6b4e09;font-weight:700;font-size:10px;padding:2px 8px;border-radius:20px;margin-left:6px}
-.pill{display:inline-block;background:var(--page);border:1px solid var(--line);color:var(--forest);padding:5px 11px;border-radius:30px;font-size:12px;font-weight:500;margin:3px 4px 3px 0}
-.tabs{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:var(--forest);border-radius:18px;padding:7px;margin-top:8px;box-shadow:0 8px 26px rgba(0,0,0,.18)}
-.tabs a{flex:1;text-align:center;color:#9fc6ae;font-size:10.5px;padding:7px 2px;border-radius:12px;cursor:pointer;text-decoration:none}
-.tabs a .ic{display:block;font-size:17px;margin-bottom:2px}
-.tabs a.active{background:var(--green);color:var(--forest);font-weight:600}
-.fieldlbl{font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px}
-.screen{display:none}.screen.show{display:block}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;color:var(--muted)}
-.signout{background:none;border:1px solid var(--line);color:var(--muted);padding:5px 11px;border-radius:20px;font-size:11.5px;cursor:pointer;font-family:inherit}
-.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#173622;color:#4DF28A;padding:10px 17px;border-radius:30px;font-size:13px;font-weight:600;z-index:50;opacity:0;transition:.2s}
+.kpi{font-size:32px;font-weight:800;letter-spacing:-1px;color:var(--forest)}.kpi.lite{color:#fff}
+.brill{background:radial-gradient(120% 140% at 0% 0%,#235437,#10291a 70%);color:#eafaf0;border-radius:22px;padding:24px 26px;position:relative;overflow:hidden;margin-bottom:18px}
+.brill::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(77,242,138,.28),transparent 70%)}
+.brill .tag{display:inline-flex;gap:7px;align-items:center;background:rgba(77,242,138,.16);color:var(--green);font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:30px;margin-bottom:12px}
+.brill p{font-size:17px;line-height:1.55;font-weight:300;max-width:640px}.brill p b{color:var(--green);font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:var(--forest);border:none;padding:10px 15px;border-radius:11px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.16s}.btn:hover{filter:brightness(1.05);transform:translateY(-1px)}.btn:disabled{opacity:.5}
+.btn.sm{padding:7px 12px;font-size:12.5px}.btn.ghost{background:transparent;border:1.5px solid var(--forest);color:var(--forest)}
+.inp{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-family:inherit;font-size:13.5px;background:#fcfefc}.inp:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(77,242,138,.18)}
 select.inp{appearance:auto}
-#app{display:none}
-.mv{display:flex;flex-direction:column;gap:3px}.mv button{border:1px solid var(--line);background:#fff;border-radius:6px;width:24px;height:17px;font-size:9px;cursor:pointer;color:var(--forest)}
+.radar-wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.q4ctrl{flex:1;min-width:230px}
+.q4row{display:flex;align-items:center;gap:12px;margin:12px 0}.q4row .lbl{width:155px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px}.q4row .em{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;font-size:14px;background:var(--page);flex:none}
+.q4row input[type=range]{flex:1;-webkit-appearance:none;height:9px;border-radius:10px;background:var(--line)}.q4row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--forest);border:3px solid var(--green);cursor:pointer}.q4row .val{width:34px;text-align:right;font-weight:700;color:var(--forest)}
+.bar{height:10px;background:var(--line);border-radius:10px;overflow:hidden}.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--green-d),var(--green));border-radius:10px;transition:width .7s}
+.habit{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--line)}.habit:last-child{border:none}
+.check{width:28px;height:28px;border-radius:9px;border:2px solid var(--line);cursor:pointer;display:grid;place-items:center;color:transparent;font-weight:800;flex:none;transition:.18s}.check.on{background:var(--green);border-color:var(--green);color:var(--forest);animation:pop .35s}@keyframes pop{0%{transform:scale(.6)}55%{transform:scale(1.25)}100%{transform:scale(1)}}
+.habit .nm{flex:1;font-size:14px;font-weight:500}
+.entry{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fcfefc;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.entry .t{font-size:13.5px;font-weight:600}.entry .m{font-size:11.5px;color:var(--muted);margin-top:2px}
+.tag{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px}.t-goal{background:#d8f3e3;color:#10743f}.t-skill{background:#e6e9ff;color:#3b46c4}.t-block{background:#fde8e8;color:#b3261e}.t-impulse{background:#fff0d9;color:#9a6400}.t-trigger{background:#e8e0ff;color:#5a3fb8}.t-need{background:#dcefff;color:#1769a6}
+.omgb{background:linear-gradient(135deg,#fbe7a6,#eac46b);color:#6b4e09;font-weight:700;font-size:10px;padding:2px 8px;border-radius:20px;margin-left:6px}
+.mv{display:flex;flex-direction:column;gap:3px}.mv button{border:1px solid var(--line);background:#fff;border-radius:6px;width:25px;height:18px;font-size:9px;cursor:pointer;color:var(--forest)}.mv button:hover{background:var(--green)}
+.pill{display:inline-block;background:var(--page);border:1px solid var(--line);color:var(--forest);padding:5px 11px;border-radius:30px;font-size:12px;font-weight:500;margin:3px 4px 3px 0}
+.pod{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}.pod .ph{height:60px;background:linear-gradient(120deg,#1d4530,#2f6344)}.pod .bd{padding:14px 16px}.pod .bd h4{font-size:14px;font-weight:600}.pod .bd .co{color:var(--muted);font-size:12px;margin:2px 0 8px}
+.note{background:rgba(77,242,138,.12);border:1px solid rgba(77,242,138,.4);border-radius:12px;padding:11px 14px;font-size:12.5px;color:var(--forest);display:flex;gap:9px;align-items:start}
+.overlay{display:none;position:fixed;inset:0;background:rgba(12,26,18,.6);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}.overlay.show{display:flex;animation:rise .25s}
+.modal{background:#fff;max-width:520px;width:100%;border-radius:22px;padding:26px;position:relative;box-shadow:0 40px 90px rgba(0,0,0,.4)}.modal .x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#173622;color:#4DF28A;padding:11px 18px;border-radius:30px;font-size:13px;font-weight:600;z-index:400;opacity:0;transition:.2s}
+.signout{background:none;border:1px solid rgba(255,255,255,.15);color:#9fc6ae;padding:5px 10px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;margin-top:8px;width:100%}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand"><span class="wm">m<span class="ii">ı<span class="idot"></span></span>nd</span><span class="osbox">OS</span></div>
-  <div class="tagline">The Life Accelerator</div>
+<canvas id="fx"></canvas>
 
-  <!-- AUTH -->
-  <div id="auth" class="card" style="max-width:420px;margin:0 auto">
-    <h3>✦ Sign in</h3><div class="hint">We'll email you a magic link — no password.</div>
-    <input class="inp" id="email" type="email" placeholder="you@email.com" style="margin-bottom:10px">
-    <button class="btn" id="sendBtn" style="width:100%;justify-content:center">Email me a link</button>
-    <div class="hint" id="authMsg" style="text-align:center;margin:10px 0 0"></div>
-  </div>
-
-  <!-- APP -->
-  <div id="app">
-    <div class="top"><span>Signed in as <b id="who"></b></span><button class="signout" id="signout">Sign out</button></div>
-    <div class="card dark gri">
-      <div><div class="hint" style="color:#9fc6ae;margin:0">Lifetime GRI</div><div class="n" id="griN">0</div></div>
-      <div style="text-align:right"><span class="badge t-blue" id="tierBadge">Blue</span><div style="font-size:12px;color:#9fc6ae;margin-top:6px">🔥 streak <b id="streakN">0</b></div></div>
+<!-- AUTH GATE -->
+<div id="gate">
+  <div class="box">
+    <div class="brandbig"><span class="wm">m<span class="ii">ı<span class="idot"></span></span>nd</span><span class="osbox">OS</span></div>
+    <div style="color:var(--muted);font-size:14px;margin-bottom:22px">The Life Accelerator</div>
+    <div class="card" style="text-align:left">
+      <h3>✦ Sign in</h3><div class="hint">We'll email you a magic link — no password.</div>
+      <input class="inp" id="email" type="email" placeholder="you@email.com" style="margin-bottom:10px">
+      <button class="btn" id="sendBtn" style="width:100%;justify-content:center">Email me a link</button>
+      <div class="hint" id="authMsg" style="text-align:center;margin:10px 0 0"></div>
     </div>
-
-    <!-- DASHBOARD -->
-    <section class="screen show" id="s-dash">
-      <div class="card"><h3>◎ Your Q4 — Quality of Life</h3><div class="hint">Slide to reflect where you are. Saves instantly.</div>
-        <div class="row"><div class="lbl">🎯 Purpose</div><input type="range" min="0" max="100" step="5" data-p="purpose"><div class="val">50</div></div>
-        <div class="row"><div class="lbl">💚 Relationships</div><input type="range" min="0" max="100" step="5" data-p="relationships"><div class="val">50</div></div>
-        <div class="row"><div class="lbl">🧠 Mind &amp; Body</div><input type="range" min="0" max="100" step="5" data-p="mind_body"><div class="val">50</div></div>
-        <div class="row"><div class="lbl">📈 Money &amp; Mastery</div><input type="range" min="0" max="100" step="5" data-p="money"><div class="val">50</div></div>
-      </div>
-    </section>
-
-    <!-- HABITS -->
-    <section class="screen" id="s-habits">
-      <div class="card"><h3>✓ Today's habits</h3><div class="hint">Tap to complete — each earns +1 GRI (once per day).</div>
-        <div id="habits"></div>
-        <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="newHabit" placeholder="Add a habit…"><button class="btn" id="addHabit">Add</button></div>
-      </div>
-    </section>
-
-    <!-- RESILIENCE -->
-    <section class="screen" id="s-res">
-      <div class="card"><h3>⛰ Resilience — your BIT-N</h3><div class="hint">Name what holds you back. Each entry earns +100 GRI.</div>
-        <div id="resList"></div>
-        <div class="fieldlbl">Add an entry</div>
-        <input class="inp" id="resTitle" placeholder="e.g. Doom-scrolling at night" style="margin-bottom:8px">
-        <div style="display:flex;gap:8px">
-          <select class="inp" id="resType"><option value="block">Block</option><option value="impulse">Impulse</option><option value="trigger">Trigger</option><option value="need">Need</option></select>
-          <select class="inp" id="resPillar"><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="mind_body">Mind &amp; Body</option><option value="money">Money</option></select>
-          <button class="btn" id="addRes">Add</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRIORITIES (goals/skills, ranked; #1 = OMG) -->
-    <section class="screen" id="s-prio">
-      <div class="card"><h3>◈ Goals, skills &amp; priorities</h3><div class="hint">Drag-rank with ▲▼. Your <b>#1 is your OMG</b>. Each item earns +50 GRI.</div>
-        <div id="prioList"></div>
-        <div class="fieldlbl">Add a goal or skill</div>
-        <input class="inp" id="prioTitle" placeholder="e.g. Close first 5 clients" style="margin-bottom:8px">
-        <div style="display:flex;gap:8px">
-          <select class="inp" id="prioKind"><option value="goal">Goal</option><option value="skill">Skill</option></select>
-          <select class="inp" id="prioPillar"><option value="money">Money</option><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="mind_body">Mind &amp; Body</option></select>
-          <button class="btn" id="addPrio">Add</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- POTENTIAL -->
-    <section class="screen" id="s-pot">
-      <div class="card"><h3>✦ Your potential</h3><div class="hint">What makes you, you.</div>
-        <div class="fieldlbl">Your superpower (20 chars)</div><input class="inp" id="sp" maxlength="20" placeholder="Turning chaos calm">
-        <div class="fieldlbl">Core strengths (comma-separated)</div><input class="inp" id="strengths" placeholder="Strategic, Empathetic, Resilient">
-        <div class="fieldlbl">Values &amp; intentions (comma-separated)</div><input class="inp" id="intentions" placeholder="Honesty, Growth, Family">
-        <button class="btn sm" id="savePot" style="margin-top:12px">Save</button>
-      </div>
-    </section>
-
-    <!-- PROFILE -->
-    <section class="screen" id="s-prof">
-      <div class="card"><h3>☺ Profile</h3><div class="hint">Your alias is public &amp; searchable. Your name &amp; email stay sealed.</div>
-        <div class="fieldlbl">Alias</div><input class="inp" id="alias" readonly>
-        <div class="fieldlbl">City &amp; country</div><input class="inp" id="city" placeholder="Austin, USA">
-        <div class="fieldlbl">About me</div><textarea class="inp" id="bio" rows="3"></textarea>
-        <div class="fieldlbl">Passions (300 chars)</div><input class="inp" id="passions" maxlength="300">
-        <button class="btn sm" id="saveProf" style="margin-top:12px">Save</button>
-      </div>
-    </section>
-
-    <nav class="tabs" id="tabs">
-      <a data-s="dash" class="active"><span class="ic">◎</span>Q4</a>
-      <a data-s="habits"><span class="ic">✓</span>Habits</a>
-      <a data-s="res"><span class="ic">⛰</span>Resilience</a>
-      <a data-s="prio"><span class="ic">◈</span>Priorities</a>
-      <a data-s="pot"><span class="ic">✦</span>Potential</a>
-      <a data-s="prof"><span class="ic">☺</span>Profile</a>
-    </nav>
   </div>
 </div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <aside class="side">
+    <div class="brand"><span class="wm">m<span class="ii">ı<span class="idot"></span></span>nd</span><span class="osbox">OS</span></div>
+    <div class="navlbl">Framework</div>
+    <nav class="nav" id="nav">
+      <a data-s="dash" class="active"><span class="ic">◎</span><span>My Growth</span></a>
+      <a data-s="habits"><span class="ic">✓</span><span>Habits</span></a>
+      <a data-s="res"><span class="ic">⛰</span><span>Resilience</span></a>
+      <a data-s="prio"><span class="ic">◈</span><span>Priorities</span></a>
+      <a data-s="pot"><span class="ic">✦</span><span>Potential</span></a>
+      <div class="navlbl">Community</div>
+      <a data-s="pods"><span class="ic">◍</span><span>Find a POD</span></a>
+      <div class="navlbl">Account</div>
+      <a data-s="prof"><span class="ic">☺</span><span>Profile</span></a>
+    </nav>
+    <div class="me"><div class="av" id="avatar">M</div><div><span id="meAlias">…</span><small id="meTier">Blue</small></div></div>
+    <button class="signout" id="signout">Sign out</button>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <div><h1 id="ttl">My Growth</h1><div class="sub" id="sub">Your quality-of-life command center</div></div>
+      <div class="tw">
+        <button class="priv" onclick="show('privM')">🔒 Data Privacy</button>
+        <div class="griH"><div class="n" id="griN">0</div><small>GRI</small></div>
+        <span class="badge b-blue" id="tierBadge">Blue</span>
+      </div>
+    </header>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <section class="screen show" id="s-dash">
+        <div class="brill">
+          <span class="tag">✦ Your Unique Brilliance</span>
+          <p id="brillText">Welcome. Every habit you keep and goal you set moves your Q4 forward — let's build momentum today.</p>
+          <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap">
+            <div><div class="kpi lite" id="dGoals">0</div><small style="color:#9fc6ae">goals &amp; skills</small></div>
+            <div><div class="kpi lite" id="dStreak">0</div><small style="color:#9fc6ae">day streak</small></div>
+            <div style="align-self:center"><button class="btn" onclick="openShare()">↗ Share my progress</button></div>
+          </div>
+        </div>
+        <div class="grid g2">
+          <div class="card"><h3>◎ Your Q4 — Quality of Life</h3><div class="hint">Slide to reflect where you are. Saves instantly.</div>
+            <div class="radar-wrap">
+              <svg id="radar" width="240" height="240" viewBox="0 0 240 240"></svg>
+              <div class="q4ctrl">
+                <div class="q4row"><div class="lbl"><span class="em">🎯</span>Purpose</div><input type="range" min="0" max="100" step="5" data-p="purpose"><div class="val">50</div></div>
+                <div class="q4row"><div class="lbl"><span class="em">💚</span>Relationships</div><input type="range" min="0" max="100" step="5" data-p="relationships"><div class="val">50</div></div>
+                <div class="q4row"><div class="lbl"><span class="em">🧠</span>Mind &amp; Body</div><input type="range" min="0" max="100" step="5" data-p="mind_body"><div class="val">50</div></div>
+                <div class="q4row"><div class="lbl"><span class="em">📈</span>Money &amp; Mastery</div><input type="range" min="0" max="100" step="5" data-p="money"><div class="val">50</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="text-align:center;display:flex;flex-direction:column;justify-content:center"><h3 style="justify-content:center">Overall Q4</h3><div class="hint">Average of your pillars</div>
+            <div style="position:relative;width:150px;height:150px;margin:6px auto"><svg width="150" height="150" style="transform:rotate(-90deg)"><circle cx="75" cy="75" r="64" fill="none" stroke="#e7f1ea" stroke-width="14"/><circle cx="75" cy="75" r="64" fill="none" stroke="#4DF28A" stroke-width="14" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="201" id="ringArc" style="transition:.6s"/></svg><div style="position:absolute;inset:0;display:grid;place-items:center"><div><b id="q4avg" style="font-size:34px;font-weight:800;color:var(--forest)">50</b><small style="display:block;color:var(--muted);font-size:11px">/ 100</small></div></div></div>
+          </div>
+        </div>
+        <div class="grid g3" style="margin-top:18px">
+          <div class="card"><h3>🏆 Tier</h3><div class="hint" id="tierHint">Keep going to climb</div><div class="kpi" id="tierKpi">0</div>
+            <div class="bar" style="margin-top:12px"><i id="tierBar" style="width:0"></i></div>
+            <div style="margin-top:9px;font-size:11.5px;color:var(--muted)">🎁 Tier perks — <b style="color:var(--forest)">coming soon</b></div>
+          </div>
+          <div class="card"><h3>🔥 Streak</h3><div class="hint">Daily consistency</div><div class="kpi" id="streakKpi">0</div><small style="color:var(--muted)">days in a row</small></div>
+          <div class="card"><h3>✓ Today</h3><div class="hint">Habits completed</div><div class="kpi" id="todayKpi">0</div><small style="color:var(--muted)">keep the streak alive</small></div>
+        </div>
+      </section>
+
+      <!-- HABITS -->
+      <section class="screen" id="s-habits">
+        <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>✓ Today's habits</h3></div>
+          <div class="hint">Tap to complete — each earns +1 GRI (once per day).</div>
+          <div id="habits"></div>
+          <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="newHabit" placeholder="Add a habit…"><button class="btn" id="addHabit">Add</button></div>
+        </div>
+      </section>
+
+      <!-- RESILIENCE -->
+      <section class="screen" id="s-res">
+        <div class="card"><h3>⛰ Resilience — your BIT-N</h3><div class="hint">Name what holds you back: Blocks · Impulses · Triggers · Needs. Each entry earns +100 GRI.</div>
+          <div id="resList"></div>
+          <input class="inp" id="resTitle" placeholder="e.g. Doom-scrolling at night" style="margin:8px 0">
+          <div style="display:flex;gap:8px"><select class="inp" id="resType"><option value="block">Block</option><option value="impulse">Impulse</option><option value="trigger">Trigger</option><option value="need">Need</option></select><select class="inp" id="resPillar"><option value="mind_body">Mind &amp; Body</option><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="money">Money</option></select><button class="btn" id="addRes">Add</button></div>
+        </div>
+      </section>
+
+      <!-- PRIORITIES -->
+      <section class="screen" id="s-prio">
+        <div class="card"><h3>◈ Goals, skills &amp; priorities</h3><div class="hint">Re-rank with ▲▼ — your <b>#1 is your OMG</b>. Each item earns +50 GRI.</div>
+          <div id="prioList"></div>
+          <input class="inp" id="prioTitle" placeholder="e.g. Close first 5 clients" style="margin:8px 0">
+          <div style="display:flex;gap:8px"><select class="inp" id="prioKind"><option value="goal">Goal</option><option value="skill">Skill</option></select><select class="inp" id="prioPillar"><option value="money">Money</option><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="mind_body">Mind &amp; Body</option></select><button class="btn" id="addPrio">Add</button></div>
+        </div>
+      </section>
+
+      <!-- POTENTIAL -->
+      <section class="screen" id="s-pot">
+        <div class="card"><h3>✦ Your potential</h3><div class="hint">What makes you, you.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Your superpower (20 chars)</div><input class="inp" id="sp" maxlength="20" placeholder="Turning chaos calm">
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Core strengths (comma-separated)</div><input class="inp" id="strengths" placeholder="Strategic, Empathetic, Resilient">
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Values &amp; intentions (comma-separated)</div><input class="inp" id="intentions" placeholder="Honesty, Growth, Family">
+          <button class="btn sm" id="savePot" style="margin-top:12px">Save</button>
+        </div>
+      </section>
+
+      <!-- PODS -->
+      <section class="screen" id="s-pods">
+        <div class="card" style="margin-bottom:18px"><h3>◍ Find a POD</h3><div class="hint">Coach-led cohorts — join any, move freely. All part of your Life Accelerator.</div></div>
+        <div class="grid g3" id="podGrid"></div>
+        <div class="note" id="podEmpty" style="display:none">◍<div>No PODs listed yet — they'll appear here as coaches join.</div></div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="screen" id="s-prof">
+        <div class="card"><h3>☺ Profile</h3><div class="hint">Your alias is public &amp; searchable. Your name &amp; email stay sealed in the vault.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Alias</div><input class="inp" id="alias" readonly>
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">City &amp; country</div><input class="inp" id="city" placeholder="Austin, USA">
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">About me</div><textarea class="inp" id="bio" rows="3"></textarea>
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Passions (300 chars)</div><input class="inp" id="passions" maxlength="300">
+          <button class="btn sm" id="saveProf" style="margin-top:12px">Save</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div class="overlay" id="privM"><div class="modal" style="background:linear-gradient(160deg,#173622,#0e2417);color:#eafaf0"><button class="x" style="color:#9fc6ae" onclick="hide('privM')">×</button>
+  <div style="display:inline-flex;gap:8px;align-items:center;background:rgba(77,242,138,.18);color:var(--green);padding:7px 14px;border-radius:30px;font-size:12px;font-weight:600;margin-bottom:14px">🔒 Your Data Privacy</div>
+  <h3 style="font-size:20px;color:#fff;font-weight:600;margin-bottom:16px">Your attributes are searchable. Your identity is sealed.</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="background:rgba(255,255,255,.06);border-radius:15px;padding:16px"><h5 style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:11px">✓ We can see</h5><p style="font-size:13px;margin-bottom:8px">🔎 Your alias</p><p style="font-size:13px;margin-bottom:8px">🧩 Your attributes</p><p style="font-size:13px">📊 Anonymous trends</p></div>
+    <div style="background:rgba(255,255,255,.06);border-radius:15px;padding:16px"><h5 style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:#ff9e9e;margin-bottom:11px">✕ We cannot see</h5><p style="font-size:13px;margin-bottom:8px">🙈 Your name</p><p style="font-size:13px;margin-bottom:8px">🙈 Email &amp; photo</p><p style="font-size:13px">🙈 Anything identifying</p></div>
+  </div>
+  <div style="margin-top:16px;font-size:12px;color:#9fc6ae;text-align:center">You own your data — export or delete anytime.</div>
+</div></div>
+
+<!-- SHARE MODAL -->
+<div class="overlay" id="shareM"><div class="modal"><button class="x" onclick="hide('shareM')">×</button>
+  <h3 style="margin-bottom:4px">Share your progress ✦</h3><div class="hint">A snapshot worth celebrating.</div>
+  <div style="background:radial-gradient(130% 130% at 100% 0%,#235437,#0e2417);color:#eafaf0;border-radius:20px;padding:24px;text-align:center">
+    <div style="font-size:12px;color:#9fc6ae;font-weight:600">MY Q4 SCORE</div><div style="font-size:52px;font-weight:800;color:var(--green);letter-spacing:-2px" id="shQ4">50</div>
+    <div style="color:var(--green);font-weight:600;font-size:13px" id="shTier">Blue Tier</div>
+    <div style="display:flex;justify-content:center;gap:22px;margin-top:14px"><div><b id="shStreak" style="font-size:20px;color:#fff;display:block">0</b><small style="color:#9fc6ae;font-size:11px">streak</small></div><div><b id="shGri" style="font-size:20px;color:#fff;display:block">0</b><small style="color:#9fc6ae;font-size:11px">GRI</small></div></div>
+    <div style="margin-top:14px;font-size:12px;color:#cfe8d8">mind.us · accelerate your brilliance</div>
+  </div>
+  <button class="btn" style="width:100%;justify-content:center;margin-top:14px" onclick="burst();toast('Shared! 🎉')">Share</button>
+</div></div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
-let user=null;
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
-function tierOf(g){return g<=1850?['Blue','t-blue']:g<=3500?['Bronze','t-bronze']:g<=7000?['Silver','t-silver']:['Gold','t-gold'];}
-function genAlias(){const a=['quiet','bright','bold','calm','swift','wise','kind','brave'],b=['summit','river','ember','meadow','harbor','grove','aurora','peak'];return a[Math.random()*8|0]+'-'+b[Math.random()*8|0]+'-'+(10+Math.random()*89|0);}
+let user=null, gri=0, streak=0, todayCount=0;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
+const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],prof:['Profile','How the community sees you']};
+function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
+function tierOf(g){return g<=1850?['Blue','blue',0,1850]:g<=3500?['Bronze','bronze',1850,3500]:g<=7000?['Silver','silver',3500,7000]:['Gold','gold',7000,7000];}
+function genAlias(){const a=['quiet','bright','bold','calm','swift','wise','kind','brave'],b=['summit','river','ember','meadow','harbor','grove','aurora','peak'];return a[Math.random()*8|0]+'-'+b[Math.random()*8|0]+'-'+(10+Math.random()*89|0);}
+function show(id){$('#'+id).classList.add('show');}function hide(id){$('#'+id).classList.remove('show');}
+$$('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 
-$('#tabs').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;$$('#tabs a').forEach(x=>x.classList.remove('active'));a.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('show'));$('#s-'+a.dataset.s).classList.add('show');window.scrollTo({top:0,behavior:'smooth'});});
+$('#nav').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;$$('#nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('show'));$('#s-'+a.dataset.s).classList.add('show');$('#ttl').textContent=TT[a.dataset.s][0];$('#sub').textContent=TT[a.dataset.s][1];window.scrollTo({top:0,behavior:'smooth'});});
 
+// AUTH
 $('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;$('#sendBtn').disabled=true;$('#authMsg').textContent='Sending…';const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href.split('?')[0]}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email for the magic link.';$('#sendBtn').disabled=false;};
 $('#signout').onclick=async()=>{await sb.auth.signOut();location.reload();};
 sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 (async()=>{const {data:{session}}=await sb.auth.getSession();if(session){user=session.user;boot();}})();
 
 async function boot(){
-  $('#auth').style.display='none';$('#app').style.display='block';$('#who').textContent=user.email;
+  $('#gate').style.display='none';$('#app').style.display='grid';
   let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower').eq('id',user.id).maybeSingle();
   if(!m){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
-  // redeem invite if present
   const code=new URLSearchParams(location.search).get('invite');
   if(code){const {data:r}=await sb.rpc('redeem_invite',{p_code:code});if(r==='joined')toast('🎉 You joined a POD!');history.replaceState({},'',location.pathname);}
-  $('#alias').value=m.alias||''; $('#bio').value=m.bio||''; $('#passions').value=m.passions||''; $('#sp').value=m.superpower||'';
-  await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf()]);
+  $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();
+  $('#alias').value=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';
+  drawRadar();
+  await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods()]);
 }
 
-async function loadGri(){
-  const {data}=await sb.from('member_gri').select('gri').eq('member_id',user.id).maybeSingle();
-  const g=data?Number(data.gri):0;$('#griN').textContent=g.toLocaleString();const [t,c]=tierOf(g);const b=$('#tierBadge');b.textContent=t;b.className='badge '+c;
-  const {data:s}=await sb.from('streaks').select('current_streak').eq('member_id',user.id).maybeSingle();$('#streakN').textContent=s?s.current_streak:0;
-}
-async function loadQ4(){
-  const {data}=await sb.from('q4_scores').select('pillar,score').eq('member_id',user.id);const map={};(data||[]).forEach(r=>map[r.pillar]=r.score);
-  $$('[data-p]').forEach(inp=>{const v=map[inp.dataset.p]??50;inp.value=v;inp.nextElementSibling.textContent=v;inp.oninput=()=>inp.nextElementSibling.textContent=inp.value;inp.onchange=async()=>{await sb.from('q4_scores').upsert({member_id:user.id,pillar:inp.dataset.p,score:+inp.value,updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});toast('Q4 saved');};});
-}
-async function loadHabits(){
-  let {data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at');
-  if(!hs||!hs.length){for(const t of ['Morning movement','Deep-work block','Gratitude note'])await sb.from('habits').insert({member_id:user.id,title:t});({data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at'));}
-  const today=new Date().toISOString().slice(0,10);const {data:lg}=await sb.from('habit_logs').select('habit_id').eq('member_id',user.id).eq('log_date',today);const done=new Set((lg||[]).map(l=>l.habit_id));
-  const el=$('#habits');el.innerHTML='';hs.forEach(h=>{const on=done.has(h.id);const d=document.createElement('div');d.className='habit';d.innerHTML=`<div class="check ${on?'on':''}">${on?'✓':''}</div><div class="nm">${h.title}</div>`;const chk=d.querySelector('.check');chk.onclick=async()=>{if(chk.classList.contains('on'))return;chk.classList.add('on');chk.textContent='✓';const {data,error}=await sb.rpc('log_habit_today',{p_habit:h.id});if(error){toast('⚠️ '+error.message);return;}const r=Array.isArray(data)?data[0]:data;if(r){$('#griN').textContent=Number(r.gri).toLocaleString();const [t,c]=tierOf(Number(r.gri));$('#tierBadge').textContent=t;$('#tierBadge').className='badge '+c;$('#streakN').textContent=r.current_streak;}toast('+1 GRI 🔥');};el.appendChild(d);});
-}
+function setGriUI(){$('#griN').textContent=gri.toLocaleString();const [t,cls,lo,hi]=tierOf(gri);$('#tierBadge').textContent=t;$('#tierBadge').className='badge b-'+cls;$('#meTier').textContent=t+' Tier';$('#tierKpi').textContent=gri.toLocaleString();$('#streakKpi').textContent=streak;$('#streakN')&&($('#streakN').textContent=streak);$('#dStreak').textContent=streak;$('#todayKpi').textContent=todayCount;const pct=hi>lo?Math.min(100,Math.round((gri-lo)/(hi-lo)*100)):100;$('#tierBar').style.width=pct+'%';$('#tierHint').textContent=t==='Gold'?'Top tier 🏆':(hi-gri).toLocaleString()+' GRI to next tier';}
+async function loadGri(){const {data}=await sb.from('member_gri').select('gri').eq('member_id',user.id).maybeSingle();gri=data?Number(data.gri):0;const {data:s}=await sb.from('streaks').select('current_streak').eq('member_id',user.id).maybeSingle();streak=s?s.current_streak:0;setGriUI();}
+
+// Q4 radar
+const cx=120,cy=120,R=88,ang=[-90,0,90,180].map(d=>d*Math.PI/180);
+function pt(i,v){return[cx+Math.cos(ang[i])*R*v/100,cy+Math.sin(ang[i])*R*v/100];}
+function drawRadar(){let h='';[.25,.5,.75,1].forEach(f=>{h+=`<polygon points="${ang.map(a=>`${cx+Math.cos(a)*R*f},${cy+Math.sin(a)*R*f}`).join(' ')}" fill="none" stroke="#e2efe7" stroke-width="1"/>`;});ang.forEach(a=>h+=`<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*R}" y2="${cy+Math.sin(a)*R}" stroke="#e2efe7" stroke-width="1"/>`);h+=`<polygon id="rpoly" points="" fill="rgba(77,242,138,.28)" stroke="#27c768" stroke-width="2.5" style="transition:.4s"/>`;const e=['🎯','💚','🧠','📈'];ang.forEach((a,i)=>h+=`<text x="${cx+Math.cos(a)*(R+16)}" y="${cy+Math.sin(a)*(R+16)+5}" text-anchor="middle" font-size="14">${e[i]}</text>`);$('#radar').innerHTML=h;updRadar();}
+function updRadar(){const vals=$$('[data-p]').map(i=>+i.value);const poly=$('#rpoly');if(poly)poly.setAttribute('points',vals.map((v,i)=>pt(i,v).join(',')).join(' '));const avg=Math.round(vals.reduce((a,b)=>a+b,0)/4);$('#q4avg').textContent=avg;$('#ringArc').style.strokeDashoffset=402-(402*avg/100);$('#shQ4').textContent=avg;}
+async function loadQ4(){const {data}=await sb.from('q4_scores').select('pillar,score').eq('member_id',user.id);const map={};(data||[]).forEach(r=>map[r.pillar]=r.score);$$('[data-p]').forEach(inp=>{const v=map[inp.dataset.p]??50;inp.value=v;inp.nextElementSibling.textContent=v;inp.oninput=()=>{inp.nextElementSibling.textContent=inp.value;updRadar();};inp.onchange=async()=>{await sb.from('q4_scores').upsert({member_id:user.id,pillar:inp.dataset.p,score:+inp.value,updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});toast('Q4 saved');};});updRadar();}
+
+async function loadHabits(){let {data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at');if(!hs||!hs.length){for(const t of ['Morning movement','Deep-work block','Gratitude note'])await sb.from('habits').insert({member_id:user.id,title:t});({data:hs}=await sb.from('habits').select('id,title').eq('member_id',user.id).eq('active',true).order('created_at'));}const today=new Date().toISOString().slice(0,10);const {data:lg}=await sb.from('habit_logs').select('habit_id').eq('member_id',user.id).eq('log_date',today);const done=new Set((lg||[]).map(l=>l.habit_id));todayCount=done.size;setGriUI();const el=$('#habits');el.innerHTML='';hs.forEach(h=>{const on=done.has(h.id);const d=document.createElement('div');d.className='habit';d.innerHTML=`<div class="check ${on?'on':''}">${on?'✓':''}</div><div class="nm">${h.title}</div>`;const chk=d.querySelector('.check');chk.onclick=async()=>{if(chk.classList.contains('on'))return;chk.classList.add('on');chk.textContent='✓';const {data,error}=await sb.rpc('log_habit_today',{p_habit:h.id});if(error){toast('⚠️ '+error.message);return;}const r=Array.isArray(data)?data[0]:data;if(r){gri=Number(r.gri);streak=r.current_streak;todayCount++;setGriUI();}burstAt(chk);toast('+1 GRI 🔥');};el.appendChild(d);});}
 $('#addHabit').onclick=async()=>{const t=$('#newHabit').value.trim();if(!t)return;await sb.from('habits').insert({member_id:user.id,title:t});$('#newHabit').value='';loadHabits();};
 
-async function loadRes(){
-  const {data}=await sb.from('resilience_entries').select('id,title,type,q4_pillar').eq('member_id',user.id).order('created_at',{ascending:false});
-  const el=$('#resList');el.innerHTML='';(data||[]).forEach(r=>{const d=document.createElement('div');d.className='entry';d.innerHTML=`<div><div class="t">${r.title}</div><div class="m">Q4: ${PILL[r.q4_pillar]||''}</div></div><span class="tag t-${r.type}">${r.type}</span>`;el.appendChild(d);});
-}
-$('#addRes').onclick=async()=>{const t=$('#resTitle').value.trim();if(!t)return;await sb.from('resilience_entries').insert({member_id:user.id,title:t,type:$('#resType').value,q4_pillar:$('#resPillar').value});$('#resTitle').value='';await loadRes();await loadGri();toast('+100 GRI 🎉');};
+async function loadRes(){const {data}=await sb.from('resilience_entries').select('id,title,type,q4_pillar').eq('member_id',user.id).order('created_at',{ascending:false});const el=$('#resList');el.innerHTML='';(data||[]).forEach(r=>{const d=document.createElement('div');d.className='entry';d.innerHTML=`<div><div class="t">${r.title}</div><div class="m">Q4: ${PILL[r.q4_pillar]||''}</div></div><span class="tag t-${r.type}">${r.type}</span>`;el.appendChild(d);});}
+$('#addRes').onclick=async()=>{const t=$('#resTitle').value.trim();if(!t)return;await sb.from('resilience_entries').insert({member_id:user.id,title:t,type:$('#resType').value,q4_pillar:$('#resPillar').value});$('#resTitle').value='';await loadRes();await loadGri();burst();toast('+100 GRI 🎉');};
 
-async function loadPrio(){
-  const {data}=await sb.from('growth_items').select('id,title,kind,q4_pillar,priority_rank').eq('member_id',user.id).order('priority_rank',{nullsFirst:false}).order('created_at');
-  const items=data||[];const el=$('#prioList');el.innerHTML='';items.forEach((g,i)=>{const d=document.createElement('div');d.className='entry';d.innerHTML=`<div><div class="t">${g.title}${i===0?'<span class="omgb">★ OMG</span>':''}</div><div class="m"><span class="tag t-${g.kind}">${g.kind}</span> &nbsp;Q4: ${PILL[g.q4_pillar]||''}</div></div><div class="mv"><button data-up>▲</button><button data-dn>▼</button></div>`;d.querySelector('[data-up]').onclick=()=>move(items,i,-1);d.querySelector('[data-dn]').onclick=()=>move(items,i,1);el.appendChild(d);});
-}
-async function move(items,i,dir){const j=i+dir;if(j<0||j>=items.length)return;[items[i],items[j]]=[items[j],items[i]];for(let k=0;k<items.length;k++){await sb.from('growth_items').update({priority_rank:k+1}).eq('id',items[k].id);}await loadPrio();toast('★ OMG: '+items[0].title);}
-$('#addPrio').onclick=async()=>{const t=$('#prioTitle').value.trim();if(!t)return;const {count}=await sb.from('growth_items').select('id',{count:'exact',head:true}).eq('member_id',user.id);await sb.from('growth_items').insert({member_id:user.id,title:t,kind:$('#prioKind').value,q4_pillar:$('#prioPillar').value,priority_rank:(count||0)+1});$('#prioTitle').value='';await loadPrio();await loadGri();toast('+50 GRI 🎉');};
+async function loadPrio(){const {data}=await sb.from('growth_items').select('id,title,kind,q4_pillar,priority_rank').eq('member_id',user.id).order('priority_rank',{nullsFirst:false}).order('created_at');const items=data||[];$('#dGoals').textContent=items.length;const el=$('#prioList');el.innerHTML='';items.forEach((g,i)=>{const d=document.createElement('div');d.className='entry';d.innerHTML=`<div><div class="t">${g.title}${i===0?'<span class="omgb">★ OMG</span>':''}</div><div class="m"><span class="tag t-${g.kind}">${g.kind}</span> &nbsp;Q4: ${PILL[g.q4_pillar]||''}</div></div><div class="mv"><button data-up>▲</button><button data-dn>▼</button></div>`;d.querySelector('[data-up]').onclick=()=>moveP(items,i,-1);d.querySelector('[data-dn]').onclick=()=>moveP(items,i,1);el.appendChild(d);});}
+async function moveP(items,i,dir){const j=i+dir;if(j<0||j>=items.length)return;[items[i],items[j]]=[items[j],items[i]];for(let k=0;k<items.length;k++)await sb.from('growth_items').update({priority_rank:k+1}).eq('id',items[k].id);await loadPrio();toast('★ OMG: '+items[0].title);}
+$('#addPrio').onclick=async()=>{const t=$('#prioTitle').value.trim();if(!t)return;const {count}=await sb.from('growth_items').select('id',{count:'exact',head:true}).eq('member_id',user.id);await sb.from('growth_items').insert({member_id:user.id,title:t,kind:$('#prioKind').value,q4_pillar:$('#prioPillar').value,priority_rank:(count||0)+1});$('#prioTitle').value='';await loadPrio();await loadGri();burst();toast('+50 GRI 🎉');};
 
 async function loadPot(){const {data}=await sb.from('potential').select('strengths,intentions').eq('member_id',user.id).maybeSingle();if(data){$('#strengths').value=(data.strengths||[]).join(', ');$('#intentions').value=(data.intentions||[]).join(', ');}}
 $('#savePot').onclick=async()=>{await sb.from('members').update({superpower:$('#sp').value}).eq('id',user.id);const arr=s=>s.split(',').map(x=>x.trim()).filter(Boolean);await sb.from('potential').upsert({member_id:user.id,strengths:arr($('#strengths').value),intentions:arr($('#intentions').value),updated_at:new Date().toISOString()},{onConflict:'member_id'});toast('Saved ✓');};
 
 async function loadProf(){const {data}=await sb.from('member_identities').select('city,country').eq('member_id',user.id).maybeSingle();if(data&&(data.city||data.country))$('#city').value=[data.city,data.country].filter(Boolean).join(', ');}
-$('#saveProf').onclick=async()=>{const parts=$('#city').value.split(',').map(x=>x.trim());await sb.from('members').update({bio:$('#bio').value,passions:$('#passions').value}).eq('id',user.id);await sb.from('member_identities').upsert({member_id:user.id,city:parts[0]||null,country:parts[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});toast('Saved ✓');};
+$('#saveProf').onclick=async()=>{const p=$('#city').value.split(',').map(x=>x.trim());await sb.from('members').update({bio:$('#bio').value,passions:$('#passions').value}).eq('id',user.id);await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});toast('Saved ✓');};
+
+async function loadPods(){const {data}=await sb.from('pods').select('id,name,focus,price_cents').eq('status','listed').limit(12);const el=$('#podGrid');el.innerHTML='';if(!data||!data.length){$('#podEmpty').style.display='flex';return;}data.forEach(p=>{const d=document.createElement('div');d.className='pod';d.innerHTML=`<div class="ph"></div><div class="bd"><h4>${p.name}</h4><div class="co">${p.focus||''}</div><div style="display:flex;justify-content:space-between;align-items:center"><b style="color:var(--forest)">$${((p.price_cents||25000)/100).toFixed(0)}<span style="font-weight:400;color:var(--muted);font-size:11px">/mo</span></b><button class="btn sm">Join</button></div></div>`;el.appendChild(d);});}
+
+function openShare(){const [t]=tierOf(gri);$('#shTier').textContent=t+' Tier';$('#shStreak').textContent=streak;$('#shGri').textContent=gri.toLocaleString();show('shareM');}
+window.show=show;window.hide=hide;window.openShare=openShare;
+
+// confetti
+const cv=$('#fx'),ctx=cv.getContext('2d');function size(){cv.width=innerWidth;cv.height=innerHeight;}size();addEventListener('resize',size);let parts=[],raf=null;
+window.burst=()=>burstXY(innerWidth/2,innerHeight/3,80);
+function burstAt(el){const r=el.getBoundingClientRect();burstXY(r.left+r.width/2,r.top+r.height/2,26);}
+function burstXY(x,y,n){const c=['#4DF28A','#27c768','#173622','#fbe7a6','#9bf7c2'];for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*9,vy:Math.random()*-9-2,g:.32,s:Math.random()*6+3,c:c[i%5],life:60+Math.random()*30,rot:Math.random()*6});if(!raf)loop();}
+function loop(){ctx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.life>0);parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.life--;p.rot+=.2;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.globalAlpha=Math.max(p.life/60,0);ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);ctx.restore();});if(parts.length)raf=requestAnimationFrame(loop);else{raf=null;ctx.clearRect(0,0,cv.width,cv.height);}}
 </script>
 </body>
 </html>
