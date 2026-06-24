@@ -67,6 +67,7 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
 let user=null,myPods=[];
+const APP_URL='https://mindos-app-one.vercel.app'; // ← change to 'https://app.mind.us' once the custom domain is attached in Vercel
 const $=s=>document.querySelector(s);
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
 $('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email.';};
@@ -109,7 +110,7 @@ $('#genInvite').onclick=async()=>{
   const code=Math.random().toString(36).slice(2,9);
   const {error}=await sb.from('invites').insert({coach_id:user.id,pod_id:myPods[0].id,code});
   if(error){toast('⚠️ '+error.message);return;}
-  $('#inviteLink').value=location.origin+location.pathname.replace('coach.html','index.html')+'?invite='+code;
+  $('#inviteLink').value=APP_URL+'/index.html?invite='+code;
   navigator.clipboard?.writeText($('#inviteLink').value);toast('Invite link copied!');
 };
 function calc(){const m=+$('#cmR').value,c=+$('#ccR').value;$('#cm').textContent=m;$('#cc').textContent=c;const mo=m*250*0.7*c;$('#cout').textContent='$'+mo.toLocaleString();$('#cyr').textContent='$'+(mo*12).toLocaleString()+' / year';}
