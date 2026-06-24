@@ -315,6 +315,15 @@ select.inp{appearance:auto}
           <div class="hint">Signed in as <b id="setEmail">…</b> · alias <b id="setAlias">…</b></div>
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn sm ghost" id="setPrivacy">🔒 Data Privacy</button><button class="btn sm ghost" id="setSignout">Sign out</button></div>
         </div>
+        <div class="card"><h3>💳 Billing &amp; plan</h3><div class="hint">You're on the <b>Free trial</b>. Pick a plan when you're ready — cancel anytime.</div>
+          <div style="display:grid;gap:10px;margin-top:12px">
+            <div style="border:1.5px solid var(--green);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center"><div><b>Member</b><div style="font-size:12px;color:var(--muted)">Full access · 21-day free trial</div></div><div style="text-align:right"><b style="font-size:18px;color:var(--forest)">$3</b><span style="font-size:11px;color:var(--muted)"> /mo billed annually</span></div></div>
+            <div style="border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center"><div><b>POD seat</b><div style="font-size:12px;color:var(--muted)">Coach-led cohort</div></div><div style="text-align:right"><b style="font-size:18px;color:var(--forest)">$250</b><span style="font-size:11px;color:var(--muted)"> /mo</span></div></div>
+            <div style="border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center"><div><b>Community leader</b><div style="font-size:12px;color:var(--muted)">Capped / unlimited</div></div><div style="text-align:right"><b style="font-size:18px;color:var(--forest)">$2k–8k</b><span style="font-size:11px;color:var(--muted)"> /yr</span></div></div>
+          </div>
+          <button class="btn sm" id="manageBilling" style="margin-top:14px;opacity:.6;cursor:not-allowed" disabled>Manage subscription — coming soon</button>
+          <div class="hint" style="margin-top:8px">🔒 Secure payments via Airwallex. Cancel anytime — no pro-rata; access runs to your next bill date.</div>
+        </div>
         <div class="card"><h3>📦 Your data</h3>
           <div class="hint">You own your data — export everything anytime, or delete your account.</div>
           <div style="margin-top:12px"><button class="btn sm" id="exportBtn">Export my data (JSON)</button></div>
