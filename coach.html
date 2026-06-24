@@ -47,9 +47,19 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
     <div class="top"><span>Coach: <b id="who"></b></span><span><a class="toggle" href="index.html">↔ Personal</a> <button class="signout" id="signout">Sign out</button></span></div>
     <div id="notCoach" class="card" style="display:none"><h3>You're not set up as a coach yet</h3><div class="hint" style="margin:0">Ask the Mind OS team to enable your coach account (concierge onboarding). Once enabled and a POD is created, your cohort appears here.</div></div>
     <div id="coachUI" style="display:none">
-      <div class="card"><h3>📊 Live Cohort Cockpit</h3><div class="hint">Your POD members at a glance — Q4, streak, lifetime GRI.</div>
+      <div class="card"><h3>👋 Coach home</h3><div class="hint">Your practice at a glance.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center">
+          <div><div class="kpi" id="kPods">0</div><small style="color:var(--muted)">PODs</small></div>
+          <div><div class="kpi" id="kMembers">0</div><small style="color:var(--muted)">members</small></div>
+          <div><div class="kpi" id="kQ4">—</div><small style="color:var(--muted)">avg Q4</small></div>
+          <div><div class="kpi" id="kGri">0</div><small style="color:var(--muted)">cohort GRI</small></div>
+        </div>
+      </div>
+      <div class="card"><h3>📊 Live Cohort Cockpit</h3><div class="hint">Your POD members at a glance — tap a member to see their frameworks.</div>
         <div id="cockpit"></div>
       </div>
+      <div class="card" id="coacheePanel" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center"><h3 id="cName">Coachee</h3><button class="signout" id="cClose">Close</button></div><div class="hint">Their frameworks — Q4, priorities, resilience.</div><div id="cBody"></div></div>
+      <div class="card"><h3>◍ Your PODs</h3><div class="hint">Cohorts you run.</div><div id="podList"></div></div>
       <div class="card"><h3>🎟 Invite your clients</h3><div class="hint">Share this link — your clients join your POD in one tap.</div>
         <div class="copy"><input class="inp" id="inviteLink" readonly><button class="btn" id="genInvite">Generate</button></div>
       </div>
@@ -69,6 +79,7 @@ const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable
 let user=null,myPods=[];
 const APP_URL='https://app.mind.us'; // custom domain (live)
 const $=s=>document.querySelector(s);
+const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
 $('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email.';};
 $('#signout').onclick=async()=>{await sb.auth.signOut();location.reload();};
@@ -82,15 +93,15 @@ async function boot(){
   myPods=pods||[];
   if(!(m&&m.is_coach)&&!myPods.length){$('#notCoach').style.display='block';return;}
   $('#coachUI').style.display='block';
-  loadCockpit();
+  loadCockpit();loadPodsList();
   ['cmR','ccR'].forEach(id=>$('#'+id).oninput=calc);calc();
 }
 async function loadCockpit(){
-  const el=$('#cockpit');
+  const el=$('#cockpit');$('#kPods').textContent=myPods.length;
   if(!myPods.length){el.innerHTML='<div class="hint">No POD yet — once a POD is created for you, members show here.</div>';return;}
   const podIds=myPods.map(p=>p.id);
   const {data:mem}=await sb.from('pod_memberships').select('member_id').in('pod_id',podIds).eq('status','active');
-  const ids=[...new Set((mem||[]).map(x=>x.member_id))];
+  const ids=[...new Set((mem||[]).map(x=>x.member_id))];$('#kMembers').textContent=ids.length;
   if(!ids.length){el.innerHTML='<div class="hint">No members yet — share your invite link below.</div>';return;}
   const [{data:members},{data:q4},{data:streaks},{data:gri}]=await Promise.all([
     sb.from('members').select('id,alias').in('id',ids),
@@ -101,10 +112,16 @@ async function loadCockpit(){
   const avg={};(q4||[]).forEach(r=>{(avg[r.member_id]=avg[r.member_id]||[]).push(r.score);});
   const stk={};(streaks||[]).forEach(r=>stk[r.member_id]=r.current_streak);
   const g={};(gri||[]).forEach(r=>g[r.member_id]=Number(r.gri));
+  let totalQ=0,nQ=0,totalG=0;
   let h='<div class="ckrow head"><span>Member</span><span>Q4</span><span>Streak</span><span>GRI</span></div>';
-  (members||[]).forEach(m=>{const a=avg[m.id];const q=a?Math.round(a.reduce((x,y)=>x+y,0)/a.length):'—';h+=`<div class="ckrow"><span>${m.alias||'member'}</span><span class="qbadge">${q}</span><span><span class="flame">🔥 ${stk[m.id]||0}</span></span><span>${(g[m.id]||0).toLocaleString()}</span></div>`;});
-  el.innerHTML=h;
+  (members||[]).forEach(m=>{const a=avg[m.id];const q=a?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null;if(q!=null){totalQ+=q;nQ++;}totalG+=g[m.id]||0;h+=`<div class="ckrow" data-id="${m.id}" data-alias="${esc(m.alias||'member')}" style="cursor:pointer"><span>${esc(m.alias||'member')} ›</span><span class="qbadge">${q==null?'—':q}</span><span><span class="flame">🔥 ${stk[m.id]||0}</span></span><span>${(g[m.id]||0).toLocaleString()}</span></div>`;});
+  el.innerHTML=h;$('#kQ4').textContent=nQ?Math.round(totalQ/nQ):'—';$('#kGri').textContent=totalG.toLocaleString();
+  el.querySelectorAll('.ckrow[data-id]').forEach(r=>r.onclick=()=>openCoachee(r.dataset.id,r.dataset.alias));
 }
+async function loadPodsList(){const el=$('#podList');if(!el)return;if(!myPods.length){el.innerHTML='<div class="hint" style="margin:0">No POD yet.</div>';return;}const podIds=myPods.map(p=>p.id);const {data:mem}=await sb.from('pod_memberships').select('pod_id').in('pod_id',podIds).eq('status','active');const cnt={};(mem||[]).forEach(x=>cnt[x.pod_id]=(cnt[x.pod_id]||0)+1);el.innerHTML=myPods.map(p=>`<div class="ckrow" style="grid-template-columns:1fr auto"><span>${esc(p.name)}</span><span class="qbadge">${cnt[p.id]||0} / 14 seats</span></div>`).join('');}
+const PILLC={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
+async function openCoachee(id,alias){const p=$('#coacheePanel');$('#cName').textContent=alias||'Coachee';p.style.display='block';p.scrollIntoView({behavior:'smooth'});const body=$('#cBody');body.innerHTML='<div class="hint">Loading…</div>';const [{data:q4},{data:res},{data:gi}]=await Promise.all([sb.from('q4_scores').select('pillar,score').eq('member_id',id),sb.from('resilience_entries').select('title,type,impact,sort_rank').eq('member_id',id).order('sort_rank',{nullsFirst:false}),sb.from('growth_items').select('title,kind,priority_rank').eq('member_id',id).order('priority_rank',{nullsFirst:false})]);const qm={};(q4||[]).forEach(r=>qm[r.pillar]=r.score);let h='<div style="font-weight:600;margin:10px 0 6px">Q4 — Quality of Life</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+['purpose','relationships','mind_body','money'].map(k=>`<span style="background:var(--page);border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;color:var(--forest)">${PILLC[k]}: ${qm[k]==null?'—':qm[k]}</span>`).join('')+'</div>';h+='<div style="font-weight:600;margin:16px 0 4px">Priorities (★ = OMG)</div>';h+=(gi&&gi.length)?gi.map((g,i)=>`<div class="ckrow" style="grid-template-columns:1fr auto"><span>${i===0?'★ ':''}${esc(g.title)}</span><span class="qbadge">${esc(g.kind)}</span></div>`).join(''):'<div class="hint" style="margin:0">None yet.</div>';h+='<div style="font-weight:600;margin:16px 0 4px">Resilience (BIT-N)</div>';h+=(res&&res.length)?res.map(r=>`<div class="ckrow" style="grid-template-columns:1fr auto auto"><span>${esc(r.title)}</span><span class="qbadge">${esc(r.type)}</span><span style="color:var(--muted)">impact ${r.impact==null?'—':r.impact}</span></div>`).join(''):'<div class="hint" style="margin:0">None yet.</div>';body.innerHTML=h;}
+$('#cClose')&&($('#cClose').onclick=()=>{$('#coacheePanel').style.display='none';});
 $('#genInvite').onclick=async()=>{
   if(!myPods.length){toast('No POD yet');return;}
   const code=Math.random().toString(36).slice(2,9);
