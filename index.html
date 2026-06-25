@@ -26,6 +26,7 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 .pphoto img{width:100%;height:100%;object-fit:cover}
 .pphoto-wrap{position:relative;width:64px;height:64px;flex:none}
 .photo-edit{position:absolute;right:-4px;bottom:-4px;width:24px;height:24px;border-radius:50%;background:var(--green);color:var(--forest);border:2px solid #fff;display:grid;place-items:center;cursor:pointer;font-size:12px;padding:0;line-height:1;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.gtoggle{background:#eef7f1;color:var(--muted);border:1px solid var(--line);padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600}.gtoggle.on{background:var(--forest);color:#fff;border-color:var(--forest)}
 .side .me .av img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 .navlbl{font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;color:#6f8f7c;padding:14px 12px 6px}
 .nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:13px;color:#cfe8d8;text-decoration:none;font-size:14.5px;cursor:pointer;transition:.18s}
@@ -153,12 +154,19 @@ select.inp{appearance:auto}
       <!-- DASHBOARD -->
       <section class="screen show" id="s-dash">
         <div class="brill">
-          <span class="tag">✦ Your Unique Brilliance</span>
-          <p id="brillText">Welcome. Every habit you keep and goal you set moves your Q4 forward — let's build momentum today.</p>
-          <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap">
-            <div><div class="kpi lite" id="dGoals">0</div><small style="color:#9fc6ae">goals &amp; skills</small></div>
-            <div><div class="kpi lite" id="dStreak">0</div><small style="color:#9fc6ae">day streak</small></div>
-            <div style="align-self:center"><button class="btn" onclick="openShare()">↗ Share my progress</button></div>
+          <div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap">
+            <div style="flex:1;min-width:240px">
+              <span class="tag">✦ Your Unique Brilliance</span>
+              <p id="brillText">Welcome. Every habit you keep and goal you set moves your Q4 forward — let's build momentum today.</p>
+              <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap">
+                <div><div class="kpi lite" id="dGoals">0</div><small style="color:#9fc6ae">goals &amp; skills</small></div>
+                <div><div class="kpi lite" id="dStreak">0</div><small style="color:#9fc6ae">day streak</small></div>
+                <div style="align-self:center"><button class="btn" onclick="openShare()">↗ Share my progress</button></div>
+              </div>
+            </div>
+            <div class="card" style="flex:none;text-align:center;margin:0;padding:14px 18px"><h3 style="justify-content:center">Overall Q4</h3><div class="hint" style="margin-bottom:2px">Average of your pillars</div>
+              <div style="position:relative;width:130px;height:130px;margin:4px auto"><svg width="130" height="130" style="transform:rotate(-90deg)"><circle cx="65" cy="65" r="64" fill="none" stroke="#e7f1ea" stroke-width="13"/><circle cx="65" cy="65" r="64" fill="none" stroke="#4DF28A" stroke-width="13" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="201" id="ringArc" style="transition:.6s"/></svg><div style="position:absolute;inset:0;display:grid;place-items:center"><div><b id="q4avg" style="font-size:30px;font-weight:800;color:var(--forest)">50</b><small style="display:block;color:var(--muted);font-size:11px">/ 100</small></div></div></div>
+            </div>
           </div>
         </div>
         <div class="card" id="completionCard" style="display:none">
@@ -181,8 +189,12 @@ select.inp{appearance:auto}
             <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap"><button class="btn sm" id="saveQ4">💾 Save snapshot</button><span class="hint" style="margin:0">Logs today's scores with a date so you can see your trend.</span></div>
             <div id="q4trend" style="margin-top:14px"></div>
           </div>
-          <div class="card" style="text-align:center;display:flex;flex-direction:column;justify-content:center"><h3 style="justify-content:center">Overall Q4</h3><div class="hint">Average of your pillars</div>
-            <div style="position:relative;width:150px;height:150px;margin:6px auto"><svg width="150" height="150" style="transform:rotate(-90deg)"><circle cx="75" cy="75" r="64" fill="none" stroke="#e7f1ea" stroke-width="14"/><circle cx="75" cy="75" r="64" fill="none" stroke="#4DF28A" stroke-width="14" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="201" id="ringArc" style="transition:.6s"/></svg><div style="position:absolute;inset:0;display:grid;place-items:center"><div><b id="q4avg" style="font-size:34px;font-weight:800;color:var(--forest)">50</b><small style="display:block;color:var(--muted);font-size:11px">/ 100</small></div></div></div>
+          <div class="card" id="growthCard">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">📈 Your Growth</h3>
+              <div style="display:flex;gap:6px"><button class="gtoggle on" data-gview="simple">Simple</button><button class="gtoggle" data-gview="detail">Detailed</button></div>
+            </div>
+            <div class="hint">Your progress over time — the more you log, the clearer it gets.</div>
+            <div id="growthBody" style="margin-top:6px"></div>
           </div>
         </div>
         <div class="grid g3" style="margin-top:18px">
@@ -388,7 +400,7 @@ function genAlias(){const a=['quiet','bright','bold','calm','swift','wise','kind
 function show(id){$('#'+id).classList.add('show');}function hide(id){$('#'+id).classList.remove('show');}
 $$('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 
-$('#nav').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;$$('#nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('show'));$('#s-'+a.dataset.s).classList.add('show');$('#ttl').textContent=TT[a.dataset.s][0];$('#sub').textContent=TT[a.dataset.s][1];track('screen_view',{screen:a.dataset.s});if(a.dataset.s==='dash')loadCompletion();window.scrollTo({top:0,behavior:'smooth'});});
+$('#nav').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;$$('#nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('show'));$('#s-'+a.dataset.s).classList.add('show');$('#ttl').textContent=TT[a.dataset.s][0];$('#sub').textContent=TT[a.dataset.s][1];track('screen_view',{screen:a.dataset.s});if(a.dataset.s==='dash'){loadCompletion();loadGrowth();}window.scrollTo({top:0,behavior:'smooth'});});
 
 // AUTH
 $('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;$('#sendBtn').disabled=true;$('#authMsg').textContent='Sending…';const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href.split('?')[0]}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email for the magic link.';$('#sendBtn').disabled=false;};
@@ -408,7 +420,7 @@ async function boot(){
   if(inv||ref)history.replaceState({},'',location.pathname);
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
-  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';loadCompletion();
+  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';loadCompletion();loadGrowth();
   drawRadar();
   await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods(),loadRefer(),loadSettings(),loadCoaches(),loadLeaderboard()]);
   initAvatar(m); initAdmin(m); initBrandLogo();
@@ -528,6 +540,13 @@ async function loadProf(){const {data}=await sb.from('member_identities').select
 function gotoScreen(s){const a=document.querySelector('#nav a[data-s="'+s+'"]');if(a)a.click();}
 async function loadCompletion(){try{const {data,error}=await sb.rpc('profile_completion');if(error||!data||data.error)return;renderCompletion(data);if(data.awarded_now){try{burst();}catch(e){}toast('🎉 Profile complete! +200 GRI');try{loadGri();}catch(e){}}}catch(e){}}
 function renderCompletion(d){const card=$('#completionCard');if(!card)return;const pct=d.percent||0;if(pct>=100){card.style.display='none';return;}card.style.display='';$('#completionPct').textContent=pct+'%';$('#completionBar').style.width=pct+'%';const L={bio:['Add a bio','prof'],photo:['Add a photo','prof'],q4:['Save your Q4','dash'],priority:['Add a priority','prio'],habit:['Log a habit','habits'],potential:['Fill in Potential','pot']};const wrap=$('#completionSteps');if(!wrap)return;wrap.innerHTML='';Object.entries(d.steps||{}).forEach(([k,done])=>{if(done||!L[k])return;const b=document.createElement('button');b.type='button';b.textContent='+ '+L[k][0];b.style.cssText='background:#eef7f1;color:var(--forest);border:1px solid var(--line);padding:6px 11px;border-radius:20px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:600';b.onclick=()=>gotoScreen(L[k][1]);wrap.appendChild(b);});}
+let GROWTH=null,gView='simple',gRange='all';
+function _gpts(arr,yKey){return (arr||[]).map(d=>({x:new Date(d.at).getTime(),y:Number(d[yKey])})).filter(p=>!isNaN(p.x)&&!isNaN(p.y));}
+function _grange(pts){if(gRange==='all'||pts.length<2)return pts;const cut=Date.now()-30*864e5;const f=pts.filter(p=>p.x>=cut);return f.length>=2?f:pts;}
+function gLine(pts,o){o=o||{};const W=320,H=o.h||64,P=8;if(!pts||pts.length<2)return '<div class="hint" style="margin:0">Not enough data yet — keep logging and your growth line appears here.</div>';const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);const sx=x=>P+(x1===x0?.5:(x-x0)/(x1-x0))*(W-2*P);const sy=y=>H-P-(y1===y0?.5:(y-y0)/(y1-y0))*(H-2*P);const d=pts.map((p,i)=>(i?'L':'M')+sx(p.x).toFixed(1)+' '+sy(p.y).toFixed(1)).join(' ');const area=d+' L '+sx(x1).toFixed(1)+' '+(H-P)+' L '+sx(x0).toFixed(1)+' '+(H-P)+' Z';const dots=o.dots?pts.map(p=>'<circle cx="'+sx(p.x).toFixed(1)+'" cy="'+sy(p.y).toFixed(1)+'" r="2.6" fill="var(--green-d)"/>').join(''):'';return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" style="display:block;overflow:visible"><path d="'+area+'" fill="rgba(77,242,138,.15)"/><path d="'+d+'" fill="none" stroke="var(--green-d)" stroke-width="2.5"/>'+dots+'</svg>';}
+async function loadGrowth(){try{const {data,error}=await sb.rpc('growth_timeline');if(error||!data)return;GROWTH=data;renderGrowth();}catch(e){}}
+function renderGrowth(){const b=$('#growthBody');if(!b||!GROWTH)return;const gri=_grange(_gpts(GROWTH.gri_series,'cum_gri'));const griNow=gri.length?gri[gri.length-1].y:0;const priN=(GROWTH.priority_events||[]).length,resN=(GROWTH.resilience_series||[]).length;if(gView==='simple'){b.innerHTML='<div style="font-size:13px;color:var(--forest);font-weight:600;margin-bottom:8px">▲ '+griNow+' GRI · '+priN+' priority updates · '+resN+' resilience wins</div>'+gLine(gri,{h:84});return;}const pri=_grange(_gpts(GROWTH.priority_events,'progress')),ri=_grange(_gpts(GROWTH.resilience_series,'cum_impact'));b.innerHTML='<div style="display:flex;gap:6px;margin:0 0 10px"><button class="gtoggle '+(gRange==='all'?'on':'')+'" data-grange="all">All-time</button><button class="gtoggle '+(gRange==='recent'?'on':'')+'" data-grange="recent">Recent</button></div>'+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin-bottom:3px">Growth (GRI)</div>'+gLine(gri,{h:56})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Priorities — progress &amp; milestones</div>'+gLine(pri,{h:56,dots:true})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Resilience — '+resN+' wins · life-impact addressed</div>'+gLine(ri,{h:56,dots:true});}
+document.addEventListener('click',function(e){const v=e.target.closest&&e.target.closest('[data-gview]');if(v){gView=v.dataset.gview;document.querySelectorAll('[data-gview]').forEach(x=>x.classList.toggle('on',x.dataset.gview===gView));renderGrowth();return;}const r=e.target.closest&&e.target.closest('[data-grange]');if(r){gRange=r.dataset.grange;renderGrowth();}});
 let _aliasOk=true,_aliasT;
 function checkAlias(){clearTimeout(_aliasT);const el=$('#alias'),msg=$('#aliasMsg');if(!el||!msg)return;const v=el.value.trim();if(v===myAlias){_aliasOk=true;msg.textContent='';return;}if(v.length<3){_aliasOk=false;msg.style.color='var(--muted)';msg.textContent='At least 3 characters.';return;}msg.style.color='var(--muted)';msg.textContent='Checking…';_aliasOk=false;_aliasT=setTimeout(async()=>{const {data,error}=await sb.rpc('alias_available',{p_alias:v});if(error){msg.textContent='';return;}_aliasOk=!!data;msg.style.color=data?'#1e9e54':'#c0392b';msg.textContent=data?'✓ Available':'✗ Taken — try another';},350);}
 $('#alias')&&$('#alias').addEventListener('input',checkAlias);
