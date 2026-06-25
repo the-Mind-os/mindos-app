@@ -24,6 +24,8 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 .photorow{display:flex;gap:14px;align-items:flex-start;margin:14px 0 4px}
 .pphoto{width:64px;height:64px;border-radius:18px;background:var(--forest);color:var(--green);display:grid;place-items:center;font-weight:800;font-size:24px;overflow:hidden;flex:none}
 .pphoto img{width:100%;height:100%;object-fit:cover}
+.pphoto-wrap{position:relative;width:64px;height:64px;flex:none}
+.photo-edit{position:absolute;right:-4px;bottom:-4px;width:24px;height:24px;border-radius:50%;background:var(--green);color:var(--forest);border:2px solid #fff;display:grid;place-items:center;cursor:pointer;font-size:12px;padding:0;line-height:1;box-shadow:0 1px 4px rgba(0,0,0,.18)}
 .side .me .av img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 .navlbl{font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;color:#6f8f7c;padding:14px 12px 6px}
 .nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:13px;color:#cfe8d8;text-decoration:none;font-size:14.5px;cursor:pointer;transition:.18s}
@@ -263,7 +265,7 @@ select.inp{appearance:auto}
       <section class="screen" id="s-prof">
         <div class="card"><h3>☺ Profile</h3><div class="hint">Your alias is public &amp; searchable. Your name &amp; email stay sealed in the vault.</div>
           <div class="photorow">
-            <div class="pphoto" id="pphoto">M</div>
+            <div class="pphoto-wrap"><div class="pphoto" id="pphoto">M</div><button class="photo-edit" id="photoEdit" type="button" title="Change photo" aria-label="Change photo">✎</button></div>
             <div style="flex:1">
               <input type="file" id="avatarFile" accept="image/png,image/jpeg,image/webp" hidden>
               <button class="btn sm" id="avatarBtn">Upload photo</button>
@@ -272,11 +274,12 @@ select.inp{appearance:auto}
               <select class="inp" id="avatarVis" style="padding:8px 10px;font-size:12.5px;max-width:230px">
                 <option value="private">Private — only you</option>
                 <option value="coach">My coach can see it</option>
+                <option value="public">Public — anyone on Mind OS</option>
               </select>
               <div class="hint" id="avatarMsg" style="margin:7px 0 0">🔒 Private by default — sealed, even from us. Max 5MB.</div>
             </div>
           </div>
-          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Alias</div><input class="inp" id="alias" readonly>
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Alias <span style="font-weight:400;color:var(--muted)">· your public handle</span></div><input class="inp" id="alias" maxlength="24" autocomplete="off"><div class="hint" id="aliasMsg" style="margin:5px 0 0;min-height:16px"></div>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">City &amp; country</div><input class="inp" id="city" placeholder="Austin, USA">
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">About me</div><textarea class="inp" id="bio" rows="3"></textarea>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Passions (300 chars)</div><input class="inp" id="passions" maxlength="300">
@@ -368,7 +371,7 @@ const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable
 const _sid=(()=>{try{let s=sessionStorage.getItem('ms_sid');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('ms_sid',s);}return s;}catch(e){return null;}})();
 function track(event,props){try{if(!user)return;sb.from('analytics_events').insert({event_name:event,props:props||{},session_id:_sid}).then(()=>{},()=>{});}catch(e){}}
 try{const _q4=new URLSearchParams(location.search).get('q4');if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);}catch(e){}
-let user=null, gri=0, streak=0, todayCount=0;
+let user=null, gri=0, streak=0, todayCount=0, myAlias='';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
 const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucket_list:'Bucket list'};
@@ -399,7 +402,7 @@ async function boot(){
   if(inv||ref)history.replaceState({},'',location.pathname);
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
-  $('#alias').value=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';
+  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';
   drawRadar();
   await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods(),loadRefer(),loadSettings(),loadCoaches(),loadLeaderboard()]);
   initAvatar(m); initAdmin(m); initBrandLogo();
@@ -417,9 +420,9 @@ async function showAvatar(path){
   }
 }
 function initAvatar(m){
-  $('#avatarVis').value=m&&m.avatar_visibility?m.avatar_visibility:'private';
+  $('#avatarVis').value=m&&m.avatar_visibility?m.avatar_visibility:'private';$('#avatarVis').dataset.prev=$('#avatarVis').value;
   if(m&&m.avatar_path) showAvatar(m.avatar_path);
-  $('#avatarBtn').onclick=()=>$('#avatarFile').click();
+  $('#avatarBtn').onclick=()=>$('#avatarFile').click();$('#photoEdit').onclick=()=>$('#avatarFile').click();
   $('#avatarFile').onchange=async e=>{
     const f=e.target.files[0]; if(!f) return;
     if(f.size>5242880){$('#avatarMsg').textContent='⚠️ Image must be under 5MB.';return;}
@@ -433,7 +436,7 @@ function initAvatar(m){
     $('#avatarMsg').innerHTML='🔒 Saved — private by default. Max 5MB.';
     toast('Photo updated ✓');
   };
-  $('#avatarVis').onchange=async()=>{await sb.from('members').update({avatar_visibility:$('#avatarVis').value}).eq('id',user.id);toast('Visibility updated ✓');};
+  $('#avatarVis').onchange=async()=>{const sel=$('#avatarVis');const v=sel.value;if(v==='public'&&!confirm('Make your photo public? Anyone on Mind OS will be able to see it. You can switch back to private anytime.')){sel.value=sel.dataset.prev||'private';return;}sel.dataset.prev=v;await sb.from('members').update({avatar_visibility:v}).eq('id',user.id);toast('Visibility updated ✓');};
   $('#avatarRm').onclick=async()=>{
     const ext0=['png','jpg','webp'];
     await sb.storage.from('avatars').remove(ext0.map(x=>user.id+'/avatar.'+x));
@@ -516,7 +519,10 @@ let potT;
 function savePot(){clearTimeout(potT);potT=setTimeout(async()=>{const {error:e1}=await sb.from('members').update({superpower:$('#sp').value}).eq('id',user.id);const {error}=await sb.from('potential').upsert({member_id:user.id,strengths:POT.strengths,intentions:POT.intentions,intelligences:POT.intelligences,updated_at:new Date().toISOString()},{onConflict:'member_id'});const msg=$('#potMsg');const err=error||e1;if(err){if(msg)msg.textContent='⚠️ '+err.message;toast('⚠️ '+err.message);return;}if(msg)msg.textContent='Saved ✓ '+new Date().toLocaleTimeString();},400);}
 
 async function loadProf(){const {data}=await sb.from('member_identities').select('city,country').eq('member_id',user.id).maybeSingle();if(data&&(data.city||data.country))$('#city').value=[data.city,data.country].filter(Boolean).join(', ');}
-$('#saveProf').onclick=async()=>{const p=$('#city').value.split(',').map(x=>x.trim());await sb.from('members').update({bio:$('#bio').value,passions:$('#passions').value}).eq('id',user.id);await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});toast('Saved ✓');};
+let _aliasOk=true,_aliasT;
+function checkAlias(){clearTimeout(_aliasT);const el=$('#alias'),msg=$('#aliasMsg');if(!el||!msg)return;const v=el.value.trim();if(v===myAlias){_aliasOk=true;msg.textContent='';return;}if(v.length<3){_aliasOk=false;msg.style.color='var(--muted)';msg.textContent='At least 3 characters.';return;}msg.style.color='var(--muted)';msg.textContent='Checking…';_aliasOk=false;_aliasT=setTimeout(async()=>{const {data,error}=await sb.rpc('alias_available',{p_alias:v});if(error){msg.textContent='';return;}_aliasOk=!!data;msg.style.color=data?'#1e9e54':'#c0392b';msg.textContent=data?'✓ Available':'✗ Taken — try another';},350);}
+$('#alias')&&$('#alias').addEventListener('input',checkAlias);
+$('#saveProf').onclick=async()=>{const newAlias=$('#alias').value.trim();if(newAlias!==myAlias){if(newAlias.length<3){toast('Alias must be at least 3 characters');return;}const {data:ok}=await sb.rpc('alias_available',{p_alias:newAlias});if(!ok){const am=$('#aliasMsg');if(am){am.style.color='#c0392b';am.textContent='✗ Taken — try another';}toast('That alias is taken');return;}}const p=$('#city').value.split(',').map(x=>x.trim());const upd={bio:$('#bio').value,passions:$('#passions').value};if(newAlias!==myAlias)upd.alias=newAlias;const {error}=await sb.from('members').update(upd).eq('id',user.id);if(error){toast(error.code==='23505'?'That alias is taken':'⚠️ '+error.message);return;}await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});if(newAlias!==myAlias){myAlias=newAlias;const ma=$('#meAlias');if(ma)ma.textContent=newAlias;const sa=$('#setAlias');if(sa)sa.textContent=newAlias;const av=$('#avatar');if(av&&!av.querySelector('img'))av.textContent=newAlias[0].toUpperCase();const pp=$('#pphoto');if(pp&&!pp.querySelector('img'))pp.textContent=newAlias[0].toUpperCase();const am=$('#aliasMsg');if(am)am.textContent='';}toast('Saved ✓');};
 
 let allPods=[], myFocus=[];
 async function loadPods(){const {data}=await sb.from('pods').select('id,name,focus,price_cents').eq('status','listed').limit(60);allPods=data||[];const {data:gi}=await sb.from('growth_items').select('title,q4_pillar').eq('member_id',user.id);const fs=[];(gi||[]).forEach(g=>{String(g.title||'').toLowerCase().split(/\W+/).forEach(w=>{if(w.length>3)fs.push(w);});if(g.q4_pillar)(PILL[g.q4_pillar]||'').toLowerCase().split(/\W+/).forEach(w=>{if(w.length>2)fs.push(w);});});myFocus=[...new Set(fs)];renderPods();}
