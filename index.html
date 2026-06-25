@@ -132,6 +132,7 @@ select.inp{appearance:auto}
       <div class="navlbl">Community</div>
       <a data-s="pods"><span class="ic">◍</span><span>Find a POD</span></a>
       <a data-s="coaches"><span class="ic">◆</span><span>Coaches</span></a>
+      <a data-s="community"><span class="ic">🤝</span><span>Community</span></a>
       <div class="navlbl">Account</div>
       <a data-s="prof"><span class="ic">☺</span><span>Profile</span></a>
       <a data-s="refer"><span class="ic">🎁</span><span>Refer</span></a>
@@ -284,6 +285,39 @@ select.inp{appearance:auto}
 
 
       <!-- PROFILE -->
+      <!-- COMMUNITY + MATCHING -->
+      <section class="screen" id="s-community">
+        <div class="card">
+          <h3>🤝 Open to connecting?</h3>
+          <div class="hint">Opt in to be matched — anonymously, alias only — with an accountability partner or a mentor in your community.</div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-top:12px">
+            <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><input type="checkbox" id="mpPartner"> Find an accountability partner</label>
+            <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><input type="checkbox" id="mpWantMentor"> Find a mentor</label>
+            <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><input type="checkbox" id="mpOfferMentor"> Offer to mentor others</label>
+            <label style="display:flex;gap:9px;align-items:center;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" id="mpPublic"> Also match me beyond my community (public pool)</label>
+          </div>
+          <button class="btn sm" id="saveMatch" style="margin-top:14px">Save preferences</button>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h3 style="margin:0">✨ Suggested matches</h3><button class="btn sm ghost" id="findMatches">Refresh</button></div>
+          <div id="matchList" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <h3>🔗 Your connections</h3><div class="hint">Match requests &amp; accepted connections.</div>
+          <div id="connList" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <h3>🏘 Your communities</h3>
+          <div id="commList" style="margin-top:8px"></div>
+          <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="joinSlug" placeholder="Community invite code"><button class="btn sm" id="joinBtn">Request to join</button></div>
+          <div class="hint" id="joinMsg" style="margin-top:6px"></div>
+        </div>
+        <div class="card" id="leaderConsole" style="display:none">
+          <h3>👑 Leader console</h3><div class="hint">Pending join requests for communities you lead.</div>
+          <div id="reqList" style="margin-top:10px"></div>
+        </div>
+      </section>
+
       <section class="screen" id="s-prof">
         <div class="card"><h3>☺ Profile</h3><div class="hint">Your alias is public &amp; searchable. Your name &amp; email stay sealed in the vault.</div>
           <div class="photorow">
@@ -402,14 +436,14 @@ let user=null, gri=0, streak=0, todayCount=0, myAlias='';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
 const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucket_list:'Bucket list'};
-const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],coaches:['Coaches','Find your coach'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends — you both earn GRI'],settings:['Settings','Your account & data']};
+const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],coaches:['Coaches','Find your coach'],community:['Community','Your people — partners, mentors & communities'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends — you both earn GRI'],settings:['Settings','Your account & data']};
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
 function tierOf(g){return g<=1850?['Blue','blue',0,1850]:g<=3500?['Bronze','bronze',1850,3500]:g<=7000?['Silver','silver',3500,7000]:['Gold','gold',7000,7000];}
 function genAlias(){const a=['quiet','bright','bold','calm','swift','wise','kind','brave'],b=['summit','river','ember','meadow','harbor','grove','aurora','peak'];return a[Math.random()*8|0]+'-'+b[Math.random()*8|0]+'-'+(10+Math.random()*89|0);}
 function show(id){$('#'+id).classList.add('show');}function hide(id){$('#'+id).classList.remove('show');}
 $$('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 
-$('#nav').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;$$('#nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('show'));$('#s-'+a.dataset.s).classList.add('show');$('#ttl').textContent=TT[a.dataset.s][0];$('#sub').textContent=TT[a.dataset.s][1];track('screen_view',{screen:a.dataset.s});if(a.dataset.s==='dash'){loadCompletion();loadGrowth();}window.scrollTo({top:0,behavior:'smooth'});});
+$('#nav').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;$$('#nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('show'));$('#s-'+a.dataset.s).classList.add('show');$('#ttl').textContent=TT[a.dataset.s][0];$('#sub').textContent=TT[a.dataset.s][1];track('screen_view',{screen:a.dataset.s});if(a.dataset.s==='dash'){loadCompletion();loadGrowth();}if(a.dataset.s==='community')loadCommunity();window.scrollTo({top:0,behavior:'smooth'});});
 
 // AUTH
 $('#sendBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;$('#sendBtn').disabled=true;$('#authMsg').textContent='Sending…';const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href.split('?')[0]}});$('#authMsg').textContent=error?('⚠️ '+error.message):'✓ Check your email for the magic link.';$('#sendBtn').disabled=false;};
@@ -557,6 +591,18 @@ function gLine(pts,o){o=o||{};const W=320,H=o.h||64,P=8;if(!pts||pts.length<2)re
 async function loadGrowth(){try{const {data,error}=await sb.rpc('growth_timeline');if(error||!data)return;GROWTH=data;renderGrowth();}catch(e){}}
 function renderGrowth(){const b=$('#growthBody');if(!b||!GROWTH)return;const gri=_grange(_gpts(GROWTH.gri_series,'cum_gri'));const griNow=gri.length?gri[gri.length-1].y:0;const priN=(GROWTH.priority_events||[]).length,resN=(GROWTH.resilience_series||[]).length;if(gView==='simple'){b.innerHTML='<div style="font-size:13px;color:var(--forest);font-weight:600;margin-bottom:8px">▲ '+griNow+' GRI · '+priN+' priority updates · '+resN+' resilience wins</div>'+gLine(gri,{h:84});return;}const pri=_grange(_gpts(GROWTH.priority_events,'progress')),ri=_grange(_gpts(GROWTH.resilience_series,'cum_impact'));b.innerHTML='<div style="display:flex;gap:6px;margin:0 0 10px"><button class="gtoggle '+(gRange==='all'?'on':'')+'" data-grange="all">All-time</button><button class="gtoggle '+(gRange==='recent'?'on':'')+'" data-grange="recent">Recent</button></div>'+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin-bottom:3px">Growth (GRI)</div>'+gLine(gri,{h:56})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Priorities — progress &amp; milestones</div>'+gLine(pri,{h:56,dots:true})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Resilience — '+resN+' wins · life-impact addressed</div>'+gLine(ri,{h:56,dots:true});}
 document.addEventListener('click',function(e){const v=e.target.closest&&e.target.closest('[data-gview]');if(v){gView=v.dataset.gview;document.querySelectorAll('[data-gview]').forEach(x=>x.classList.toggle('on',x.dataset.gview===gView));renderGrowth();return;}const r=e.target.closest&&e.target.closest('[data-grange]');if(r){gRange=r.dataset.grange;renderGrowth();}});
+// ---- Community + Matching ----
+async function loadCommunity(){const {data:mp}=await sb.from('match_profiles').select('*').eq('member_id',user.id).maybeSingle();const set=(id,v)=>{const e=$(id);if(e)e.checked=!!v;};set('#mpPartner',mp&&mp.wants_partner);set('#mpWantMentor',mp&&mp.wants_mentor);set('#mpOfferMentor',mp&&mp.offers_mentor);set('#mpPublic',mp&&mp.open_to_public);loadMyCommunities();loadConnections();findMatchesNow();loadLeaderConsole();}
+async function findMatchesNow(){const el=$('#matchList');if(!el)return;const {data}=await sb.rpc('find_matches');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No matches yet — opt in above, add a few priorities, and check back.</div>';return;}el.innerHTML=arr.map(x=>`<div class="prio" style="align-items:center"><div style="flex:1"><b>${esc(x.alias||'member')}</b> <span class="tag t-goal">${x.type}</span> <span class="tag">${x.scope}</span><div class="meta" style="margin-top:4px">${x.shared_focus?('✨ '+x.shared_focus+' shared focus'):'Open to connect'}</div></div><button class="btn sm" data-conn="${x.member_id}|${x.type}|${x.community_id||''}">Connect</button></div>`).join('');el.querySelectorAll('[data-conn]').forEach(b=>b.onclick=()=>connectMatch(b.dataset.conn));}
+async function connectMatch(s){const p=s.split('|');const {error}=await sb.rpc('request_match',{p_target:p[0],p_type:p[1],p_community:p[2]||null});if(error){toast('⚠️ '+error.message);return;}toast('Request sent ✓');findMatchesNow();loadConnections();}
+async function loadConnections(){const el=$('#connList');if(!el)return;const {data}=await sb.rpc('my_connections');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No connections yet.</div>';return;}el.innerHTML=arr.map(m=>`<div class="prio" style="align-items:center"><div style="flex:1"><b>${esc(m.other_alias||'member')}</b> <span class="tag t-goal">${m.type}</span> <span class="meta">${m.status}</span></div>${m.incoming?`<button class="btn sm" data-acc="${m.id}">Accept</button><button class="btn sm ghost" data-dec="${m.id}">Decline</button>`:''}</div>`).join('');el.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>respMatch(b.dataset.acc,true));el.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>respMatch(b.dataset.dec,false));}
+async function respMatch(id,acc){const {error}=await sb.rpc('respond_match',{p_match:id,p_accept:acc});if(error){toast('⚠️ '+error.message);return;}toast(acc?'Connected ✓':'Declined');loadConnections();}
+async function loadMyCommunities(){const el=$('#commList');if(!el)return;const {data}=await sb.from('community_memberships').select('role,communities(name,slug)').eq('member_id',user.id).eq('status','active');const arr=(data||[]).filter(x=>x.communities);if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">Not in a community yet. Got an invite code? Join below.</div>';return;}el.innerHTML=arr.map(x=>`<div class="prio"><div style="flex:1"><b>${esc(x.communities.name)}</b> <span class="tag">${x.role}</span></div></div>`).join('');}
+async function loadLeaderConsole(){const lc=$('#leaderConsole');if(!lc)return;const {data:led}=await sb.from('communities').select('id').eq('leader_id',user.id);if(!led||!led.length){lc.style.display='none';return;}lc.style.display='';const el=$('#reqList');const {data}=await sb.rpc('leader_pending_requests');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No pending requests.</div>';return;}el.innerHTML=arr.map(r=>`<div class="prio"><div style="flex:1"><b>${esc(r.alias||'member')}</b> <span class="meta">wants to join ${esc(r.community||'')}</span></div><button class="btn sm" data-app="${r.id}">Approve</button><button class="btn sm ghost" data-den="${r.id}">Deny</button></div>`).join('');el.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>decideReq(b.dataset.app,true));el.querySelectorAll('[data-den]').forEach(b=>b.onclick=()=>decideReq(b.dataset.den,false));}
+async function decideReq(id,app){const {error}=await sb.rpc('decide_join_request',{p_request:id,p_approve:app});if(error){toast('⚠️ '+error.message);return;}toast(app?'Approved ✓':'Denied');loadLeaderConsole();}
+$('#saveMatch')&&($('#saveMatch').onclick=async()=>{const {error}=await sb.from('match_profiles').upsert({member_id:user.id,wants_partner:$('#mpPartner').checked,wants_mentor:$('#mpWantMentor').checked,offers_mentor:$('#mpOfferMentor').checked,open_to_public:$('#mpPublic').checked,is_active:true,updated_at:new Date().toISOString()},{onConflict:'member_id'});if(error){toast('⚠️ '+error.message);return;}toast('Saved ✓');findMatchesNow();});
+$('#findMatches')&&($('#findMatches').onclick=()=>findMatchesNow());
+$('#joinBtn')&&($('#joinBtn').onclick=async()=>{const slug=$('#joinSlug').value.trim();if(!slug)return;const {data,error}=await sb.rpc('request_to_join',{p_slug:slug});const msg=$('#joinMsg');if(error){msg.textContent='⚠️ '+error.message;return;}msg.textContent=({requested:'✓ Request sent — the leader will approve.',already_member:'You are already a member.',not_found:'No community with that code.'})[data]||data;loadMyCommunities();});
 let _aliasOk=true,_aliasT;
 function checkAlias(){clearTimeout(_aliasT);const el=$('#alias'),msg=$('#aliasMsg');if(!el||!msg)return;const v=el.value.trim();if(v===myAlias){_aliasOk=true;msg.textContent='';return;}if(v.length<3){_aliasOk=false;msg.style.color='var(--muted)';msg.textContent='At least 3 characters.';return;}msg.style.color='var(--muted)';msg.textContent='Checking…';_aliasOk=false;_aliasT=setTimeout(async()=>{const {data,error}=await sb.rpc('alias_available',{p_alias:v});if(error){msg.textContent='';return;}_aliasOk=!!data;msg.style.color=data?'#1e9e54':'#c0392b';msg.textContent=data?'✓ Available':'✗ Taken — try another';},350);}
 $('#alias')&&$('#alias').addEventListener('input',checkAlias);
