@@ -316,6 +316,14 @@ select.inp{appearance:auto}
           <h3>👑 Leader console</h3><div class="hint">Pending join requests for communities you lead.</div>
           <div id="reqList" style="margin-top:10px"></div>
         </div>
+        <div class="card" id="upgradeCard" style="display:none">
+          <h3>🚀 Grow with Mind OS</h3>
+          <div class="hint">Coaches and community leaders run their people on Mind OS — done-for-you tech, framework, cockpit, payouts &amp; branding.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <a class="btn sm" id="ctaCoach" href="https://mind.us/mind-os/partners#coach" target="_blank" rel="noopener">Are you a coach? →</a>
+            <a class="btn sm ghost" id="ctaLeader" href="https://mind.us/mind-os/partners#leader" target="_blank" rel="noopener">Are you a community leader? →</a>
+          </div>
+        </div>
       </section>
 
       <section class="screen" id="s-prof">
@@ -432,7 +440,7 @@ const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable
 const _sid=(()=>{try{let s=sessionStorage.getItem('ms_sid');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('ms_sid',s);}return s;}catch(e){return null;}})();
 function track(event,props){try{if(!user)return;sb.from('analytics_events').insert({event_name:event,props:props||{},session_id:_sid}).then(()=>{},()=>{});}catch(e){}}
 try{const _q4=new URLSearchParams(location.search).get('q4');if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);}catch(e){}
-let user=null, gri=0, streak=0, todayCount=0, myAlias='';
+let user=null, gri=0, streak=0, todayCount=0, myAlias='', isCoach=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
 const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucket_list:'Bucket list'};
@@ -454,7 +462,7 @@ sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 
 async function boot(){
   $('#gate').style.display='none';$('#app').style.display='grid';
-  let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin,age_bracket,star_sign').eq('id',user.id).maybeSingle();
+  let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin,is_coach,age_bracket,star_sign').eq('id',user.id).maybeSingle();
   const isNew=!m;
   if(isNew){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
   track('app_open',{returning:!isNew});if(isNew)track('signup',{});
@@ -464,7 +472,7 @@ async function boot(){
   if(inv||ref)history.replaceState({},'',location.pathname);
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
-  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';loadCompletion();loadGrowth();
+  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';isCoach=!!(m&&m.is_coach);loadCompletion();loadGrowth();
   drawRadar();
   await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods(),loadRefer(),loadSettings(),loadCoaches(),loadLeaderboard()]);
   initAvatar(m); initAdmin(m); initBrandLogo();
@@ -598,7 +606,7 @@ async function connectMatch(s){const p=s.split('|');const {error}=await sb.rpc('
 async function loadConnections(){const el=$('#connList');if(!el)return;const {data}=await sb.rpc('my_connections');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No connections yet.</div>';return;}el.innerHTML=arr.map(m=>`<div class="prio" style="align-items:center"><div style="flex:1"><b>${esc(m.other_alias||'member')}</b> <span class="tag t-goal">${m.type}</span> <span class="meta">${m.status}</span></div>${m.incoming?`<button class="btn sm" data-acc="${m.id}">Accept</button><button class="btn sm ghost" data-dec="${m.id}">Decline</button>`:''}</div>`).join('');el.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>respMatch(b.dataset.acc,true));el.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>respMatch(b.dataset.dec,false));}
 async function respMatch(id,acc){const {error}=await sb.rpc('respond_match',{p_match:id,p_accept:acc});if(error){toast('⚠️ '+error.message);return;}toast(acc?'Connected ✓':'Declined');loadConnections();}
 async function loadMyCommunities(){const el=$('#commList');if(!el)return;const {data}=await sb.from('community_memberships').select('role,communities(name,slug)').eq('member_id',user.id).eq('status','active');const arr=(data||[]).filter(x=>x.communities);if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">Not in a community yet. Got an invite code? Join below.</div>';return;}el.innerHTML=arr.map(x=>`<div class="prio"><div style="flex:1"><b>${esc(x.communities.name)}</b> <span class="tag">${x.role}</span></div></div>`).join('');}
-async function loadLeaderConsole(){const lc=$('#leaderConsole');if(!lc)return;const {data:led}=await sb.from('communities').select('id').eq('leader_id',user.id);if(!led||!led.length){lc.style.display='none';return;}lc.style.display='';const el=$('#reqList');const {data}=await sb.rpc('leader_pending_requests');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No pending requests.</div>';return;}el.innerHTML=arr.map(r=>`<div class="prio"><div style="flex:1"><b>${esc(r.alias||'member')}</b> <span class="meta">wants to join ${esc(r.community||'')}</span></div><button class="btn sm" data-app="${r.id}">Approve</button><button class="btn sm ghost" data-den="${r.id}">Deny</button></div>`).join('');el.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>decideReq(b.dataset.app,true));el.querySelectorAll('[data-den]').forEach(b=>b.onclick=()=>decideReq(b.dataset.den,false));}
+async function loadLeaderConsole(){const lc=$('#leaderConsole');if(!lc)return;const {data:led}=await sb.from('communities').select('id').eq('leader_id',user.id);const isLeader=!!(led&&led.length);const uc=$('#upgradeCard');if(uc){const cc=$('#ctaCoach'),cl=$('#ctaLeader');if(cc)cc.style.display=isCoach?'none':'';if(cl)cl.style.display=isLeader?'none':'';uc.style.display=(isCoach&&isLeader)?'none':'';}if(!isLeader){lc.style.display='none';return;}lc.style.display='';const el=$('#reqList');const {data}=await sb.rpc('leader_pending_requests');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No pending requests.</div>';return;}el.innerHTML=arr.map(r=>`<div class="prio"><div style="flex:1"><b>${esc(r.alias||'member')}</b> <span class="meta">wants to join ${esc(r.community||'')}</span></div><button class="btn sm" data-app="${r.id}">Approve</button><button class="btn sm ghost" data-den="${r.id}">Deny</button></div>`).join('');el.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>decideReq(b.dataset.app,true));el.querySelectorAll('[data-den]').forEach(b=>b.onclick=()=>decideReq(b.dataset.den,false));}
 async function decideReq(id,app){const {error}=await sb.rpc('decide_join_request',{p_request:id,p_approve:app});if(error){toast('⚠️ '+error.message);return;}toast(app?'Approved ✓':'Denied');loadLeaderConsole();}
 $('#saveMatch')&&($('#saveMatch').onclick=async()=>{const {error}=await sb.from('match_profiles').upsert({member_id:user.id,wants_partner:$('#mpPartner').checked,wants_mentor:$('#mpWantMentor').checked,offers_mentor:$('#mpOfferMentor').checked,open_to_public:$('#mpPublic').checked,is_active:true,updated_at:new Date().toISOString()},{onConflict:'member_id'});if(error){toast('⚠️ '+error.message);return;}toast('Saved ✓');findMatchesNow();});
 $('#findMatches')&&($('#findMatches').onclick=()=>findMatchesNow());
