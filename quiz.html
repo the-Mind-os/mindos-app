@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What's your Q4 Life Score? — Free 2-minute assessment | Mind OS</title>
-<meta name="description" content="Discover your quality of life across the 4 dimensions that matter most — Purpose, Relationships, Mind & Body, Money. Free, 2 minutes, no signup. Get your Q4 Score and your growth archetype.">
+<title>What's your Q4 Life Score?, Free 2-minute assessment | Mind OS</title>
+<meta name="description" content="Discover your quality of life across the 4 dimensions that matter most, Purpose, Relationships, Mind & Body, Money. Free, 2 minutes, no signup. Get your Q4 Score and your growth archetype.">
 <meta property="og:title" content="What's your Q4 Life Score?">
 <meta property="og:description" content="Measure your life across the 4 dimensions that matter. Free, 2 minutes, no signup.">
 <meta property="og:type" content="website">
@@ -59,7 +59,7 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
   <div id="intro" class="hero">
     <span class="tag">✦ The Q4 Life Score</span>
     <h1>How good is your life, <b>really?</b></h1>
-    <p>Measure yourself across the 4 dimensions that decide your quality of life — Purpose, Relationships, Mind &amp; Body, and Money. Get your score, your archetype, and where to grow next.</p>
+    <p>Measure yourself across the 4 dimensions that decide your quality of life, Purpose, Relationships, Mind &amp; Body, and Money. Get your score, your archetype, and where to grow next.</p>
     <button class="btn" id="startBtn">Start the assessment →</button>
     <div class="meta"><span>⏱ 2 minutes</span><span>🔒 No signup</span><span>📊 12 questions</span></div>
   </div>
@@ -147,14 +147,14 @@ function finish(){
   $('#rArche').textContent=ARCHE[top];
   drawRadar(sc);
   $('#rBars').innerHTML=ORDER.map(p=>`<div class="brow"><div class="l"><span>${PILL[p].emoji} ${PILL[p].name}</span><b>${sc[p]}</b></div><div class="t"><i style="width:${sc[p]}%"></i></div></div>`).join('');
-  $('#rInsight').innerHTML=`You're <b>${ARCHE[top]}</b> — your strongest dimension is <b>${PILL[top].name}</b> (${sc[top]}). Your biggest growth opportunity right now is <b>${PILL[low].name}</b> (${sc[low]}). Mind OS helps you raise every dimension, one habit at a time.`;
+  $('#rInsight').innerHTML=`You're <b>${ARCHE[top]}</b>, your strongest dimension is <b>${PILL[top].name}</b> (${sc[top]}). Your biggest growth opportunity right now is <b>${PILL[low].name}</b> (${sc[low]}). Mind OS helps you raise every dimension, one habit at a time.`;
   const enc=ORDER.map(p=>sc[p]).join('.');
   $('#ctaBtn').href=APP+'/?q4='+enc;
   $('#quiz').classList.add('hide');$('#result').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'});
   window._share={overall,arche:ARCHE[top]};
 }
-function shareText(){const s=window._share||{overall:0,arche:''};return `I scored ${s.overall}/100 on my Q4 Life Score — I'm ${s.arche}. What's yours?`;}
-$('#shareBtn').onclick=async()=>{const text=shareText();const url=location.href;if(navigator.share){try{await navigator.share({title:'My Q4 Life Score',text,url});}catch(e){}}else{navigator.clipboard?.writeText(text+' '+url);toast('Result copied — paste it anywhere!');}};
+function shareText(){const s=window._share||{overall:0,arche:''};return `I scored ${s.overall}/100 on my Q4 Life Score, I'm ${s.arche}. What's yours?`;}
+$('#shareBtn').onclick=async()=>{const text=shareText();const url=location.href;if(navigator.share){try{await navigator.share({title:'My Q4 Life Score',text,url});}catch(e){}}else{navigator.clipboard?.writeText(text+' '+url);toast('Result copied, paste it anywhere!');}};
 $('#copyBtn').onclick=()=>{navigator.clipboard?.writeText(location.href);toast('Link copied!');};
 $('#retakeBtn').onclick=()=>{i=0;ans=new Array(Q.length).fill(null);$('#result').classList.add('hide');$('#quiz').classList.remove('hide');render();};
 </script>

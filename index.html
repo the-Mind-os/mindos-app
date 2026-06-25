@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mind OS — The Life Accelerator</title>
+<title>Mind OS, The Life Accelerator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -154,7 +154,7 @@ select.inp{appearance:auto}
     <img src="mindos-logo.png" alt="Mind OS" style="background:var(--forest);height:44px;width:auto;padding:13px 22px;border-radius:16px;margin-bottom:8px">
     <div style="color:var(--muted);font-size:14px;margin-bottom:22px">The Life Accelerator</div>
     <div class="card" style="text-align:left">
-      <h3>✦ Sign in or sign up</h3><div class="hint">New or returning — magic link or Google, no password. We'll create your account automatically if you're new.</div>
+      <h3>✦ Sign in or sign up</h3><div class="hint">New or returning, magic link or Google, no password. We'll create your account automatically if you're new.</div>
       <input class="inp" id="email" type="email" placeholder="you@email.com" style="margin-bottom:10px">
       <button class="btn" id="sendBtn" style="width:100%;justify-content:center">Email me a link</button>
       <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px"><div style="flex:1;height:1px;background:var(--line)"></div>or<div style="flex:1;height:1px;background:var(--line)"></div></div>
@@ -217,7 +217,7 @@ select.inp{appearance:auto}
           <div class="herorow" style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap">
             <div class="heroleft" style="flex:1;min-width:240px">
               <span class="tag">✦ Your Unique Brilliance</span>
-              <p id="brillText">Welcome. Every habit you keep and goal you set moves your Q4 forward — let's build momentum today.</p>
+              <p id="brillText">Welcome. Every habit you keep and goal you set moves your Q4 forward, let's build momentum today.</p>
               <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap">
                 <div><div class="kpi lite" id="dGoals">0</div><small style="color:#9fc6ae">goals &amp; skills</small></div>
                 <div><div class="kpi lite" id="dStreak">0</div><small style="color:#9fc6ae">day streak</small></div>
@@ -238,7 +238,7 @@ select.inp{appearance:auto}
           <div id="completionSteps" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"></div>
         </div>
         <div class="grid g2">
-          <div class="card"><h3>◎ Your Q4 — Quality of Life</h3><div class="hint">Slide to reflect where you are, then save a snapshot to track your trend over time.</div>
+          <div class="card"><h3>◎ Your Q4, Quality of Life</h3><div class="hint">Slide to reflect where you are, then save a snapshot to track your trend over time.</div>
             <div class="radar-wrap">
               <svg id="radar" width="240" height="240" viewBox="0 0 240 240"></svg>
               <div class="q4ctrl">
@@ -255,27 +255,27 @@ select.inp{appearance:auto}
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">📈 Your Growth</h3>
               <div style="display:flex;gap:6px"><button class="gtoggle on" data-gview="simple">Simple</button><button class="gtoggle" data-gview="detail">Detailed</button></div>
             </div>
-            <div class="hint">Your progress over time — the more you log, the clearer it gets.</div>
+            <div class="hint">Your progress over time, the more you log, the clearer it gets.</div>
             <div id="growthBody" style="margin-top:6px"></div>
           </div>
         </div>
         <div class="grid g3" style="margin-top:18px">
           <div class="card"><h3>🏆 Tier</h3><div class="hint" id="tierHint">Keep going to climb</div><div class="kpi" id="tierKpi">0</div>
             <div class="bar" style="margin-top:12px"><i id="tierBar" style="width:0"></i></div>
-            <div style="margin-top:9px;font-size:11.5px;color:var(--muted)">🎁 Tier perks — <b style="color:var(--forest)">coming soon</b></div>
+            <div style="margin-top:9px;font-size:11.5px;color:var(--muted)">🎁 Tier perks, <b style="color:var(--forest)">coming soon</b></div>
           </div>
           <div class="card"><h3>🔥 Streak</h3><div class="hint">Daily consistency</div><div class="kpi" id="streakKpi">0</div><small style="color:var(--muted)">days in a row</small></div>
           <div class="card"><h3>✓ Today</h3><div class="hint">Habits completed</div><div class="kpi" id="todayKpi">0</div><small style="color:var(--muted)">keep the streak alive</small></div>
         </div>
       
-        <div class="card"><h3>🏅 Leaderboard</h3><div class="hint">Top members by lifetime GRI. You're <b id="myRank">—</b>.</div><div id="leaderList" style="margin-top:10px"></div></div>
+        <div class="card"><h3>🏅 Leaderboard</h3><div class="hint">Top members by lifetime GRI. You're <b id="myRank">...</b>.</div><div id="leaderList" style="margin-top:10px"></div></div>
         <div class="card"><h3>🎖 Your badges</h3><div class="hint">Milestones you've unlocked.</div><div id="badgeWrap" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"></div></div>
 </section>
 
       <!-- HABITS -->
       <section class="screen" id="s-habits">
         <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>✓ Today's habits</h3></div>
-          <div class="hint">Tap to complete — each earns +1 GRI (once per day).</div>
+          <div class="hint">Tap to complete, each earns +1 GRI (once per day).</div>
           <div id="habits"></div>
           <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="newHabit" placeholder="Add a habit…"><button class="btn" id="addHabit">Add</button></div>
         </div>
@@ -283,7 +283,7 @@ select.inp{appearance:auto}
 
       <!-- RESILIENCE -->
       <section class="screen" id="s-res">
-        <div class="card"><h3>⛰ Resilience — your BIT-N</h3><div class="hint">Name what holds you back: Blocks · Impulses · Triggers · Needs. Each entry earns +100 GRI.</div>
+        <div class="card"><h3>⛰ Resilience, your BIT-N</h3><div class="hint">Name what holds you back: Blocks · Impulses · Triggers · Needs. Each entry earns +100 GRI.</div>
           <div id="resList"></div>
           <input class="inp" id="resTitle" placeholder="e.g. Doom-scrolling at night" style="margin:8px 0">
           <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--forest);font-weight:600;margin:4px 0 4px"><span>How much does this block the life you want?</span><b id="resImpactV" style="color:var(--green-d)">50</b></div>
@@ -319,7 +319,7 @@ select.inp{appearance:auto}
 
       <!-- POTENTIAL -->
       <section class="screen" id="s-pot">
-        <div class="card"><h3>✦ Your potential</h3><div class="hint">What makes you, you. Not sure where to start? Tap a suggestion to add it — or write your own.</div>
+        <div class="card"><h3>✦ Your potential</h3><div class="hint">What makes you, you. Not sure where to start? Tap a suggestion to add it, or write your own.</div>
           <div class="plbl">Your superpower (one phrase, 20 chars)</div><input class="inp" id="sp" maxlength="20" placeholder="e.g. Turning chaos calm">
           <div class="chips" id="chips-sp"></div>
           <div class="plbl">Core strengths</div>
@@ -337,19 +337,19 @@ select.inp{appearance:auto}
 
       <!-- PODS -->
       <section class="screen" id="s-pods">
-        <div class="card" style="margin-bottom:14px"><h3>◍ Find a POD</h3><div class="hint">Coach-led cohorts — join any, move freely.</div><div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="podSearch" placeholder="🔍 Search by goal, focus or coach…"><button class="btn" id="podSearchBtn">Search</button></div><div class="hint" id="podMatchHint" style="margin:10px 0 0"></div></div>
+        <div class="card" style="margin-bottom:14px"><h3>◍ Find a POD</h3><div class="hint">Coach-led cohorts, join any, move freely.</div><div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="podSearch" placeholder="🔍 Search by goal, focus or coach…"><button class="btn" id="podSearchBtn">Search</button></div><div class="hint" id="podMatchHint" style="margin:10px 0 0"></div></div>
         <div class="grid g3" id="podGrid"></div>
-        <div class="note" id="podEmpty" style="display:none">◍<div>No PODs listed yet — they'll appear here as coaches join.</div></div>
+        <div class="note" id="podEmpty" style="display:none">◍<div>No PODs listed yet, they'll appear here as coaches join.</div></div>
       </section>
 
       <!-- COACHES -->
       <section class="screen" id="s-coaches">
-        <div class="card" style="margin-bottom:14px"><h3>◆ Coaches</h3><div class="hint">Find a coach for your goals — matched to your priorities.</div>
+        <div class="card" style="margin-bottom:14px"><h3>◆ Coaches</h3><div class="hint">Find a coach for your goals, matched to your priorities.</div>
           <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="coachSearch" placeholder="🔍 Search coaches by specialty or focus…"></div>
           <div class="hint" id="coachMatchHint" style="margin:10px 0 0"></div>
         </div>
         <div class="grid g3" id="coachGrid"></div>
-        <div class="note" id="coachEmpty" style="display:none">◆<div>No coaches listed yet — they&#39;ll appear here as coaches join.</div></div>
+        <div class="note" id="coachEmpty" style="display:none">◆<div>No coaches listed yet, they&#39;ll appear here as coaches join.</div></div>
       </section>
 
 
@@ -358,7 +358,7 @@ select.inp{appearance:auto}
       <section class="screen" id="s-community">
         <div class="card">
           <h3>🤝 Open to connecting?</h3>
-          <div class="hint">Opt in to be matched — anonymously, alias only — with an accountability partner or a mentor in your community.</div>
+          <div class="hint">Opt in to be matched, anonymously, alias only, with an accountability partner or a mentor in your community.</div>
           <div style="display:flex;flex-direction:column;gap:9px;margin-top:12px">
             <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><input type="checkbox" id="mpPartner"> Find an accountability partner</label>
             <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><input type="checkbox" id="mpWantMentor"> Find a mentor</label>
@@ -369,7 +369,7 @@ select.inp{appearance:auto}
         </div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h3 style="margin:0">✨ Suggested matches</h3><button class="btn sm ghost" id="findMatches">Refresh</button></div>
-          <div class="hint" style="margin-top:6px">🔒 Connecting sends a <b>private request</b> — they only ever see your <b>alias</b>, never your name or details. You're connected only if you both say yes.</div>
+          <div class="hint" style="margin-top:6px">🔒 Connecting sends a <b>private request</b>, they only ever see your <b>alias</b>, never your name or details. You're connected only if you both say yes.</div>
           <div id="matchList" style="margin-top:10px"></div>
         </div>
         <div class="card">
@@ -388,7 +388,7 @@ select.inp{appearance:auto}
         </div>
         <div class="card" id="upgradeCard" style="display:none">
           <h3>🚀 Grow with Mind OS</h3>
-          <div class="hint">Coaches and community leaders run their people on Mind OS — done-for-you tech, framework, cockpit, payouts &amp; branding.</div>
+          <div class="hint">Coaches and community leaders run their people on Mind OS, done-for-you tech, framework, cockpit, payouts &amp; branding.</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
             <a class="btn sm" id="ctaCoach" href="https://mind.us/mind-os/partners#coach" target="_blank" rel="noopener">Are you a coach? →</a>
             <a class="btn sm ghost" id="ctaLeader" href="https://mind.us/mind-os/partners#leader" target="_blank" rel="noopener">Are you a community leader? →</a>
@@ -406,18 +406,18 @@ select.inp{appearance:auto}
               <button class="btn sm ghost" id="avatarRm" style="display:none;margin-left:6px">Remove</button>
               <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Who can see it</div>
               <select class="inp" id="avatarVis" style="padding:8px 10px;font-size:12.5px;max-width:230px">
-                <option value="private">Private — only you</option>
+                <option value="private">Private, only you</option>
                 <option value="coach">My coach can see it</option>
-                <option value="public">Public — anyone on Mind OS</option>
+                <option value="public">Public, anyone on Mind OS</option>
               </select>
-              <div class="hint" id="avatarMsg" style="margin:7px 0 0">🔒 Private by default — sealed, even from us. Max 5MB.</div>
+              <div class="hint" id="avatarMsg" style="margin:7px 0 0">🔒 Private by default, sealed, even from us. Max 5MB.</div>
             </div>
           </div>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Alias <span style="font-weight:400;color:var(--muted)">· your public handle</span></div><input class="inp" id="alias" maxlength="24" autocomplete="off"><div class="hint" id="aliasMsg" style="margin:5px 0 0;min-height:16px"></div>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">City &amp; country</div><input class="inp" id="city" placeholder="Austin, USA">
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">About me</div><textarea class="inp" id="bio" rows="3"></textarea>
           <div style="font-size:12px;font-weight:600;color:var(--forest);margin:12px 0 5px">Passions (300 chars)</div><input class="inp" id="passions" maxlength="300">
-          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:14px 0 5px">✨ Make it personal <span style="font-weight:400;color:var(--muted)">· optional — helps us tailor your insights &amp; tone</span></div>
+          <div style="font-size:12px;font-weight:600;color:var(--forest);margin:14px 0 5px">✨ Make it personal <span style="font-weight:400;color:var(--muted)">· optional, helps us tailor your insights &amp; tone</span></div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <select class="inp" id="ageBracket" style="flex:1;min-width:150px"><option value="">Age range (optional)</option><option>18-24</option><option>25-34</option><option>35-44</option><option>45-54</option><option>55-64</option><option>65+</option></select>
             <select class="inp" id="starSign" style="flex:1;min-width:150px"><option value="">Star sign (optional)</option><option>Aries</option><option>Taurus</option><option>Gemini</option><option>Cancer</option><option>Leo</option><option>Virgo</option><option>Libra</option><option>Scorpio</option><option>Sagittarius</option><option>Capricorn</option><option>Aquarius</option><option>Pisces</option></select>
@@ -441,7 +441,7 @@ select.inp{appearance:auto}
         </div>
         <div class="card">
           <h3>Your invite link</h3>
-          <div class="hint">Share it anywhere — it's tied to you, so you both get credit automatically.</div>
+          <div class="hint">Share it anywhere, it's tied to you, so you both get credit automatically.</div>
           <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="refLink" readonly value="…"><button class="btn" id="copyRef">Copy</button></div>
           <div style="display:flex;gap:8px;margin-top:10px"><a class="btn sm ghost" id="refWa" target="_blank" rel="noopener">Share on WhatsApp</a><a class="btn sm ghost" id="refMail">Share by email</a></div>
           <div style="display:flex;gap:14px;margin-top:18px">
@@ -457,17 +457,17 @@ select.inp{appearance:auto}
           <div class="hint">Signed in as <b id="setEmail">…</b> · alias <b id="setAlias">…</b></div>
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn sm ghost" id="setPrivacy">🔒 Data Privacy</button><button class="btn sm ghost" id="setSignout">Sign out</button></div>
         </div>
-        <div class="card"><h3>💳 Billing &amp; plan</h3><div class="hint">You're on the <b>Free trial</b>. Pick a plan when you're ready — cancel anytime.</div>
+        <div class="card"><h3>💳 Billing &amp; plan</h3><div class="hint">You're on the <b>Free trial</b>. Pick a plan when you're ready, cancel anytime.</div>
           <div style="display:grid;gap:10px;margin-top:12px">
             <div style="border:1.5px solid var(--green);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center"><div><b>Member</b><div style="font-size:12px;color:var(--muted)">Full access · 21-day free trial</div></div><div style="text-align:right"><b style="font-size:18px;color:var(--forest)">$3</b><span style="font-size:11px;color:var(--muted)"> /mo billed annually</span></div></div>
             <div style="border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center"><div><b>POD seat</b><div style="font-size:12px;color:var(--muted)">Coach-led cohort</div></div><div style="text-align:right"><b style="font-size:18px;color:var(--forest)">$250</b><span style="font-size:11px;color:var(--muted)"> /mo</span></div></div>
             <div style="border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center"><div><b>Community leader</b><div style="font-size:12px;color:var(--muted)">Capped / unlimited</div></div><div style="text-align:right"><b style="font-size:18px;color:var(--forest)">$2k–8k</b><span style="font-size:11px;color:var(--muted)"> /yr</span></div></div>
           </div>
-          <button class="btn sm" id="manageBilling" style="margin-top:14px;opacity:.6;cursor:not-allowed" disabled>Manage subscription — coming soon</button>
-          <div class="hint" style="margin-top:8px">🔒 Secure payments via Airwallex. Cancel anytime — no pro-rata; access runs to your next bill date.</div>
+          <button class="btn sm" id="manageBilling" style="margin-top:14px;opacity:.6;cursor:not-allowed" disabled>Manage subscription, coming soon</button>
+          <div class="hint" style="margin-top:8px">🔒 Secure payments via Airwallex. Cancel anytime, no pro-rata; access runs to your next bill date.</div>
         </div>
         <div class="card"><h3>📦 Your data</h3>
-          <div class="hint">You own your data — export everything anytime, or delete your account.</div>
+          <div class="hint">You own your data, export everything anytime, or delete your account.</div>
           <div style="margin-top:12px"><button class="btn sm" id="exportBtn">Export my data (JSON)</button></div>
           <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px"><div style="font-size:12.5px;font-weight:600;color:#c0392b">Danger zone</div><div class="hint" style="margin:4px 0 10px">Permanently delete your account and all your data. This can&#39;t be undone.</div><button class="btn sm" id="deleteAcct" style="background:#fbeae7;color:#c0392b;border:1px solid #e9c4bd">Delete my account</button></div>
         </div>
@@ -486,7 +486,7 @@ select.inp{appearance:auto}
     <div style="background:rgba(255,255,255,.06);border-radius:15px;padding:16px"><h5 style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:11px">✓ We can see</h5><p style="font-size:13px;margin-bottom:8px">🔎 Your alias</p><p style="font-size:13px;margin-bottom:8px">🧩 Your attributes</p><p style="font-size:13px">📊 Anonymous trends</p></div>
     <div style="background:rgba(255,255,255,.06);border-radius:15px;padding:16px"><h5 style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:#ff9e9e;margin-bottom:11px">✕ We cannot see</h5><p style="font-size:13px;margin-bottom:8px">🙈 Your name</p><p style="font-size:13px;margin-bottom:8px">🙈 Email &amp; photo</p><p style="font-size:13px">🙈 Anything identifying</p></div>
   </div>
-  <div style="margin-top:16px;font-size:12px;color:#9fc6ae;text-align:center">You own your data — export or delete anytime.</div>
+  <div style="margin-top:16px;font-size:12px;color:#9fc6ae;text-align:center">You own your data, export or delete anytime.</div>
 </div></div>
 
 <!-- SHARE MODAL -->
@@ -516,7 +516,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
 // Capture referral/invite codes immediately, before the magic-link or Google round-trip drops the query string.
 try{var _q=new URLSearchParams(location.search);var _r=_q.get('ref'),_iv=_q.get('invite');if(_r)localStorage.setItem('mos_ref',_r);if(_iv)localStorage.setItem('mos_invite',_iv);}catch(e){}
-// Funnel/retention analytics — fire-and-forget, never blocks UX, never stores PII.
+// Funnel/retention analytics, fire-and-forget, never blocks UX, never stores PII.
 const _sid=(()=>{try{let s=sessionStorage.getItem('ms_sid');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('ms_sid',s);}return s;}catch(e){return null;}})();
 function track(event,props){try{if(!user)return;sb.from('analytics_events').insert({event_name:event,props:props||{},session_id:_sid}).then(()=>{},()=>{});}catch(e){}}
 try{const _q4=new URLSearchParams(location.search).get('q4');if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);}catch(e){}
@@ -524,7 +524,7 @@ let user=null, gri=0, streak=0, todayCount=0, myAlias='', isCoach=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
 const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucket_list:'Bucket list'};
-const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],coaches:['Coaches','Find your coach'],community:['Community','Your people — partners, mentors & communities'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends — you both earn GRI'],settings:['Settings','Your account & data']};
+const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],coaches:['Coaches','Find your coach'],community:['Community','Your people, partners, mentors & communities'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends, you both earn GRI'],settings:['Settings','Your account & data']};
 const AFFIRM=["Small steps, kept daily, become a different life. You're already moving.","The person you're becoming is built one choice at a time, and you're choosing well.","Showing up today is the whole game. You showed up.","Your future self is grateful for the work you put in right now.","Growth is the quiet reps you do when no one's watching. Keep going.","You don't have to do it all. Just the next right thing.","Every habit you keep is a vote for who you want to be.","Momentum loves a start. Begin small today and let it build.","Progress beats perfection. One honest step is enough.","You've grown more than you give yourself credit for.","The hard days are where the real growth hides. You've got this.","Fresh page today. What's one thing that would move you forward?"];
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
 function tierOf(g){return g<=1850?['Blue','blue',0,1850]:g<=3500?['Bronze','bronze',1850,3500]:g<=7000?['Silver','silver',3500,7000]:['Gold','gold',7000,7000];}
@@ -584,7 +584,7 @@ function initAvatar(m){
     if(error){$('#avatarMsg').textContent='⚠️ '+error.message;return;}
     await sb.from('members').update({avatar_path:path,avatar_visibility:$('#avatarVis').value}).eq('id',user.id);
     await showAvatar(path);
-    $('#avatarMsg').innerHTML='🔒 Saved — private by default. Max 5MB.';
+    $('#avatarMsg').innerHTML='🔒 Saved, private by default. Max 5MB.';
     toast('Photo updated ✓');
   };
   $('#avatarVis').onchange=async()=>{const sel=$('#avatarVis');const v=sel.value;if(v==='public'&&!confirm('Make your photo public? Anyone on Mind OS will be able to see it. You can switch back to private anytime.')){sel.value=sel.dataset.prev||'private';return;}sel.dataset.prev=v;await sb.from('members').update({avatar_visibility:v}).eq('id',user.id);toast('Visibility updated ✓');};
@@ -631,7 +631,7 @@ function drawRadar(){let h='';[.25,.5,.75,1].forEach(f=>{h+=`<polygon points="${
 function updRadar(){const vals=$$('[data-p]').map(i=>+i.value);const poly=$('#rpoly');if(poly)poly.setAttribute('points',vals.map((v,i)=>pt(i,v).join(',')).join(' '));const avg=Math.round(vals.reduce((a,b)=>a+b,0)/4);$('#q4avg').textContent=avg;$('#ringArc').style.strokeDashoffset=402-(402*avg/100);$('#shQ4').textContent=avg;}
 async function loadQ4(){const {data}=await sb.from('q4_scores').select('pillar,score').eq('member_id',user.id);const map={};(data||[]).forEach(r=>map[r.pillar]=r.score);$$('[data-p]').forEach(inp=>{const v=map[inp.dataset.p]??50;inp.value=v;inp.nextElementSibling.textContent=v;inp.oninput=()=>{inp.nextElementSibling.textContent=inp.value;updRadar();};});updRadar();await loadQ4Trend();}
 async function saveQ4(){const v={};$$('[data-p]').forEach(i=>v[i.dataset.p]=+i.value);const overall=Math.round((v.purpose+v.relationships+v.mind_body+v.money)/4);for(const p of ['purpose','relationships','mind_body','money'])await sb.from('q4_scores').upsert({member_id:user.id,pillar:p,score:v[p],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});const {error}=await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v.purpose,relationships:v.relationships,mind_body:v.mind_body,money:v.money,overall});if(error){toast('⚠️ '+error.message);return;}toast('Saved &amp; logged ✓');track('q4_saved',{overall});burst();await loadQ4Trend();}
-async function loadQ4Trend(){const {data}=await sb.from('q4_snapshots').select('overall,recorded_at').eq('member_id',user.id).order('recorded_at',{ascending:false}).limit(10);const el=$('#q4trend');if(!el)return;const snaps=(data||[]).reverse();if(!snaps.length){el.innerHTML='<div class="hint" style="margin:0">No snapshots yet — save one to start your trend.</div>';return;}el.innerHTML='<div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600">Your Q4 trend</div><div style="display:flex;align-items:flex-end;gap:6px;height:74px">'+snaps.map(s=>{const h=Math.max(6,Math.round((s.overall||0)/100*60));const d=new Date(s.recorded_at);return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1"><div style="font-size:10px;font-weight:700;color:var(--forest)">${s.overall}</div><div style="width:100%;max-width:26px;height:${h}px;background:linear-gradient(180deg,var(--green),var(--green-d));border-radius:5px"></div><div style="font-size:9px;color:var(--muted)">${d.getMonth()+1}/${d.getDate()}</div></div>`;}).join('')+'</div>';}
+async function loadQ4Trend(){const {data}=await sb.from('q4_snapshots').select('overall,recorded_at').eq('member_id',user.id).order('recorded_at',{ascending:false}).limit(10);const el=$('#q4trend');if(!el)return;const snaps=(data||[]).reverse();if(!snaps.length){el.innerHTML='<div class="hint" style="margin:0">No snapshots yet, save one to start your trend.</div>';return;}el.innerHTML='<div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600">Your Q4 trend</div><div style="display:flex;align-items:flex-end;gap:6px;height:74px">'+snaps.map(s=>{const h=Math.max(6,Math.round((s.overall||0)/100*60));const d=new Date(s.recorded_at);return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1"><div style="font-size:10px;font-weight:700;color:var(--forest)">${s.overall}</div><div style="width:100%;max-width:26px;height:${h}px;background:linear-gradient(180deg,var(--green),var(--green-d));border-radius:5px"></div><div style="font-size:9px;color:var(--muted)">${d.getMonth()+1}/${d.getDate()}</div></div>`;}).join('')+'</div>';}
 $('#saveQ4').onclick=saveQ4;
 const SUG={sp:['Turning chaos calm','Making people feel seen','Relentless optimism','Calm under pressure'],strengths:['Strategic','Empathetic','Resilient','Curious','Disciplined','Creative','Decisive','Patient','Driven'],intentions:['Honesty','Growth','Family','Freedom','Discipline','Kindness','Courage','Integrity','Gratitude'],intelligences:['Linguistic','Logical','Spatial','Musical','Bodily-Kinesthetic','Interpersonal','Intrapersonal','Naturalistic']};
 const POT={strengths:[],intentions:[],intelligences:[]};
@@ -658,7 +658,7 @@ let pDrag=null;
 function dragAfter(list,y){return [...list.querySelectorAll('.prio:not(.dragging)')].reduce((cl,ch)=>{const b=ch.getBoundingClientRect();const o=y-b.top-b.height/2;return(o<0&&o>cl.offset)?{offset:o,element:ch}:cl;},{offset:-Infinity,element:null}).element;}
 function _vibe(ms){try{navigator.vibrate&&navigator.vibrate(ms);}catch(_){}}
 function _flipSibs(list,drag,mutate){const sibs=[...list.querySelectorAll('.prio')].filter(p=>p!==drag);const pre=new Map(sibs.map(s=>[s,s.getBoundingClientRect().top]));mutate();sibs.forEach(s=>{const d=pre.get(s)-s.getBoundingClientRect().top;if(d){s.style.transition='none';s.style.transform='translateY('+d+'px)';requestAnimationFrame(()=>{s.style.transition='transform .18s cubic-bezier(.2,.7,.3,1)';s.style.transform='';});}});}
-// Reusable Trello-style drag-to-reorder — SINGLE source of truth for every rank-grabber (.prio list + .gr handle).
+// Reusable Trello-style drag-to-reorder, SINGLE source of truth for every rank-grabber (.prio list + .gr handle).
 function enableDragSort(list,onDrop){let startY=0;const LIFT=' scale(1.035) rotate(-.6deg)';list.addEventListener('pointerdown',e=>{const h=e.target.closest('.gr');if(!h)return;const row=h.closest('.prio');if(!row||row.parentElement!==list)return;e.preventDefault();pDrag=row;startY=e.clientY;try{list.setPointerCapture(e.pointerId);}catch(_){}row.style.transition='none';row.classList.add('dragging');row.style.transform='translateY(0)'+LIFT;_vibe(14);});list.addEventListener('pointermove',e=>{if(!pDrag||pDrag.parentElement!==list)return;pDrag.style.transform='translateY('+(e.clientY-startY)+'px)'+LIFT;const a=dragAfter(list,e.clientY);if(a!==pDrag.nextElementSibling&&a!==pDrag){const pre=pDrag.offsetTop;_flipSibs(list,pDrag,()=>{if(a==null)list.appendChild(pDrag);else list.insertBefore(pDrag,a);});startY+=pDrag.offsetTop-pre;pDrag.style.transform='translateY('+(e.clientY-startY)+'px)'+LIFT;_vibe(5);}});const end=async e=>{if(!pDrag||pDrag.parentElement!==list)return;const d=pDrag;pDrag=null;try{list.releasePointerCapture(e.pointerId);}catch(_){}d.style.transition='transform .2s cubic-bezier(.2,.7,.3,1)';d.style.transform='';_vibe(10);setTimeout(()=>{d.classList.remove('dragging');d.style.transition='';d.style.transform='';},210);await onDrop();};list.addEventListener('pointerup',end);list.addEventListener('pointercancel',end);}
 async function logEvent(entity,id,kind,data){try{await sb.from('entry_events').insert({member_id:user.id,entity,entity_id:id,kind,data});}catch(_){}}
 // Reusable goal progress + timeline pace (single source of truth for measurable goals everywhere)
@@ -689,14 +689,14 @@ function renderCompletion(d){const card=$('#completionCard');if(!card)return;con
 let GROWTH=null,gView='simple',gRange='all';
 function _gpts(arr,yKey){return (arr||[]).map(d=>({x:new Date(d.at).getTime(),y:Number(d[yKey])})).filter(p=>!isNaN(p.x)&&!isNaN(p.y));}
 function _grange(pts){if(gRange==='all'||pts.length<2)return pts;const cut=Date.now()-30*864e5;const f=pts.filter(p=>p.x>=cut);return f.length>=2?f:pts;}
-function gLine(pts,o){o=o||{};const W=320,H=o.h||64,P=8;if(!pts||pts.length<2)return '<div class="hint" style="margin:0">Not enough data yet — keep logging and your growth line appears here.</div>';const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);const sx=x=>P+(x1===x0?.5:(x-x0)/(x1-x0))*(W-2*P);const sy=y=>H-P-(y1===y0?.5:(y-y0)/(y1-y0))*(H-2*P);const d=pts.map((p,i)=>(i?'L':'M')+sx(p.x).toFixed(1)+' '+sy(p.y).toFixed(1)).join(' ');const area=d+' L '+sx(x1).toFixed(1)+' '+(H-P)+' L '+sx(x0).toFixed(1)+' '+(H-P)+' Z';const dots=o.dots?pts.map(p=>'<circle cx="'+sx(p.x).toFixed(1)+'" cy="'+sy(p.y).toFixed(1)+'" r="2.6" fill="var(--green-d)"/>').join(''):'';return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" style="display:block;overflow:visible"><path d="'+area+'" fill="rgba(77,242,138,.15)"/><path d="'+d+'" fill="none" stroke="var(--green-d)" stroke-width="2.5"/>'+dots+'</svg>';}
+function gLine(pts,o){o=o||{};const W=320,H=o.h||64,P=8;if(!pts||pts.length<2)return '<div class="hint" style="margin:0">Not enough data yet, keep logging and your growth line appears here.</div>';const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);const sx=x=>P+(x1===x0?.5:(x-x0)/(x1-x0))*(W-2*P);const sy=y=>H-P-(y1===y0?.5:(y-y0)/(y1-y0))*(H-2*P);const d=pts.map((p,i)=>(i?'L':'M')+sx(p.x).toFixed(1)+' '+sy(p.y).toFixed(1)).join(' ');const area=d+' L '+sx(x1).toFixed(1)+' '+(H-P)+' L '+sx(x0).toFixed(1)+' '+(H-P)+' Z';const dots=o.dots?pts.map(p=>'<circle cx="'+sx(p.x).toFixed(1)+'" cy="'+sy(p.y).toFixed(1)+'" r="2.6" fill="var(--green-d)"/>').join(''):'';return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" style="display:block;overflow:visible"><path d="'+area+'" fill="rgba(77,242,138,.15)"/><path d="'+d+'" fill="none" stroke="var(--green-d)" stroke-width="2.5"/>'+dots+'</svg>';}
 async function loadGrowth(){try{const {data,error}=await sb.rpc('growth_timeline');if(error||!data)return;GROWTH=data;renderGrowth();}catch(e){}}
-function renderGrowth(){const b=$('#growthBody');if(!b||!GROWTH)return;const gri=_grange(_gpts(GROWTH.gri_series,'cum_gri'));const griNow=gri.length?gri[gri.length-1].y:0;const priN=(GROWTH.priority_events||[]).length,resN=(GROWTH.resilience_series||[]).length;if(gView==='simple'){b.innerHTML='<div style="font-size:13px;color:var(--forest);font-weight:600;margin-bottom:8px">▲ '+griNow+' GRI · '+priN+' priority updates · '+resN+' resilience wins</div>'+gLine(gri,{h:84});return;}const pri=_grange(_gpts(GROWTH.priority_events,'progress')),ri=_grange(_gpts(GROWTH.resilience_series,'cum_impact'));b.innerHTML='<div style="display:flex;gap:6px;margin:0 0 10px"><button class="gtoggle '+(gRange==='all'?'on':'')+'" data-grange="all">All-time</button><button class="gtoggle '+(gRange==='recent'?'on':'')+'" data-grange="recent">Recent</button></div>'+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin-bottom:3px">Growth (GRI)</div>'+gLine(gri,{h:56})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Priorities — progress &amp; milestones</div>'+gLine(pri,{h:56,dots:true})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Resilience — '+resN+' wins · life-impact addressed</div>'+gLine(ri,{h:56,dots:true});}
+function renderGrowth(){const b=$('#growthBody');if(!b||!GROWTH)return;const gri=_grange(_gpts(GROWTH.gri_series,'cum_gri'));const griNow=gri.length?gri[gri.length-1].y:0;const priN=(GROWTH.priority_events||[]).length,resN=(GROWTH.resilience_series||[]).length;if(gView==='simple'){b.innerHTML='<div style="font-size:13px;color:var(--forest);font-weight:600;margin-bottom:8px">▲ '+griNow+' GRI · '+priN+' priority updates · '+resN+' resilience wins</div>'+gLine(gri,{h:84});return;}const pri=_grange(_gpts(GROWTH.priority_events,'progress')),ri=_grange(_gpts(GROWTH.resilience_series,'cum_impact'));b.innerHTML='<div style="display:flex;gap:6px;margin:0 0 10px"><button class="gtoggle '+(gRange==='all'?'on':'')+'" data-grange="all">All-time</button><button class="gtoggle '+(gRange==='recent'?'on':'')+'" data-grange="recent">Recent</button></div>'+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin-bottom:3px">Growth (GRI)</div>'+gLine(gri,{h:56})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Priorities, progress &amp; milestones</div>'+gLine(pri,{h:56,dots:true})+'<div style="font-size:12px;font-weight:700;color:var(--forest);margin:12px 0 3px">Resilience, '+resN+' wins · life-impact addressed</div>'+gLine(ri,{h:56,dots:true});}
 document.addEventListener('click',function(e){const v=e.target.closest&&e.target.closest('[data-gview]');if(v){gView=v.dataset.gview;document.querySelectorAll('[data-gview]').forEach(x=>x.classList.toggle('on',x.dataset.gview===gView));renderGrowth();return;}const r=e.target.closest&&e.target.closest('[data-grange]');if(r){gRange=r.dataset.grange;renderGrowth();}});
 // ---- Community + Matching ----
 async function loadCommunity(){const {data:mp}=await sb.from('match_profiles').select('*').eq('member_id',user.id).maybeSingle();const set=(id,v)=>{const e=$(id);if(e)e.checked=!!v;};set('#mpPartner',mp&&mp.wants_partner);set('#mpWantMentor',mp&&mp.wants_mentor);set('#mpOfferMentor',mp&&mp.offers_mentor);set('#mpPublic',mp&&mp.open_to_public);loadMyCommunities();loadConnections();findMatchesNow();loadLeaderConsole();}
-async function findMatchesNow(){const el=$('#matchList');if(!el)return;const {data}=await sb.rpc('find_matches');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No matches yet — opt in above, add a few priorities, and check back.</div>';return;}el.innerHTML=arr.map(x=>{const pills=(x.shared_pillars||[]).map(p=>PILL[p]||p).join(', ');const why=(x.reason||'Open to connect')+(pills?(' · you both focus on '+pills):'');const tl=x.type==='partner'?'Accountability partner':'Mentor';const scopeL=x.scope==='community'?'in your community':'public pool';return `<div class="prio" style="align-items:flex-start"><div style="flex:1"><b>${esc(x.alias||'member')}</b> <span class="tag t-goal">${tl}</span> <span class="tag">${scopeL}</span><div class="meta" style="margin-top:5px">${esc(why)}</div></div><button class="btn sm" data-conn="${x.member_id}|${x.type}|${x.community_id||''}" data-alias="${esc(x.alias||'member')}">Connect</button></div>`;}).join('');el.querySelectorAll('[data-conn]').forEach(b=>b.onclick=()=>connectMatch(b));}
-async function connectMatch(b){const p=b.dataset.conn.split('|');const alias=b.dataset.alias||'this member';if(!confirm('Send a private connection request to '+alias+'?\n\nThey will only ever see your alias — never your name or details. You\'ll be connected only if they accept.'))return;const {error}=await sb.rpc('request_match',{p_target:p[0],p_type:p[1],p_community:p[2]||null});if(error){toast('⚠️ '+error.message);return;}toast('Request sent ✓ — you\'ll connect if they accept.');findMatchesNow();loadConnections();}
+async function findMatchesNow(){const el=$('#matchList');if(!el)return;const {data}=await sb.rpc('find_matches');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No matches yet, opt in above, add a few priorities, and check back.</div>';return;}el.innerHTML=arr.map(x=>{const pills=(x.shared_pillars||[]).map(p=>PILL[p]||p).join(', ');const why=(x.reason||'Open to connect')+(pills?(' · you both focus on '+pills):'');const tl=x.type==='partner'?'Accountability partner':'Mentor';const scopeL=x.scope==='community'?'in your community':'public pool';return `<div class="prio" style="align-items:flex-start"><div style="flex:1"><b>${esc(x.alias||'member')}</b> <span class="tag t-goal">${tl}</span> <span class="tag">${scopeL}</span><div class="meta" style="margin-top:5px">${esc(why)}</div></div><button class="btn sm" data-conn="${x.member_id}|${x.type}|${x.community_id||''}" data-alias="${esc(x.alias||'member')}">Connect</button></div>`;}).join('');el.querySelectorAll('[data-conn]').forEach(b=>b.onclick=()=>connectMatch(b));}
+async function connectMatch(b){const p=b.dataset.conn.split('|');const alias=b.dataset.alias||'this member';if(!confirm('Send a private connection request to '+alias+'?\n\nThey will only ever see your alias, never your name or details. You\'ll be connected only if they accept.'))return;const {error}=await sb.rpc('request_match',{p_target:p[0],p_type:p[1],p_community:p[2]||null});if(error){toast('⚠️ '+error.message);return;}toast('Request sent ✓, you\'ll connect if they accept.');findMatchesNow();loadConnections();}
 async function loadConnections(){const el=$('#connList');if(!el)return;const {data}=await sb.rpc('my_connections');const arr=data||[];if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">No connections yet.</div>';return;}el.innerHTML=arr.map(m=>`<div class="prio" style="align-items:center"><div style="flex:1"><b>${esc(m.other_alias||'member')}</b> <span class="tag t-goal">${m.type}</span> <span class="meta">${m.status}</span></div>${m.incoming?`<button class="btn sm" data-acc="${m.id}">Accept</button><button class="btn sm ghost" data-dec="${m.id}">Decline</button>`:''}</div>`).join('');el.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>respMatch(b.dataset.acc,true));el.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>respMatch(b.dataset.dec,false));}
 async function respMatch(id,acc){const {error}=await sb.rpc('respond_match',{p_match:id,p_accept:acc});if(error){toast('⚠️ '+error.message);return;}toast(acc?'Connected ✓':'Declined');loadConnections();}
 async function loadMyCommunities(){const el=$('#commList');if(!el)return;const {data}=await sb.from('community_memberships').select('role,communities(name,slug)').eq('member_id',user.id).eq('status','active');const arr=(data||[]).filter(x=>x.communities);if(!arr.length){el.innerHTML='<div class="hint" style="margin:0">Not in a community yet. Got an invite code? Join below.</div>';return;}el.innerHTML=arr.map(x=>`<div class="prio"><div style="flex:1"><b>${esc(x.communities.name)}</b> <span class="tag">${x.role}</span></div></div>`).join('');}
@@ -704,17 +704,17 @@ async function loadLeaderConsole(){const lc=$('#leaderConsole');if(!lc)return;co
 async function decideReq(id,app){const {error}=await sb.rpc('decide_join_request',{p_request:id,p_approve:app});if(error){toast('⚠️ '+error.message);return;}toast(app?'Approved ✓':'Denied');loadLeaderConsole();}
 $('#saveMatch')&&($('#saveMatch').onclick=async()=>{const {error}=await sb.from('match_profiles').upsert({member_id:user.id,wants_partner:$('#mpPartner').checked,wants_mentor:$('#mpWantMentor').checked,offers_mentor:$('#mpOfferMentor').checked,open_to_public:$('#mpPublic').checked,is_active:true,updated_at:new Date().toISOString()},{onConflict:'member_id'});if(error){toast('⚠️ '+error.message);return;}toast('Saved ✓');findMatchesNow();});
 $('#findMatches')&&($('#findMatches').onclick=()=>findMatchesNow());
-$('#joinBtn')&&($('#joinBtn').onclick=async()=>{const slug=$('#joinSlug').value.trim();if(!slug)return;const {data,error}=await sb.rpc('request_to_join',{p_slug:slug});const msg=$('#joinMsg');if(error){msg.textContent='⚠️ '+error.message;return;}msg.textContent=({requested:'✓ Request sent — the leader will approve.',already_member:'You are already a member.',not_found:'No community with that code.'})[data]||data;loadMyCommunities();});
+$('#joinBtn')&&($('#joinBtn').onclick=async()=>{const slug=$('#joinSlug').value.trim();if(!slug)return;const {data,error}=await sb.rpc('request_to_join',{p_slug:slug});const msg=$('#joinMsg');if(error){msg.textContent='⚠️ '+error.message;return;}msg.textContent=({requested:'✓ Request sent, the leader will approve.',already_member:'You are already a member.',not_found:'No community with that code.'})[data]||data;loadMyCommunities();});
 let _aliasOk=true,_aliasT;
-function checkAlias(){clearTimeout(_aliasT);const el=$('#alias'),msg=$('#aliasMsg');if(!el||!msg)return;const v=el.value.trim();if(v===myAlias){_aliasOk=true;msg.textContent='';return;}if(v.length<3){_aliasOk=false;msg.style.color='var(--muted)';msg.textContent='At least 3 characters.';return;}msg.style.color='var(--muted)';msg.textContent='Checking…';_aliasOk=false;_aliasT=setTimeout(async()=>{const {data,error}=await sb.rpc('alias_available',{p_alias:v});if(error){msg.textContent='';return;}_aliasOk=!!data;msg.style.color=data?'#1e9e54':'#c0392b';msg.textContent=data?'✓ Available':'✗ Taken — try another';},350);}
+function checkAlias(){clearTimeout(_aliasT);const el=$('#alias'),msg=$('#aliasMsg');if(!el||!msg)return;const v=el.value.trim();if(v===myAlias){_aliasOk=true;msg.textContent='';return;}if(v.length<3){_aliasOk=false;msg.style.color='var(--muted)';msg.textContent='At least 3 characters.';return;}msg.style.color='var(--muted)';msg.textContent='Checking…';_aliasOk=false;_aliasT=setTimeout(async()=>{const {data,error}=await sb.rpc('alias_available',{p_alias:v});if(error){msg.textContent='';return;}_aliasOk=!!data;msg.style.color=data?'#1e9e54':'#c0392b';msg.textContent=data?'✓ Available':'✗ Taken, try another';},350);}
 $('#alias')&&$('#alias').addEventListener('input',checkAlias);
-$('#saveProf').onclick=async()=>{const newAlias=$('#alias').value.trim();if(newAlias!==myAlias){if(newAlias.length<3){toast('Alias must be at least 3 characters');return;}const {data:ok}=await sb.rpc('alias_available',{p_alias:newAlias});if(!ok){const am=$('#aliasMsg');if(am){am.style.color='#c0392b';am.textContent='✗ Taken — try another';}toast('That alias is taken');return;}}const p=$('#city').value.split(',').map(x=>x.trim());const upd={bio:$('#bio').value,passions:$('#passions').value,age_bracket:$('#ageBracket').value||null,star_sign:$('#starSign').value||null};if(newAlias!==myAlias)upd.alias=newAlias;const {error}=await sb.from('members').update(upd).eq('id',user.id);if(error){toast(error.code==='23505'?'That alias is taken':'⚠️ '+error.message);return;}await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});if(newAlias!==myAlias){myAlias=newAlias;const ma=$('#meAlias');if(ma)ma.textContent=newAlias;const sa=$('#setAlias');if(sa)sa.textContent=newAlias;const av=$('#avatar');if(av&&!av.querySelector('img'))av.textContent=newAlias[0].toUpperCase();const pp=$('#pphoto');if(pp&&!pp.querySelector('img'))pp.textContent=newAlias[0].toUpperCase();const am=$('#aliasMsg');if(am)am.textContent='';}loadCompletion();toast('Saved ✓');};
+$('#saveProf').onclick=async()=>{const newAlias=$('#alias').value.trim();if(newAlias!==myAlias){if(newAlias.length<3){toast('Alias must be at least 3 characters');return;}const {data:ok}=await sb.rpc('alias_available',{p_alias:newAlias});if(!ok){const am=$('#aliasMsg');if(am){am.style.color='#c0392b';am.textContent='✗ Taken, try another';}toast('That alias is taken');return;}}const p=$('#city').value.split(',').map(x=>x.trim());const upd={bio:$('#bio').value,passions:$('#passions').value,age_bracket:$('#ageBracket').value||null,star_sign:$('#starSign').value||null};if(newAlias!==myAlias)upd.alias=newAlias;const {error}=await sb.from('members').update(upd).eq('id',user.id);if(error){toast(error.code==='23505'?'That alias is taken':'⚠️ '+error.message);return;}await sb.from('member_identities').upsert({member_id:user.id,city:p[0]||null,country:p[1]||null,updated_at:new Date().toISOString()},{onConflict:'member_id'});if(newAlias!==myAlias){myAlias=newAlias;const ma=$('#meAlias');if(ma)ma.textContent=newAlias;const sa=$('#setAlias');if(sa)sa.textContent=newAlias;const av=$('#avatar');if(av&&!av.querySelector('img'))av.textContent=newAlias[0].toUpperCase();const pp=$('#pphoto');if(pp&&!pp.querySelector('img'))pp.textContent=newAlias[0].toUpperCase();const am=$('#aliasMsg');if(am)am.textContent='';}loadCompletion();toast('Saved ✓');};
 
 let allPods=[], myFocus=[];
 async function loadPods(){const {data}=await sb.rpc('pods_listed');allPods=data||[];const {data:gi}=await sb.from('growth_items').select('title,q4_pillar').eq('member_id',user.id);const fs=[];(gi||[]).forEach(g=>{String(g.title||'').toLowerCase().split(/\W+/).forEach(w=>{if(w.length>3)fs.push(w);});if(g.q4_pillar)(PILL[g.q4_pillar]||'').toLowerCase().split(/\W+/).forEach(w=>{if(w.length>2)fs.push(w);});});myFocus=[...new Set(fs)];renderPods();}
 function podScore(p){const hay=((p.focus||'')+' '+(p.name||'')).toLowerCase();return myFocus.reduce((n,w)=>n+(w&&hay.includes(w)?1:0),0);}
-function renderPods(){const q=(($('#podSearch')&&$('#podSearch').value)||'').trim().toLowerCase();let list=allPods.map(p=>({...p,score:podScore(p)}));if(q)list=list.filter(p=>(((p.focus||'')+' '+(p.name||'')).toLowerCase().includes(q)));list.sort((a,b)=>b.score-a.score);const matched=list.filter(p=>p.score>0).length;const mh=$('#podMatchHint');if(mh)mh.innerHTML=matched?('✨ <b>'+matched+'</b> matched to your goals'):(myFocus.length?'No PODs matched your goals yet — browse all below.':'Add priorities to get goal-matched PODs.');const el=$('#podGrid');el.innerHTML='';if(!list.length){$('#podEmpty').style.display='flex';return;}$('#podEmpty').style.display='none';list.forEach(p=>{const price=((p.price_cents||25000)/100).toFixed(0);const seats=p.seats||14,taken=p.seats_taken||0,left=Math.max(0,seats-taken);const full=left<=0,joined=!!p.joined;const seatsTxt=joined?'You\'re in ✓':(full?'Full':left+' seat'+(left===1?'':'s')+' left');const btn=joined?'<button class="btn sm ghost" disabled>Joined ✓</button>':(full?'<button class="btn sm ghost" disabled>Full</button>':'<button class="btn sm" data-join="'+p.id+'" data-name="'+esc(p.name)+'" data-price="'+price+'">Join</button>');const d=document.createElement('div');d.className='pod';d.innerHTML=`<div class="ph"></div><div class="bd"><h4>${esc(p.name)}${p.score>0?' <span style="background:var(--green);color:var(--forest);font-weight:700;font-size:10px;padding:2px 7px;border-radius:20px;margin-left:4px">✨ Match</span>':''}</h4><div class="co">${esc(p.focus||'')}</div><div style="font-size:11.5px;color:var(--muted);margin-top:6px">👥 ${seatsTxt}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><b style="color:var(--forest)">$${price}<span style="font-weight:400;color:var(--muted);font-size:11px">/mo</span></b>${btn}</div></div>`;el.appendChild(d);});el.querySelectorAll('[data-join]').forEach(b=>b.onclick=()=>joinPod(b.dataset.join,b.dataset.name,b.dataset.price));}
-async function joinPod(podId,name,price){if(!confirm('Reserve your seat in "'+name+'"?\n\nThis starts a coach-led POD seat ($'+price+'/mo) — cancel anytime. You\'ll confirm payment at checkout.'))return;const {data,error}=await sb.rpc('join_pod',{p_pod:podId,p_source:'platform_discovery'});if(error){toast('⚠️ '+error.message);return;}if(data&&data.error){const m={already_member:'You\'re already in this POD.',pod_full:'This POD just filled up.',pod_not_found:'This POD is no longer available.',not_authenticated:'Please sign in again.'};toast(m[data.error]||data.error);loadPods();return;}try{burst();}catch(e){}track('pod_join',{pod:podId,source:data&&data.source});toast('🎉 Seat reserved — '+(data&&data.seats_left)+' left. Payment step coming soon.');loadPods();}
+function renderPods(){const q=(($('#podSearch')&&$('#podSearch').value)||'').trim().toLowerCase();let list=allPods.map(p=>({...p,score:podScore(p)}));if(q)list=list.filter(p=>(((p.focus||'')+' '+(p.name||'')).toLowerCase().includes(q)));list.sort((a,b)=>b.score-a.score);const matched=list.filter(p=>p.score>0).length;const mh=$('#podMatchHint');if(mh)mh.innerHTML=matched?('✨ <b>'+matched+'</b> matched to your goals'):(myFocus.length?'No PODs matched your goals yet, browse all below.':'Add priorities to get goal-matched PODs.');const el=$('#podGrid');el.innerHTML='';if(!list.length){$('#podEmpty').style.display='flex';return;}$('#podEmpty').style.display='none';list.forEach(p=>{const price=((p.price_cents||25000)/100).toFixed(0);const seats=p.seats||14,taken=p.seats_taken||0,left=Math.max(0,seats-taken);const full=left<=0,joined=!!p.joined;const seatsTxt=joined?'You\'re in ✓':(full?'Full':left+' seat'+(left===1?'':'s')+' left');const btn=joined?'<button class="btn sm ghost" disabled>Joined ✓</button>':(full?'<button class="btn sm ghost" disabled>Full</button>':'<button class="btn sm" data-join="'+p.id+'" data-name="'+esc(p.name)+'" data-price="'+price+'">Join</button>');const d=document.createElement('div');d.className='pod';d.innerHTML=`<div class="ph"></div><div class="bd"><h4>${esc(p.name)}${p.score>0?' <span style="background:var(--green);color:var(--forest);font-weight:700;font-size:10px;padding:2px 7px;border-radius:20px;margin-left:4px">✨ Match</span>':''}</h4><div class="co">${esc(p.focus||'')}</div><div style="font-size:11.5px;color:var(--muted);margin-top:6px">👥 ${seatsTxt}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><b style="color:var(--forest)">$${price}<span style="font-weight:400;color:var(--muted);font-size:11px">/mo</span></b>${btn}</div></div>`;el.appendChild(d);});el.querySelectorAll('[data-join]').forEach(b=>b.onclick=()=>joinPod(b.dataset.join,b.dataset.name,b.dataset.price));}
+async function joinPod(podId,name,price){if(!confirm('Reserve your seat in "'+name+'"?\n\nThis starts a coach-led POD seat ($'+price+'/mo), cancel anytime. You\'ll confirm payment at checkout.'))return;const {data,error}=await sb.rpc('join_pod',{p_pod:podId,p_source:'platform_discovery'});if(error){toast('⚠️ '+error.message);return;}if(data&&data.error){const m={already_member:'You\'re already in this POD.',pod_full:'This POD just filled up.',pod_not_found:'This POD is no longer available.',not_authenticated:'Please sign in again.'};toast(m[data.error]||data.error);loadPods();return;}try{burst();}catch(e){}track('pod_join',{pod:podId,source:data&&data.source});toast('🎉 Seat reserved, '+(data&&data.seats_left)+' left. Payment step coming soon.');loadPods();}
 $('#podSearch')&&$('#podSearch').addEventListener('input',renderPods);$('#podSearchBtn')&&($('#podSearchBtn').onclick=renderPods);
 
 function openShare(){const [t]=tierOf(gri);$('#shTier').textContent=t+' Tier';$('#shStreak').textContent=streak;$('#shGri').textContent=gri.toLocaleString();show('shareM');}
@@ -730,7 +730,7 @@ function loop(){ctx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.li
 async function loadRefer(){const {data:code}=await sb.rpc('my_referral_code');const link=location.origin+'/?ref='+(code||'');$('#refLink').value=link;const msg=encodeURIComponent("I'm using Mind OS to track my growth across my whole life. Join me, we both get a boost: "+link);$('#refWa').href='https://wa.me/?text='+msg;$('#refMail').href='mailto:?subject='+encodeURIComponent('Join me on Mind OS')+'&body='+msg;const {count}=await sb.from('referrals').select('id',{count:'exact',head:true}).eq('referrer_id',user.id);$('#refCount').textContent=count||0;$('#refGri').textContent=((count||0)*50).toLocaleString();}
 $('#copyRef').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText($('#refLink').value);toast('Invite link copied!');};
 
-async function loadSettings(){var e=$('#setEmail');if(e)e.textContent=user.email;var a=$('#setAlias');if(a)a.textContent=$('#alias').value||'—';}
+async function loadSettings(){var e=$('#setEmail');if(e)e.textContent=user.email;var a=$('#setAlias');if(a)a.textContent=$('#alias').value||',';}
 async function exportMyData(){toast('Preparing your export…');const tbls=['q4_scores','q4_snapshots','habits','habit_logs','resilience_entries','growth_items','potential','streaks','entry_events'];const out={exported_at:new Date().toISOString(),account:{email:user.email,alias:$('#alias').value}};for(const tb of tbls){const {data}=await sb.from(tb).select('*').eq('member_id',user.id);out[tb]=data||[];}const {data:refs}=await sb.from('referrals').select('*').eq('referrer_id',user.id);out.referrals=refs||[];const {data:me}=await sb.from('members').select('*').eq('id',user.id).maybeSingle();out.profile=me||{};const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mind-os-my-data.json';document.body.appendChild(a);a.click();a.remove();toast('Exported ✓');}
 $('#exportBtn')&&($('#exportBtn').onclick=exportMyData);
 $('#setSignout')&&($('#setSignout').onclick=async()=>{await sb.auth.signOut();location.reload();});
