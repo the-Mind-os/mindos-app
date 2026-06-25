@@ -514,6 +514,8 @@ select.inp{appearance:auto}
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
+// Capture referral/invite codes immediately, before the magic-link or Google round-trip drops the query string.
+try{var _q=new URLSearchParams(location.search);var _r=_q.get('ref'),_iv=_q.get('invite');if(_r)localStorage.setItem('mos_ref',_r);if(_iv)localStorage.setItem('mos_invite',_iv);}catch(e){}
 // Funnel/retention analytics — fire-and-forget, never blocks UX, never stores PII.
 const _sid=(()=>{try{let s=sessionStorage.getItem('ms_sid');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('ms_sid',s);}return s;}catch(e){return null;}})();
 function track(event,props){try{if(!user)return;sb.from('analytics_events').insert({event_name:event,props:props||{},session_id:_sid}).then(()=>{},()=>{});}catch(e){}}
@@ -545,9 +547,9 @@ async function boot(){
   const isNew=!m;
   if(isNew){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
   track('app_open',{returning:!isNew});if(isNew)track('signup',{});
-  const params=new URLSearchParams(location.search);const inv=params.get('invite');const ref=params.get('ref');
-  if(inv){const {data:r}=await sb.rpc('redeem_invite',{p_code:inv});if(r==='joined')toast('🎉 You joined a POD!');}
-  if(ref){const {data:rr}=await sb.rpc('redeem_referral',{p_code:ref});if(rr==='ok')toast('🎉 Welcome! +50 GRI for you and your friend');}
+  const params=new URLSearchParams(location.search);let inv=params.get('invite');let ref=params.get('ref');try{inv=inv||localStorage.getItem('mos_invite');ref=ref||localStorage.getItem('mos_ref');}catch(e){}
+  if(inv){const {data:r}=await sb.rpc('redeem_invite',{p_code:inv});if(r==='joined')toast('🎉 You joined a POD!');try{localStorage.removeItem('mos_invite');}catch(e){}}
+  if(ref){const {data:rr}=await sb.rpc('redeem_referral',{p_code:ref});if(rr==='ok')toast('🎉 Welcome! +50 GRI for you and your friend');try{localStorage.removeItem('mos_ref');}catch(e){}}
   if(inv||ref)history.replaceState({},'',location.pathname);
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
@@ -725,7 +727,7 @@ function burstAt(el){const r=el.getBoundingClientRect();burstXY(r.left+r.width/2
 function burstXY(x,y,n){const c=['#4DF28A','#27c768','#173622','#fbe7a6','#9bf7c2'];for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*9,vy:Math.random()*-9-2,g:.32,s:Math.random()*6+3,c:c[i%5],life:60+Math.random()*30,rot:Math.random()*6});if(!raf)loop();}
 function loop(){ctx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.life>0);parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.life--;p.rot+=.2;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.globalAlpha=Math.max(p.life/60,0);ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);ctx.restore();});if(parts.length)raf=requestAnimationFrame(loop);else{raf=null;ctx.clearRect(0,0,cv.width,cv.height);}}
 
-async function loadRefer(){const {data:code}=await sb.rpc('my_referral_code');const link=location.origin+'/?ref='+(code||'');$('#refLink').value=link;const msg=encodeURIComponent("I'm using Mind OS to track my growth across my whole life. Join me — we both get a boost: "+link);$('#refWa').href='https://wa.me/?text='+msg;$('#refMail').href='mailto:?subject='+encodeURIComponent('Join me on Mind OS')+'&body='+msg;const {count}=await sb.from('referrals').select('id',{count:'exact',head:true}).eq('referrer_id',user.id);$('#refCount').textContent=count||0;$('#refGri').textContent=((count||0)*50).toLocaleString();}
+async function loadRefer(){const {data:code}=await sb.rpc('my_referral_code');const link=location.origin+'/?ref='+(code||'');$('#refLink').value=link;const msg=encodeURIComponent("I'm using Mind OS to track my growth across my whole life. Join me, we both get a boost: "+link);$('#refWa').href='https://wa.me/?text='+msg;$('#refMail').href='mailto:?subject='+encodeURIComponent('Join me on Mind OS')+'&body='+msg;const {count}=await sb.from('referrals').select('id',{count:'exact',head:true}).eq('referrer_id',user.id);$('#refCount').textContent=count||0;$('#refGri').textContent=((count||0)*50).toLocaleString();}
 $('#copyRef').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText($('#refLink').value);toast('Invite link copied!');};
 
 async function loadSettings(){var e=$('#setEmail');if(e)e.textContent=user.email;var a=$('#setAlias');if(a)a.textContent=$('#alias').value||'—';}
