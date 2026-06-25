@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind OS — Measurable Goals + Onboarding (concept)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#4DF28A;--forest:#173622;--page:#eaf6ee;--ink:#0c1a12;--muted:#5d6f64;--line:#e2efe7;--green-d:#27c768;--amber:#e8852b;--red:#d83a3a}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',system-ui,sans-serif}
+body{background:#dfeee6;padding:28px 16px 60px;-webkit-font-smoothing:antialiased;color:var(--ink)}
+.head{max-width:1180px;margin:0 auto 22px}
+.head h1{color:var(--forest);font-size:22px;font-weight:800;display:flex;gap:9px;align-items:center}
+.head p{color:var(--muted);font-size:13.5px;margin-top:6px;max-width:760px;line-height:1.55}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.legend b{color:var(--forest)}
+.row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;max-width:1280px;margin:0 auto}
+.col{width:300px}
+.cap{font-size:12.5px;font-weight:700;color:var(--forest);margin:0 0 9px;text-align:center}
+.cap span{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}
+.phone{width:300px;height:620px;background:#0c1a12;border-radius:38px;padding:9px;box-shadow:0 18px 44px rgba(23,54,34,.22)}
+.screen{background:var(--page);width:100%;height:100%;border-radius:30px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{display:flex;justify-content:space-between;padding:10px 18px 2px;font-size:12px;font-weight:600;color:var(--forest)}
+.top{padding:6px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.top .t{font-size:17px;font-weight:800;color:var(--forest)}
+.top .ic{width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:13px}
+.body{flex:1;overflow-y:auto;padding:2px 15px 22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 2px 9px rgba(23,54,34,.05);margin-bottom:13px}
+.hero{background:linear-gradient(155deg,#173622,#0c2417);color:#fff;border-radius:18px;padding:17px}
+.hero .tag{display:inline-block;background:rgba(77,242,138,.16);color:var(--green);font-size:11px;font-weight:600;padding:4px 11px;border-radius:13px;margin-bottom:9px}
+.hero h2{font-size:18px;font-weight:800;line-height:1.25}
+.hero p{font-size:12.5px;color:#bcd6c6;margin-top:7px;line-height:1.5}
+.step{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:0}
+.step .n{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);color:var(--muted);display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.step.done .n{background:var(--green);border-color:var(--green);color:var(--forest)}
+.step.now .n{border-color:var(--green-d);color:var(--green-d)}
+.step .tx b{font-size:13.5px;color:var(--ink);display:block}
+.step .tx small{font-size:11.5px;color:var(--muted)}
+.btn{background:var(--green);color:var(--forest);border:0;border-radius:11px;padding:12px;font-weight:700;font-size:14px;width:100%;cursor:pointer;font-family:inherit}
+.btn.dk{background:var(--forest);color:#fff}
+.ghost{background:transparent;color:var(--muted);font-weight:600;font-size:12.5px;border:0;width:100%;padding:9px;cursor:pointer;font-family:inherit}
+.lbl{font-size:12px;font-weight:700;color:var(--forest);margin:13px 0 6px;display:block}
+.inp{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff}
+.seg{display:flex;background:#eef7f1;border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:transparent;padding:8px;border-radius:8px;font-weight:700;font-size:12.5px;color:var(--muted);cursor:pointer;font-family:inherit}
+.seg button.on{background:#fff;color:var(--forest);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.chip{border:1px solid var(--line);background:#fff;color:var(--muted);font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:18px;cursor:pointer}
+.chip.on{background:var(--forest);color:var(--green);border-color:var(--forest)}
+.two{display:flex;gap:9px;align-items:flex-end}
+.two .f{flex:1}
+.arrow{align-self:center;color:var(--muted);font-size:18px;padding-bottom:11px}
+.prev{background:#eef7f1;border:1px dashed var(--green-d);border-radius:12px;padding:12px;margin-top:14px;font-size:12.5px;color:var(--forest);line-height:1.5}
+.goalcard h3{font-size:15px;font-weight:800;color:var(--forest);display:flex;align-items:center;gap:7px;justify-content:space-between}
+.rag{font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:14px;white-space:nowrap}
+.rag.g{background:#e6f9ee;color:#1e9e54}
+.rag.a{background:#fff3e0;color:var(--amber)}
+.sub{font-size:12px;color:var(--muted);margin:5px 0 11px}
+.bar{height:9px;border-radius:9px;background:#e7f1ea;overflow:hidden;position:relative}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--green-d));border-radius:9px}
+.bar .pace{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--forest);opacity:.5}
+.barrow{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px}
+.pacing{font-size:12px;color:var(--forest);background:#eef7f1;border-radius:10px;padding:9px 11px;margin-top:11px;line-height:1.45}
+.spark{margin-top:12px}
+.ci{font-size:11.5px;color:var(--muted);margin-top:10px;text-align:center}
+.modal{position:absolute;inset:0;background:rgba(12,26,18,.45);display:grid;place-items:end center;padding-bottom:0}
+.sheet{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:20px 18px 26px}
+.sheet h3{font-size:16px;font-weight:800;color:var(--forest);margin-bottom:3px}
+.sheet p{font-size:12.5px;color:var(--muted);margin-bottom:13px}
+.bignum{display:flex;align-items:baseline;gap:8px;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:6px}
+.bignum input{border:0;font-size:30px;font-weight:800;color:var(--forest);width:100%;font-family:inherit;outline:none}
+.bignum span{font-size:14px;color:var(--muted);font-weight:600}
+.note{font-size:11.5px;color:var(--muted);margin:6px 0 14px}
+.win{background:#e6f9ee;color:#1e9e54;border-radius:10px;padding:10px;font-size:12.5px;font-weight:600;text-align:center;margin-bottom:13px}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>📈 Mind OS — Measurable Goals + first-run onboarding <span style="font-size:12px;font-weight:600;color:var(--muted)">(concept mockup)</span></h1>
+  <p>Borrowing the OKR/KPI "measurable" pattern (typed target, start to target, cadence) and pairing it with <b>timeline-aware progress</b>: the percentage is computed from how far you have moved toward the target, then checked against how much time has passed. No more guessing on a slider, and a brand-new member always knows the next thing to do.</p>
+  <div class="legend">
+    <span>🟢 <b>On track / ahead:</b> progress ≥ time elapsed</span>
+    <span>🟠 <b>Behind:</b> progress lags the clock</span>
+    <span>Formula: <b>progress% = (start − current) ÷ (start − target)</b> · <b>pace = progress% vs time% elapsed</b></span>
+  </div>
+</div>
+
+<div class="row">
+
+  <!-- 1: ONBOARDING -->
+  <div class="col">
+    <div class="cap">1. First run (kills the confusion)<span>One clear path, advanced stuff hidden for now</span></div>
+    <div class="phone"><div class="screen">
+      <div class="status"><span>9:41</span><span>● ● ●</span></div>
+      <div class="top"><span class="t">Welcome</span><div class="ic">A</div></div>
+      <div class="body">
+        <div class="hero">
+          <span class="tag">✦ Let's begin</span>
+          <h2>Welcome, Ari.</h2>
+          <p>Three quick steps and your whole life is on one screen. Takes about two minutes.</p>
+        </div>
+        <div class="card" style="margin-top:13px">
+          <div class="step now"><div class="n">1</div><div class="tx"><b>Set your Q4</b><small>Where's your life right now?</small></div></div>
+          <div class="step"><div class="n">2</div><div class="tx"><b>Add your #1 goal</b><small>The one thing this year</small></div></div>
+          <div class="step"><div class="n">3</div><div class="tx"><b>Log your first habit</b><small>Start your streak today</small></div></div>
+        </div>
+        <button class="btn dk">Start with step 1</button>
+        <button class="ghost">I'll explore on my own</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 2: CREATE MEASURABLE -->
+  <div class="col">
+    <div class="cap">2. Add a goal (simple or measurable)<span>Pick a real number to track, with a target</span></div>
+    <div class="phone"><div class="screen">
+      <div class="status"><span>9:42</span><span>● ● ●</span></div>
+      <div class="top"><span class="t">Add your #1 goal</span><div class="ic">✕</div></div>
+      <div class="body">
+        <span class="lbl" style="margin-top:2px">What's the goal?</span>
+        <input class="inp" value="Lose weight" readonly>
+
+        <span class="lbl">How do you want to track it?</span>
+        <div class="seg"><button>Simple progress</button><button class="on">A number (measurable)</button></div>
+
+        <span class="lbl">Measure</span>
+        <div class="chips"><span class="chip on">Number</span><span class="chip">%</span><span class="chip">Currency</span><span class="chip">Time</span><span class="chip">Yes / No</span></div>
+
+        <span class="lbl">Start → Target</span>
+        <div class="two">
+          <div class="f"><input class="inp" value="100"></div>
+          <div class="arrow">→</div>
+          <div class="f"><input class="inp" value="85"></div>
+          <div class="f" style="max-width:64px"><input class="inp" value="kg"></div>
+        </div>
+
+        <span class="lbl">Reach it by</span>
+        <input class="inp" value="31 Dec 2026">
+
+        <span class="lbl">Check in</span>
+        <input class="inp" value="Weekly">
+
+        <div class="prev">📊 We'll track <b>100 → 85 kg</b> and work out your progress and pace for you. Just tell us your weight each week.</div>
+        <button class="btn" style="margin-top:13px">Create goal</button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 3: GOAL CARD -->
+  <div class="col">
+    <div class="cap">3. The goal, tracking itself<span>Auto % + honest pace vs the deadline</span></div>
+    <div class="phone"><div class="screen">
+      <div class="status"><span>9:50</span><span>● ● ●</span></div>
+      <div class="top"><span class="t">My Growth</span><div class="ic">A</div></div>
+      <div class="body">
+        <div class="card goalcard">
+          <h3>⭐ Lose weight <span class="rag g">🟢 On track</span></h3>
+          <div class="sub">Now <b>92 kg</b> · started 100 · target 85</div>
+          <div class="bar"><i style="width:53%"></i><div class="pace" style="left:40%"></div></div>
+          <div class="barrow"><span><b style="color:var(--forest)">53%</b> there</span><span>target 85 kg</span></div>
+          <div class="pacing">You're <b>53% of the way</b> with only <b>40% of the time</b> gone. Nicely ahead of pace.</div>
+          <div class="spark"><svg width="100%" viewBox="0 0 240 50" preserveAspectRatio="none" style="display:block"><path d="M2 8 L60 16 L120 24 L180 30 L238 33" fill="none" stroke="#27c768" stroke-width="2.5"/><path d="M2 8 L60 16 L120 24 L180 30 L238 33 L238 50 L2 50 Z" fill="rgba(77,242,138,.14)"/></svg></div>
+          <div class="ci">Next check-in: Sunday</div>
+          <button class="btn" style="margin-top:11px">Check in</button>
+        </div>
+        <div class="card goalcard">
+          <h3>Read 24 books <span class="rag a">🟠 A bit behind</span></h3>
+          <div class="sub">Now <b>7</b> · target 24 by Dec</div>
+          <div class="bar"><i style="width:29%;background:linear-gradient(90deg,#f6c46b,#e8852b)"></i><div class="pace" style="left:46%"></div></div>
+          <div class="barrow"><span><b style="color:var(--amber)">29%</b> there</span><span>target 24</span></div>
+          <div class="pacing" style="background:#fff3e0;color:#9a5414">A little behind the clock. One book this month puts you back on pace.</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 4: CHECK-IN -->
+  <div class="col">
+    <div class="cap">4. The weekly check-in<span>One number. Progress updates itself.</span></div>
+    <div class="phone"><div class="screen">
+      <div class="status"><span>10:01</span><span>● ● ●</span></div>
+      <div class="top"><span class="t">My Growth</span><div class="ic">A</div></div>
+      <div class="body" style="filter:blur(1.5px);opacity:.5">
+        <div class="card goalcard"><h3>⭐ Lose weight <span class="rag g">🟢 On track</span></h3><div class="sub">Now 92 kg · target 85</div><div class="bar"><i style="width:53%"></i></div></div>
+      </div>
+      <div class="modal">
+        <div class="sheet">
+          <div class="win">🔥 Down 0.6 kg. Now 58% there, still ahead of pace.</div>
+          <h3>Quick check-in</h3>
+          <p>What's your weight today?</p>
+          <div class="bignum"><input value="91.4"><span>kg</span></div>
+          <div class="note">Last time: 92 kg · 7 days ago</div>
+          <button class="btn">Save check-in</button>
+          <button class="ghost">Skip this week</button>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+</body>
+</html>
