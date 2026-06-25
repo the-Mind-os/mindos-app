@@ -80,14 +80,15 @@ body{overflow-x:hidden}
 .top h1{font-size:16px}
 .vtoggle span,.vtoggle a{padding:5px 9px;font-size:11.5px}
 .griH .n,.griH #griN{font-size:16px}
-.herorow{flex-direction:column !important;align-items:stretch !important;gap:14px !important}
-.heroleft{min-width:0 !important;width:100% !important}
-.heroleft #brillText{font-size:clamp(13.5px,4vw,15.5px);line-height:1.45;margin:8px 0 10px}
-.heroleft .kpi.lite{font-size:19px}
-.heroleft .btn{padding:10px 16px;font-size:13.5px}
-.herodial{width:100% !important;padding:14px 16px !important}
-.herodial svg,.herodialring{width:100px !important;height:100px !important}
-.herodial #q4avg{font-size:22px}}
+.herorow{position:relative !important;display:block !important}
+.heroleft{min-width:0 !important;width:auto !important}
+.heroleft #brillText{font-size:clamp(13.5px,4vw,15px);line-height:1.4;margin:8px 0 12px;padding-right:96px}
+.heroleft .kpi.lite{font-size:20px}
+.heroleft .btn{padding:9px 15px;font-size:13px}
+.herodial{position:absolute !important;top:0;right:0;width:auto !important;background:transparent !important;border:none !important;padding:0 !important}
+.herodial>div:not(.herodialring){display:none !important}
+.herodial .herodialring,.herodial .herodialring svg{width:82px !important;height:82px !important;margin:0 auto !important}
+.herodial #q4avg{font-size:21px}}
 .card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm)}
 .card h3{font-size:15px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px}.card .hint{color:var(--muted);font-size:12.5px;margin-bottom:14px}
 .dark{background:linear-gradient(150deg,#1d4530,#0e2417);color:#dff3e7;border:none}.dark h3{color:var(--green)}
