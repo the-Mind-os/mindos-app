@@ -242,8 +242,8 @@ select.inp{appearance:auto}
             <div class="radar-wrap">
               <svg id="radar" width="240" height="240" viewBox="0 0 240 240"></svg>
               <div class="q4ctrl">
-                <div class="q4row"><div class="lbl"><span class="em">🎯</span>Purpose</div><input type="range" min="0" max="100" step="5" data-p="purpose"><div class="val">50</div></div>
-                <div class="q4row"><div class="lbl"><span class="em">💚</span>Relationships</div><input type="range" min="0" max="100" step="5" data-p="relationships"><div class="val">50</div></div>
+                <div class="q4row"><div class="lbl"><span class="em">🎯</span>Purpose &amp; Meaning</div><input type="range" min="0" max="100" step="5" data-p="purpose"><div class="val">50</div></div>
+                <div class="q4row"><div class="lbl"><span class="em">💚</span>Relationships &amp; Belonging</div><input type="range" min="0" max="100" step="5" data-p="relationships"><div class="val">50</div></div>
                 <div class="q4row"><div class="lbl"><span class="em">🧠</span>Mind &amp; Body</div><input type="range" min="0" max="100" step="5" data-p="mind_body"><div class="val">50</div></div>
                 <div class="q4row"><div class="lbl"><span class="em">📈</span>Money &amp; Mastery</div><input type="range" min="0" max="100" step="5" data-p="money"><div class="val">50</div></div>
               </div>
@@ -297,7 +297,7 @@ select.inp{appearance:auto}
           <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--forest);font-weight:600;margin:4px 0 4px"><span>How much does this block the life you want?</span><b id="resImpactV" style="color:var(--green-d)">50</b></div>
           <input type="range" min="0" max="100" value="50" id="resImpact" style="width:100%;accent-color:var(--green-d);cursor:pointer" oninput="document.getElementById('resImpactV').textContent=this.value">
           <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin:2px 0 10px"><span>Barely</span><span>Completely blocks me</span></div>
-          <div style="display:flex;gap:8px"><select class="inp" id="resType"><option value="block">Block</option><option value="impulse">Impulse</option><option value="trigger">Trigger</option><option value="need">Need</option></select><select class="inp" id="resPillar"><option value="mind_body">Mind &amp; Body</option><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="money">Money</option></select><button class="btn" id="addRes">Add</button></div>
+          <div style="display:flex;gap:8px"><select class="inp" id="resType"><option value="block">Block</option><option value="impulse">Impulse</option><option value="trigger">Trigger</option><option value="need">Need</option></select><select class="inp" id="resPillar"><option value="mind_body">Mind &amp; Body</option><option value="purpose">Purpose &amp; Meaning</option><option value="relationships">Relationships &amp; Belonging</option><option value="money">Money &amp; Mastery</option></select><button class="btn" id="addRes">Add</button></div>
         </div>
       </section>
 
@@ -316,7 +316,7 @@ select.inp{appearance:auto}
             <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:4px">Reach it by (optional)</label>
             <div style="display:flex;gap:7px"><input class="inp" id="measDate" type="date" style="flex:1;min-width:0"><select class="inp" id="measCadence" style="width:122px" title="How often to check in"><option value="weekly">Check in weekly</option><option value="daily">Check in daily</option><option value="monthly">Check in monthly</option></select></div>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><select class="inp" id="prioKind"><option value="goal">Goal</option><option value="skill">Skill</option></select><select class="inp" id="prioPillar"><option value="money">Money</option><option value="purpose">Purpose</option><option value="relationships">Relationships</option><option value="mind_body">Mind &amp; Body</option></select><select class="inp" id="prioTimeframe"><option value="this_year">This year</option><option value="three_years">3 years</option><option value="ten_years">10 years</option><option value="bucket_list">Bucket list</option></select><button class="btn" id="addPrio">Add</button></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><select class="inp" id="prioKind"><option value="goal">Goal</option><option value="skill">Skill</option></select><select class="inp" id="prioPillar"><option value="money">Money &amp; Mastery</option><option value="purpose">Purpose &amp; Meaning</option><option value="relationships">Relationships &amp; Belonging</option><option value="mind_body">Mind &amp; Body</option></select><select class="inp" id="prioTimeframe"><option value="this_year">This year</option><option value="three_years">3 years</option><option value="ten_years">10 years</option><option value="bucket_list">Bucket list</option></select><button class="btn" id="addPrio">Add</button></div>
         </div>
         <div class="card"><h3>◈ Your goals, skills &amp; priorities</h3><div class="hint">Drag the handle to reorder. Your <b>#1 is your OMG</b>.</div>
           <div id="prioList"></div>
@@ -530,7 +530,7 @@ function track(event,props){try{if(!user)return;sb.from('analytics_events').inse
 try{const _q4=new URLSearchParams(location.search).get('q4');if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);}catch(e){}
 let user=null, gri=0, streak=0, todayCount=0, myAlias='', isCoach=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const PILL={purpose:'Purpose',relationships:'Relationships',mind_body:'Mind & Body',money:'Money'};
+const PILL={purpose:'Purpose & Meaning',relationships:'Relationships & Belonging',mind_body:'Mind & Body',money:'Money & Mastery'};
 const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucket_list:'Bucket list'};
 const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],coaches:['Coaches','Find your coach'],community:['Community','Your people, partners, mentors & communities'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends, you both earn GRI'],settings:['Settings','Your account & data']};
 const AFFIRM=["Small steps, kept daily, become a different life. You're already moving.","The person you're becoming is built one choice at a time, and you're choosing well.","Showing up today is the whole game. You showed up.","Your future self is grateful for the work you put in right now.","Growth is the quiet reps you do when no one's watching. Keep going.","You don't have to do it all. Just the next right thing.","Every habit you keep is a vote for who you want to be.","Momentum loves a start. Begin small today and let it build.","Progress beats perfection. One honest step is enough.","You've grown more than you give yourself credit for.","The hard days are where the real growth hides. You've got this.","Fresh page today. What's one thing that would move you forward?"];
