@@ -813,7 +813,7 @@ async function joinPod(podId,name,price){if(!confirm('Reserve your seat in "'+na
 $('#podSearch')&&$('#podSearch').addEventListener('input',renderPods);$('#podSearchBtn')&&($('#podSearchBtn').onclick=renderPods);
 
 function openShare(){const [t]=tierOf(gri);$('#shTier').textContent=t+' Tier';$('#shStreak').textContent=streak;$('#shGri').textContent=gri.toLocaleString();show('shareM');}
-window.show=show;window.hide=hide;window.openShare=openShare;
+window.show=show;window.hide=hide;window.openShare=openShare;window.openGri=openGri;
 
 // confetti
 const cv=$('#fx'),ctx=cv.getContext('2d');function size(){cv.width=innerWidth;cv.height=innerHeight;}size();addEventListener('resize',size);let parts=[],raf=null;
