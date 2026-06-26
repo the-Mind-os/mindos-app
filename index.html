@@ -12,7 +12,7 @@
 body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var(--ink);font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:300}
 /* AUTH GATE */
-#gate{min-height:100vh;display:grid;place-items:center;padding:24px}
+#gate{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(900px 480px at 50% -8%,rgba(77,242,138,.20),transparent),var(--page)}
 #gate .box{max-width:400px;width:100%;text-align:center}
 .brandbig{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px}
 .brandbig .wm{font-size:40px;font-weight:700;letter-spacing:-2.5px;color:var(--forest)}.brandbig .ii{position:relative;display:inline-block}.brandbig .idot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--green)}.brandbig .osbox{background:var(--green);color:#08200f;font-weight:800;font-size:20px;padding:2px 10px;border-radius:10px}
@@ -152,15 +152,18 @@ select.inp{appearance:auto}
 <div id="gate">
   <div class="box">
     <img src="mindos-logo.png" alt="Mind OS" style="background:var(--forest);height:44px;width:auto;padding:13px 22px;border-radius:16px;margin-bottom:8px">
-    <div style="color:var(--muted);font-size:14px;margin-bottom:22px">The Life Accelerator</div>
+    <div style="color:var(--muted);font-size:14px;margin-bottom:14px">The Life Accelerator</div>
+    <h1 id="welcomeHead" style="font-size:clamp(1.45rem,5.5vw,1.9rem);font-weight:800;color:var(--forest);line-height:1.18;margin:2px auto 8px;max-width:18ch">See your whole life as one score. Then move it.</h1>
+    <p id="welcomeSub" style="color:var(--muted);font-size:14.5px;line-height:1.5;margin:0 auto 20px;max-width:32ch">Your Q4Score across four pillars, plus a coach-facilitated community to grow it a little every day.</p>
     <div class="card" style="text-align:left">
-      <h3>✦ Sign in or sign up</h3><div class="hint">New or returning, magic link or Google, no password. We'll create your account automatically if you're new.</div>
+      <h3>✦ Create your free account</h3><div class="hint">New or returning, magic link or Google, no password, we set you up automatically.</div>
       <input class="inp" id="email" type="email" placeholder="you@email.com" style="margin-bottom:10px">
       <button class="btn" id="sendBtn" style="width:100%;justify-content:center">Email me a link</button>
       <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px"><div style="flex:1;height:1px;background:var(--line)"></div>or<div style="flex:1;height:1px;background:var(--line)"></div></div>
       <button class="btn" id="googleBtn" style="width:100%;justify-content:center;background:#fff;color:var(--ink);border:1px solid var(--line)"><svg width="16" height="16" viewBox="0 0 48 48" style="margin-right:2px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>
       <div class="hint" id="authMsg" style="text-align:center;margin:10px 0 0"></div>
     </div>
+    <div style="margin-top:16px;color:var(--muted);font-size:12.5px;line-height:1.5">No credit card &middot; your data stays yours &middot; <b style="color:var(--forest)">92% feel clearer within 30 days</b></div>
   </div>
 </div>
 
@@ -527,7 +530,8 @@ try{var _q=new URLSearchParams(location.search);var _r=_q.get('ref'),_iv=_q.get(
 // Funnel/retention analytics, fire-and-forget, never blocks UX, never stores PII.
 const _sid=(()=>{try{let s=sessionStorage.getItem('ms_sid');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('ms_sid',s);}return s;}catch(e){return null;}})();
 function track(event,props){try{if(!user)return;sb.from('analytics_events').insert({event_name:event,props:props||{},session_id:_sid}).then(()=>{},()=>{});}catch(e){}}
-try{const _sp=new URLSearchParams(location.search);let _q4=_sp.get('q4');if(!_q4){const _p=_sp.get('p'),_r=_sp.get('r'),_b=_sp.get('b'),_m=_sp.get('m');if(_p&&_r&&_b&&_m)_q4=[_p,_r,_b,_m].join('.');}if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);const _g=_sp.get('g');if(_g)localStorage.setItem('pendingGoal',_g.slice(0,140));}catch(e){}
+try{const _sp=new URLSearchParams(location.search);let _q4=_sp.get('q4');if(!_q4){const _p=_sp.get('p'),_r=_sp.get('r'),_b=_sp.get('b'),_m=_sp.get('m');if(_p&&_r&&_b&&_m)_q4=[_p,_r,_b,_m].join('.');}if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);const _g=_sp.get('g');if(_g)localStorage.setItem('pendingGoal',_g.slice(0,140));const _n=_sp.get('n');if(_n)localStorage.setItem('pendingName',_n.slice(0,60));}catch(e){}
+try{const _pn=localStorage.getItem('pendingName')||'';const _pq=localStorage.getItem('pendingQ4');const _wh=document.getElementById('welcomeHead'),_ws=document.getElementById('welcomeSub');if(_pq&&_wh&&_ws){_wh.textContent=_pn?('Your Q4 score is ready, '+_pn+'.'):'Your Q4 score is ready.';_ws.textContent='Create your free account to unlock it and start moving your number, a little every day.';}}catch(e){}
 let user=null, gri=0, streak=0, todayCount=0, myAlias='', isCoach=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose & Meaning',relationships:'Relationships & Belonging',mind_body:'Mind & Body',money:'Money & Mastery'};
