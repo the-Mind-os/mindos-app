@@ -527,7 +527,7 @@ try{var _q=new URLSearchParams(location.search);var _r=_q.get('ref'),_iv=_q.get(
 // Funnel/retention analytics, fire-and-forget, never blocks UX, never stores PII.
 const _sid=(()=>{try{let s=sessionStorage.getItem('ms_sid');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem('ms_sid',s);}return s;}catch(e){return null;}})();
 function track(event,props){try{if(!user)return;sb.from('analytics_events').insert({event_name:event,props:props||{},session_id:_sid}).then(()=>{},()=>{});}catch(e){}}
-try{const _q4=new URLSearchParams(location.search).get('q4');if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);}catch(e){}
+try{const _sp=new URLSearchParams(location.search);let _q4=_sp.get('q4');if(!_q4){const _p=_sp.get('p'),_r=_sp.get('r'),_b=_sp.get('b'),_m=_sp.get('m');if(_p&&_r&&_b&&_m)_q4=[_p,_r,_b,_m].join('.');}if(_q4&&/^[0-9]+(\.[0-9]+){3}$/.test(_q4))localStorage.setItem('pendingQ4',_q4);const _g=_sp.get('g');if(_g)localStorage.setItem('pendingGoal',_g.slice(0,140));}catch(e){}
 let user=null, gri=0, streak=0, todayCount=0, myAlias='', isCoach=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PILL={purpose:'Purpose & Meaning',relationships:'Relationships & Belonging',mind_body:'Mind & Body',money:'Money & Mastery'};
@@ -560,6 +560,7 @@ async function boot(){
   if(ref){const {data:rr}=await sb.rpc('redeem_referral',{p_code:ref});if(rr==='ok')toast('🎉 Welcome! +50 GRI for you and your friend');try{localStorage.removeItem('mos_ref');}catch(e){}}
   if(inv||ref)history.replaceState({},'',location.pathname);
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
+  try{const _pg=localStorage.getItem('pendingGoal');if(_pg){const _pt=$('#prioTitle');if(_pt&&!_pt.value)_pt.value=_pg;localStorage.removeItem('pendingGoal');}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
   $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';isCoach=!!(m&&m.is_coach);try{var _bt=$('#brillText');if(_bt)_bt.textContent=AFFIRM[Math.random()*AFFIRM.length|0];}catch(e){}loadCompletion();loadGrowth();
   drawRadar();
