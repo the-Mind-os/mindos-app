@@ -342,6 +342,7 @@
   var MOS_URL='https://hrftsfjjtaclqnmaurfd.supabase.co';
   var MOS_KEY='sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz';
   var LEADS_KEY='sb_publishable_5BxmSPaJyaAIQAgp7_q7VQ_bvf3ooWz';
+  var LP_SOURCE=((location.hostname.split('.')[0])||'os')+'_lp_q4';
   function lowestPillar(){
     var a=[['Purpose & Meaning',target.purpose],['Relationships & Belonging',target.rel],['Mind & Body',target.body],['Money & Mastery',target.money]];
     return a.reduce(function(lo,p){return p[1]<lo[1]?p:lo;})[0];
@@ -403,12 +404,12 @@
     var need=lowestPillar();
     // 1) CRM (mindshift-leads `submit`): tags source + audience + primary_need + q4 scores + goal, links visitor by vid.
     fetch(LEADS_FN,{method:'POST',headers:{'content-type':'application/json','apikey':LEADS_KEY,'authorization':'Bearer '+LEADS_KEY},body:JSON.stringify({
-      email:e, consent:true, source:'os_lp_q4', audience:'individual', success_goal:leadGoal||null, vid:VID,
+      email:e, consent:true, source:LP_SOURCE, audience:'individual', success_goal:leadGoal||null, vid:VID,
       q4:{purpose:target.purpose, relationships:target.rel, mind_body:target.body, money:target.money}
     })}).catch(function(){});
     // 2) mindos-app mirror (for signup carry-through matching).
     fetch(MOS_URL+'/rest/v1/landing_leads',{method:'POST',headers:{'content-type':'application/json','apikey':MOS_KEY,'authorization':'Bearer '+MOS_KEY,'prefer':'return=minimal'},body:JSON.stringify({
-      email:e, source:'os_lp_q4', goal:leadGoal||null, primary_need:need, q4_overall:overall,
+      email:e, source:LP_SOURCE, goal:leadGoal||null, primary_need:need, q4_overall:overall,
       q4_purpose:target.purpose, q4_relationships:target.rel, q4_mind_body:target.body, q4_money:target.money
     })}).catch(function(){});
   });
