@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://os.mind.us/sitemap.xml
