@@ -341,6 +341,7 @@
   var LEADS_FN='https://zmiimkdyypnxekzoemxc.supabase.co/functions/v1/submit';
   var MOS_URL='https://hrftsfjjtaclqnmaurfd.supabase.co';
   var MOS_KEY='sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz';
+  var LEADS_KEY='sb_publishable_5BxmSPaJyaAIQAgp7_q7VQ_bvf3ooWz';
   function lowestPillar(){
     var a=[['Purpose & Meaning',target.purpose],['Relationships & Belonging',target.rel],['Mind & Body',target.body],['Money & Mastery',target.money]];
     return a.reduce(function(lo,p){return p[1]<lo[1]?p:lo;})[0];
@@ -401,7 +402,7 @@
     var overall=Math.round((target.purpose+target.rel+target.body+target.money)/4);
     var need=lowestPillar();
     // 1) CRM (mindshift-leads `submit`): tags source + audience + primary_need + q4 scores + goal, links visitor by vid.
-    fetch(LEADS_FN,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+    fetch(LEADS_FN,{method:'POST',headers:{'content-type':'application/json','apikey':LEADS_KEY,'authorization':'Bearer '+LEADS_KEY},body:JSON.stringify({
       email:e, consent:true, source:'os_lp_q4', audience:'individual', success_goal:leadGoal||null, vid:VID,
       q4:{purpose:target.purpose, relationships:target.rel, mind_body:target.body, money:target.money}
     })}).catch(function(){});
