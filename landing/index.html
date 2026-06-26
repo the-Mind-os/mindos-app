@@ -211,7 +211,8 @@
       <div class="gate" id="gate">
         <div class="gate-box">
           <h4>Want to keep going?</h4>
-          <p>Pop in your email (and your #1 goal, if you like) and your Q4Score is yours. Keep playing, and we'll carry it into your free account.</p>
+          <p>Pop in your name and email (and your #1 goal, if you like) and your Q4Score is yours. Keep playing, and we'll carry it into your free account.</p>
+          <input type="text" id="gateName" placeholder="First name" autocomplete="given-name" maxlength="60">
           <input type="email" id="gateEmail" placeholder="you@email.com" autocomplete="email">
           <input type="text" id="gateGoal" placeholder="Your #1 goal right now (optional)" maxlength="140">
           <button class="btn btn-primary" id="gateBtn">See my Q4Score</button>
@@ -336,7 +337,7 @@
   // Reuse the app's Q4 logic shape: four 1-10 pillars -> average score, radar from values.
   // target = chosen values; cur = animated values eased toward target (addictive morph).
   var target={purpose:70,rel:60,body:50,money:80}, cur={purpose:70,rel:60,body:50,money:80};
-  var unlocked=false, email="", leadGoal="", raf=null, gateArmed=false;
+  var unlocked=false, email="", leadGoal="", leadName="", raf=null, gateArmed=false;
   var VID = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (''+Date.now()+Math.random());
   var LEADS_FN='https://zmiimkdyypnxekzoemxc.supabase.co/functions/v1/submit';
   var MOS_URL='https://hrftsfjjtaclqnmaurfd.supabase.co';
@@ -376,6 +377,7 @@
   function signupUrl(){
     var u='https://app.mind.us/?src=os_lp&p='+target.purpose+'&r='+target.rel+'&b='+target.body+'&m='+target.money;
     if(email) u+='&email='+encodeURIComponent(email);
+    if(leadName) u+='&n='+encodeURIComponent(leadName);
     if(leadGoal) u+='&g='+encodeURIComponent(leadGoal);
     return u;
   }
@@ -399,12 +401,13 @@
     var e=document.getElementById('gateEmail').value.trim();
     if(!/.+@.+\..+/.test(e)){ document.getElementById('gateEmail').focus(); return; }
     leadGoal=document.getElementById('gateGoal').value.trim();
+    leadName=document.getElementById('gateName').value.trim();
     email=e; unlocked=true; gate.classList.remove('show'); updateCta();
     var overall=Math.round((target.purpose+target.rel+target.body+target.money)/4);
     var need=lowestPillar();
     // 1) CRM (mindshift-leads `submit`): tags source + audience + primary_need + q4 scores + goal, links visitor by vid.
     fetch(LEADS_FN,{method:'POST',headers:{'content-type':'application/json','apikey':LEADS_KEY,'authorization':'Bearer '+LEADS_KEY},body:JSON.stringify({
-      email:e, consent:true, source:LP_SOURCE, audience:'individual', success_goal:leadGoal||null, vid:VID,
+      email:e, consent:true, source:LP_SOURCE, audience:'individual', first_name:leadName||null, success_goal:leadGoal||null, vid:VID,
       q4:{purpose:target.purpose, relationships:target.rel, mind_body:target.body, money:target.money}
     })}).catch(function(){});
     // 2) mindos-app mirror (for signup carry-through matching).
