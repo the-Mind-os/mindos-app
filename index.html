@@ -59,7 +59,7 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 .b-blue{background:linear-gradient(135deg,#6fb0f0,#3f7fc4)}.b-bronze{background:linear-gradient(135deg,#e2a96b,#b76a2e)}.b-silver{background:linear-gradient(135deg,#cdd6df,#8b98a6);color:#2a323a}.b-gold{background:linear-gradient(135deg,#f4d06a,#d7a229);color:#5a4408}
 .content{padding:24px 26px 70px;max-width:1100px;width:100%}
 .screen{display:none}.screen.show{display:block;animation:rise .35s cubic-bezier(.2,.7,.3,1)}@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.grid{display:grid;gap:18px}.g2{grid-template-columns:1.5fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:1fr 1.4fr}.g3{grid-template-columns:repeat(3,1fr)}
 @media(max-width:1024px){.g2,.g3{grid-template-columns:1fr}.app{grid-template-columns:72px 1fr}.brand .wm,.nav a span:not(.ic),.navlbl,.side .me div{display:none}.brand,.nav a{justify-content:center}}
 .tabbar{display:none}.moresheet{display:none}
 @media(max-width:760px){.app{grid-template-columns:1fr}.side{display:none}.main{padding-bottom:80px}.top{padding:14px 16px}.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid var(--line);align-items:center;justify-content:space-around;z-index:50}.tabbar .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--muted);text-decoration:none;cursor:pointer;flex:1}.tabbar .tab .i{font-size:20px}.tabbar .tab.on{color:var(--forest);font-weight:700}.tabbar .tab.on .i{color:var(--green-d)}.moresheet.show{display:block;position:fixed;inset:0;z-index:60}.moresheet-bg{position:absolute;inset:0;background:rgba(12,26,18,.45)}.moresheet-panel{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:18px}.morelink{display:block;padding:13px 6px;font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
@@ -298,6 +298,7 @@ select.inp{appearance:auto}
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">✓ Today</h3><b id="todayProgress" style="color:var(--green-d);font-size:13px"></b></div>
             <div class="hint" id="todayHint">Tap to complete. Each habit keeps your streak alive.</div>
             <div id="todayHabits"></div>
+            <button type="button" class="btn ghost sm" id="editHabitsBtn" style="margin-top:12px">✏️ Edit or add habits</button>
           </div>
           <div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><h3 style="margin:0">◎ Your Q4, Quality of Life</h3><div style="font-weight:800;color:var(--forest);font-size:21px"><span id="q4avg">50</span><span style="font-size:12px;color:var(--muted);font-weight:600"> / 100</span></div></div><div class="hint">Slide to reflect where you are, then save a snapshot to track your trend over time.</div>
             <div class="radar-wrap">
@@ -621,10 +622,10 @@ select.inp{appearance:auto}
   <div class="griearn"><span>Finish your profile setup</span><b>+200 once</b></div>
   <div class="griearn"><span>Invite a friend who joins</span><b>+50 both</b></div>
   <div style="font-weight:800;color:var(--forest);font-size:13px;margin:16px 0 8px">Status tiers</div>
-  <div class="gtierrow" id="gtier-blue"><span>🔵 Blue</span><span>0 – 1,499</span></div>
-  <div class="gtierrow" id="gtier-bronze"><span>🥉 Bronze</span><span>1,500 – 4,999</span></div>
-  <div class="gtierrow" id="gtier-silver"><span>🥈 Silver</span><span>5,000 – 14,999</span></div>
-  <div class="gtierrow" id="gtier-gold"><span>🥇 Gold</span><span>15,000+</span></div>
+  <div class="gtierrow" id="gtier-blue"><span>🔵 Blue</span><span>0 – 1,799</span></div>
+  <div class="gtierrow" id="gtier-bronze"><span>🥉 Bronze</span><span>1,800 – 8,999</span></div>
+  <div class="gtierrow" id="gtier-silver"><span>🥈 Silver</span><span>9,000 – 21,999</span></div>
+  <div class="gtierrow" id="gtier-gold"><span>🥇 Gold</span><span>22,000+</span></div>
   <div class="hint" style="margin-top:14px">Your daily ring fills with the GRI you earn today. Close it to keep your streak alive, that's the fastest way to climb.</div>
   <button class="btn ghost sm" style="width:100%;justify-content:center;margin-top:12px" onclick="hide('griM');setTimeout(function(){var b=document.getElementById('setTargetBtn');if(b)b.click();},140)">🎯 Set your daily GRI goal →</button>
 </div></div>
@@ -648,7 +649,7 @@ const TF={this_year:'This year',three_years:'3 years',ten_years:'10 years',bucke
 const TT={dash:['My Growth','Your quality-of-life command center'],habits:['Habits','Build streaks, earn GRI'],res:['Resilience','Name what holds you back'],prio:['Priorities','Goals, skills & your OMG'],pot:['Potential','What makes you, you'],pods:['Find a POD','Coach-led cohorts'],coaches:['Coaches','Find your coach'],community:['Community','Your people, partners, mentors & communities'],prof:['Profile','How the community sees you'],refer:['Refer a friend','Invite friends, you both earn GRI'],settings:['Settings','Your account & data']};
 const AFFIRM=["Small steps, kept daily, become a different life. You're already moving.","The person you're becoming is built one choice at a time, and you're choosing well.","Showing up today is the whole game. You showed up.","Your future self is grateful for the work you put in right now.","Growth is the quiet reps you do when no one's watching. Keep going.","You don't have to do it all. Just the next right thing.","Every habit you keep is a vote for who you want to be.","Momentum loves a start. Begin small today and let it build.","Progress beats perfection. One honest step is enough.","You've grown more than you give yourself credit for.","The hard days are where the real growth hides. You've got this.","Fresh page today. What's one thing that would move you forward?"];
 function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity='1';setTimeout(()=>e.style.opacity='0',1500);}
-function tierOf(g){return g<1500?['Blue','blue',0,1500]:g<5000?['Bronze','bronze',1500,5000]:g<15000?['Silver','silver',5000,15000]:['Gold','gold',15000,15000];}
+function tierOf(g){return g<1800?['Blue','blue',0,1800]:g<9000?['Bronze','bronze',1800,9000]:g<22000?['Silver','silver',9000,22000]:['Gold','gold',22000,22000];}
 function genAlias(){const a=['quiet','bright','bold','calm','swift','wise','kind','brave'],b=['summit','river','ember','meadow','harbor','grove','aurora','peak'];return a[Math.random()*8|0]+'-'+b[Math.random()*8|0]+'-'+(10+Math.random()*89|0);}
 function show(id){$('#'+id).classList.add('show');}function hide(id){$('#'+id).classList.remove('show');}
 function openGri(){try{var g=(typeof gri!=='undefined'&&gri)?gri:0;var tr=tierOf(g);var mn=$('#griMineN');if(mn)mn.textContent=g.toLocaleString();var mt=$('#griMineTier');if(mt)mt.textContent=tr[0];var nx=$('#griMineNext');if(nx)nx.textContent=(tr[0]==='Gold')?'Top tier 🏆':((tr[3]-g).toLocaleString()+' GRI to next tier');['blue','bronze','silver','gold'].forEach(function(c){var r=$('#gtier-'+c);if(r)r.classList.toggle('cur',c===tr[1]);});}catch(e){}show('griM');}
@@ -782,6 +783,7 @@ function _goalAdj(d){var gi=$('#goalInput');if(!gi)return;gi.value=Math.max(5,Ma
 $('#goalPlus')&&($('#goalPlus').onclick=()=>_goalAdj(5));$('#goalMinus')&&($('#goalMinus').onclick=()=>_goalAdj(-5));
 $('#goalSave')&&($('#goalSave').onclick=async()=>{var gi=$('#goalInput');const n=Math.max(1,Math.min(999,parseInt(gi&&gi.value,10)||0));if(!n){toast('Enter a number');return;}const {error}=await sb.from('members').update({daily_gri_target:n}).eq('id',user.id);if(error){toast('⚠️ '+error.message);return;}hide('goalM');loadDailyRing();toast('Daily goal set to '+n+' GRI 🎯');});
 $('#restDayBtn')&&($('#restDayBtn').onclick=async()=>{const today=new Date().toISOString().slice(0,10);const {data,error}=await sb.rpc('toggle_rest_day',{p_date:today});if(error){toast('⚠️ '+error.message);return;}const r=Array.isArray(data)?data[0]:data;toast(r&&r.is_rest?'Today set as a rest day — your streak is safe 💤':'Rest day removed');loadDailyRing();});
+$('#editHabitsBtn')&&($('#editHabitsBtn').onclick=()=>gotoScreen('habits'));
 $('#shareDo')&&($('#shareDo').onclick=async()=>{const link=window._shareLink||location.origin,text=shareMsg();if(navigator.share){try{await navigator.share({title:'Mind OS',text:text,url:link});track('share',{ch:'native'});}catch(e){}return;}try{await navigator.clipboard.writeText(text+' '+link);toast('Copied — paste it anywhere ✓');track('share',{ch:'copy'});}catch(e){toast('Copy not supported here');}});
 $('#shareCopy')&&($('#shareCopy').onclick=async()=>{try{await navigator.clipboard.writeText(window._shareLink||location.origin);toast('Link copied ✓');track('share',{ch:'copylink'});}catch(e){toast('Copy not supported here');}});
 $('#shareWa')&&($('#shareWa').onclick=()=>{window.open('https://wa.me/?text='+encodeURIComponent(shareMsg()+' '+(window._shareLink||location.origin)),'_blank');track('share',{ch:'whatsapp'});});
