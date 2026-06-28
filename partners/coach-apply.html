@@ -42,6 +42,10 @@ label{display:block;font-size:12.5px;font-weight:600;color:var(--forest);margin:
 label .opt{font-weight:400;color:var(--muted)}
 .inp,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-family:inherit;font-size:14px;background:#fcfefc;color:var(--ink)}
 textarea{min-height:74px;resize:vertical}
+.radios{display:flex;gap:8px;flex-wrap:wrap;margin-top:3px}
+.radio{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;border:1px solid var(--line);border-radius:11px;padding:9px 13px;cursor:pointer;background:#fcfefc}
+.radio input{width:auto;margin:0;accent-color:var(--green-d)}
+input[type=range]{margin:4px 0 2px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .btn{display:inline-flex;gap:7px;align-items:center;justify-content:center;background:var(--green);color:var(--forest);border:none;padding:13px 22px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;width:100%}
 .btn:disabled{opacity:.55;cursor:not-allowed}
@@ -122,30 +126,30 @@ textarea{min-height:74px;resize:vertical}
       <div class="sec"><h3>About you</h3></div>
       <div class="row2">
         <div><label for="qCity">City</label><input class="inp" id="qCity" type="text" maxlength="80"></div>
-        <div><label for="qCountry">Country</label><input class="inp" id="qCountry" type="text" maxlength="80"></div>
+        <div><label for="qCountry">Country</label><select id="qCountry"><option value="">Choose…</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>New Zealand</option><option>Ireland</option><option>South Africa</option><option>India</option><option>Singapore</option><option>United Arab Emirates</option><option>Germany</option><option>France</option><option>Netherlands</option><option>Spain</option><option>Italy</option><option>Portugal</option><option>Switzerland</option><option>Sweden</option><option>Norway</option><option>Denmark</option><option>Finland</option><option>Belgium</option><option>Austria</option><option>Poland</option><option>Brazil</option><option>Mexico</option><option>Argentina</option><option>Chile</option><option>Colombia</option><option>Japan</option><option>Hong Kong</option><option>Philippines</option><option>Malaysia</option><option>Indonesia</option><option>Nigeria</option><option>Kenya</option><option>Egypt</option><option>Saudi Arabia</option><option>Israel</option><option>Turkey</option><option>Other</option></select></div>
       </div>
-      <label for="qLinkedin">LinkedIn profile <span class="opt">· optional</span></label>
-      <input class="inp" id="qLinkedin" type="url" placeholder="https://www.linkedin.com/in/you">
-      <label for="qPhone">Phone / WhatsApp <span class="opt">· optional</span></label>
-      <input class="inp" id="qPhone" type="tel" maxlength="40">
+      <label for="qLinkedin">LinkedIn profile</label>
+      <input class="inp" id="qLinkedin" type="url" required placeholder="https://www.linkedin.com/in/you">
+      <label for="qPhone">Cell / WhatsApp</label>
+      <input class="inp" id="qPhone" type="tel" required maxlength="40" placeholder="+1 555 000 0000">
 
       <div class="sec"><h3>Your coaching practice</h3></div>
-      <label for="qCertified">Are you a certified coach?</label>
-      <select id="qCertified"><option value="">Choose…</option><option value="yes">Yes</option><option value="no">No</option></select>
+      <label>Are you a certified coach?</label>
+      <div class="radios" id="qCertified"><label class="radio"><input type="radio" name="qCertified" value="yes"> Yes</label><label class="radio"><input type="radio" name="qCertified" value="no"> No</label></div>
       <label for="qCerts">If yes, which certification(s)? <span class="opt">· optional</span></label>
       <input class="inp" id="qCerts" type="text" maxlength="200" placeholder="e.g. ICF PCC, EMCC, Lumina">
-      <label for="qHours">Approx. paid coaching hours delivered</label>
-      <select id="qHours"><option value="">Choose…</option><option>Under 100</option><option>100–500</option><option>500–1,000</option><option>1,000+</option></select>
-      <label for="qActive">Are you currently running an active coaching practice?</label>
-      <select id="qActive"><option value="">Choose…</option><option value="yes">Yes</option><option value="no">No</option></select>
+      <label for="qCert" style="margin-top:10px">Attach certificate <span class="opt">· optional · PDF or image, max 5MB</span></label>
+      <input id="qCert" type="file" accept="image/*,application/pdf" style="font-size:12.5px;width:100%">
+      <label style="margin-top:12px">Approx. paid coaching hours delivered: <b id="qHoursLbl" style="color:var(--green-d)">100–500</b></label>
+      <input type="range" id="qHours" min="0" max="3" step="1" value="1" style="width:100%;accent-color:var(--green-d)">
+      <label>Are you currently running an active coaching practice?</label>
+      <div class="radios" id="qActive"><label class="radio"><input type="radio" name="qActive" value="yes"> Yes</label><label class="radio"><input type="radio" name="qActive" value="no"> No</label></div>
       <label for="qClients">If yes, roughly how many active clients? <span class="opt">· optional</span></label>
-      <input class="inp" id="qClients" type="number" min="0" max="100000">
-      <label for="qLumina">Are you Lumina Leader certified?</label>
-      <select id="qLumina"><option value="">Choose…</option><option value="yes">Yes</option><option value="willing">Not yet, but willing to certify</option><option value="no">No</option></select>
-      <div class="row2">
-        <div><label for="qYears">Years coaching</label><input class="inp" id="qYears" type="number" min="0" max="80"></div>
-        <div><label for="qNetwork">Network size you could invite</label><input class="inp" id="qNetwork" type="text" maxlength="40" placeholder="e.g. ~500"></div>
-      </div>
+      <select id="qClients"><option value="">Choose…</option><option>None</option><option>1–3</option><option>4–8</option><option>9–15</option><option>16+</option></select>
+      <label>Are you Lumina Leader certified?</label>
+      <div class="radios" id="qLumina"><label class="radio"><input type="radio" name="qLumina" value="yes"> Yes</label><label class="radio"><input type="radio" name="qLumina" value="willing"> Not yet, willing to</label><label class="radio"><input type="radio" name="qLumina" value="no"> No</label></div>
+      <label style="margin-top:12px">How large is your network, email list, followers, or circle of influence? <b id="qNetworkLbl" style="color:var(--green-d)">51–500</b></label>
+      <input type="range" id="qNetwork" min="0" max="5" step="1" value="1" style="width:100%;accent-color:var(--green-d)">
       <label for="qApproach">Your coaching approach / modality</label>
       <textarea id="qApproach" maxlength="600"></textarea>
 
@@ -233,23 +237,31 @@ async function maybeVerify(){
 $('qForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const m = $('qMsg');
-  if(!$('qCertified').value || !$('qHours').value || !$('qActive').value || !$('qLumina').value){ setMsg(m,'Please answer the practice questions (certification, hours, active, Lumina).',false); return; }
+  const rv=function(n){const el=document.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';};
+  const HOURS=['Under 100','100–500','500–1,000','1,000+'], NETWORK=['0–50','51–500','501–1,500','1,501–3,500','3,501–8,000','8,000+'];
+  const certified=rv('qCertified'), active=rv('qActive'), lumina=rv('qLumina');
+  if(!$('qLinkedin').value.trim()){ setMsg(m,'Please add your LinkedIn profile URL.',false); return; }
+  if(!$('qPhone').value.trim()){ setMsg(m,'Please add your cell / WhatsApp number.',false); return; }
+  if(!certified || !active || !lumina){ setMsg(m,'Please answer the practice questions (certified, active practice, Lumina).',false); return; }
   if(!$('qNiche').value.trim() || !$('qWhy').value.trim()){ setMsg(m,'Please tell us your niche and why you want to coach with us.',false); return; }
   if(!$('qAgree').checked){ setMsg(m,'Please confirm you agree to the Coach Agreement.',false); return; }
   const answers = {
-    city:$('qCity').value.trim(), country:$('qCountry').value.trim(), linkedin:$('qLinkedin').value.trim(), phone:$('qPhone').value.trim(),
-    certified:$('qCertified').value, certs:$('qCerts').value.trim(), hours:$('qHours').value, active:$('qActive').value, clients:$('qClients').value,
-    lumina:$('qLumina').value, years:$('qYears').value, network:$('qNetwork').value.trim(), approach:$('qApproach').value.trim(),
+    city:$('qCity').value.trim(), country:$('qCountry').value, linkedin:$('qLinkedin').value.trim(), phone:$('qPhone').value.trim(),
+    certified:certified, certs:$('qCerts').value.trim(), hours:HOURS[+$('qHours').value]||'', active:active, clients:$('qClients').value,
+    lumina:lumina, network:NETWORK[+$('qNetwork').value]||'', approach:$('qApproach').value.trim(),
     niche:$('qNiche').value.trim(), why:$('qWhy').value.trim(), links:$('qLinks').value.trim(), other:$('qOther').value.trim(), agreed:true
   };
+  let cert=null; const cf=$('qCert')&&$('qCert').files&&$('qCert').files[0];
+  if(cf){ if(cf.size>5*1024*1024){ setMsg(m,'Certificate is over 5MB, please use a smaller file.',false); return; } try{ cert=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res({name:cf.name,type:cf.type,b64:String(fr.result).split(',')[1]});fr.onerror=rej;fr.readAsDataURL(cf);}); }catch(_){ cert=null; } }
   $('submitBtn').disabled = true; $('submitBtn').textContent = 'Submitting…';
-  const r = await call('submit', { token: CTOKEN, answers });
+  const r = await call('submit', { token: CTOKEN, answers, cert });
   $('submitBtn').disabled = false; $('submitBtn').textContent = 'Submit my application →';
   if(r.status === 'submitted'){ show('cardDone'); return; }
   if(r.error === 'not_verified'){ setMsg(m,'Your session expired. Please use the link in your email again.',false); return; }
   setMsg(m,'Something went wrong submitting. Please try again.',false);
 });
 
+(function(){const H=['Under 100','100–500','500–1,000','1,000+'],N=['0–50','51–500','501–1,500','1,501–3,500','3,501–8,000','8,000+'];const h=$('qHours'),n=$('qNetwork');if(h)h.oninput=()=>{$('qHoursLbl').textContent=H[+h.value];};if(n)n.oninput=()=>{$('qNetworkLbl').textContent=N[+n.value];};})();
 maybeVerify();
 </script>
 </body>
