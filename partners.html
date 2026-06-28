@@ -32,6 +32,13 @@ header img{height:30px}
 .ben h3{font-size:17px;font-weight:700;color:var(--forest);margin-bottom:3px}
 .ben p{font-size:14.5px;color:var(--muted);line-height:1.55}
 .cta{text-align:center;background:var(--forest);border-radius:24px;padding:46px 24px;margin:30px 0 0}
+.calc{background:var(--forest);border-radius:24px;padding:30px 24px;margin:30px 0 0}
+.calc h3{color:#fff;font-size:19px;margin-bottom:4px}
+.calc .sub{color:#9fc6ae;font-size:13px;margin-bottom:18px}
+.calcrow{display:flex;align-items:center;gap:14px;margin:14px 0}
+.calcrow label{width:130px;color:#cfeede;font-size:14px}
+.calcrow input{flex:1;accent-color:var(--green)}
+.calcrow b{width:34px;text-align:right;color:#fff;font-weight:700}
 .cta h2{color:#fff;font-size:25px;font-weight:800;margin-bottom:8px;line-height:1.3}
 .cta p{color:#9fc6ae;font-size:15px;margin-bottom:24px}
 footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 0 40px}
@@ -58,6 +65,14 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 0 40px
     <div class="ben"><span class="ic">✨</span><div><h3>Look world-class from day one</h3><p>A beautiful, branded experience your clients show off — with nothing for you to build.</p></div></div>
     <div class="ben"><span class="ic">🎯</span><div><h3>Know exactly who needs you</h3><p>See every client's momentum at a glance and spend your energy where it matters most.</p></div></div>
     <div class="ben"><span class="ic">🤝</span><div><h3>Your clients stay yours</h3><p>You own the relationship and the data. Always.</p></div></div>
+    <div class="calc">
+      <h3>What could you earn?</h3>
+      <div class="sub">Drag to see your monthly income across your PODs.</div>
+      <div class="calcrow"><label>PODs</label><input type="range" id="cPods" min="1" max="5" value="2"><b id="cPodsV">2</b></div>
+      <div class="calcrow"><label>Members / POD</label><input type="range" id="cMem" min="1" max="14" value="10"><b id="cMemV">10</b></div>
+      <div style="text-align:center;margin-top:16px"><div style="font-size:36px;font-weight:800;color:var(--green)" id="cMonthly">$3,500</div><div style="color:#9fc6ae;font-size:13px">per month · <b id="cAnnual" style="color:#cfeede">$42,000</b>/yr</div></div>
+      <div style="color:#7fa890;font-size:11px;text-align:center;margin-top:12px">Based on $250 / member / month and a 70% coach share. Illustrative.</div>
+    </div>
     <div class="cta"><h2>Ready to grow your practice?</h2><p>Apply to coach on Mind OS. It takes a few minutes, and we review every application personally.</p><a class="btn" href="https://app.mind.us/partners/coach-apply">Apply to be a coach →</a></div>
   </div>
 
@@ -83,6 +98,7 @@ document.querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
   document.getElementById('p-'+b.dataset.tab).classList.add('show');
 });
 (function(){if((location.hash||'').replace('#','')==='leader'){document.querySelector('[data-tab="leader"]').click();}})();
+(function(){var p=document.getElementById('cPods'),m=document.getElementById('cMem');function fmt(n){return '$'+Math.round(n).toLocaleString();}function upd(){var pods=+p.value,mem=+m.value;document.getElementById('cPodsV').textContent=pods;document.getElementById('cMemV').textContent=mem;var monthly=pods*mem*250*0.7;document.getElementById('cMonthly').textContent=fmt(monthly);document.getElementById('cAnnual').textContent=fmt(monthly*12);}if(p&&m){p.oninput=upd;m.oninput=upd;upd();}})();
 </script>
 </body>
 </html>
