@@ -187,7 +187,8 @@ textarea{min-height:74px;resize:vertical}
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const sb = createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
+// Coach applicants are not-yet-active contacts → mindshift-leads project (CRM/leads), per the active/not-active DB divider.
+const sb = createClient('https://zmiimkdyypnxekzoemxc.supabase.co','sb_publishable_5BxmSPaJyaAIQAgp7_q7VQ_bvf3ooWz');
 const $ = id => document.getElementById(id);
 const show = id => { ['cardApply','cardSent','cardVerifying','cardForm','cardDone','cardLinkErr'].forEach(c=>{ const e=$(c); if(e) e.style.display = (c===id?'':'none'); }); };
 let CTOKEN = null;
