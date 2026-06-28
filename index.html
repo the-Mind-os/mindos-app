@@ -379,7 +379,7 @@ select.inp{appearance:auto}
           <div id="prioList"></div>
         </div>
 
-        <div class="note" id="omgCoachNote" style="margin-top:14px;cursor:pointer">◆<div>Want a coach to crush your OMG? <b>See matched coaches →</b></div></div>
+        <div class="note" id="omgCoachNote" style="margin-top:14px;cursor:pointer">◆<div>Want a coach to crush your OMG? <b>Book a 1:1 call →</b></div></div>
 </section>
 
       <!-- POTENTIAL -->
@@ -409,7 +409,8 @@ select.inp{appearance:auto}
 
       <!-- COACHES -->
       <section class="screen" id="s-coaches">
-        <div class="card" style="margin-bottom:14px"><h3>◆ Coaches</h3><div class="hint">Find a coach for your goals, matched to your priorities.</div>
+        <div class="card" style="margin-bottom:14px"><h3>◆ Coaches</h3><div class="hint">Work with a coach 1:1, matched to your goals and priorities.</div>
+          <button class="btn sm" style="margin-top:10px" onclick="window.open('https://www.mind.us/lets-talk','_blank','noopener')">🎯 Book a 1:1 coaching call →</button>
           <div style="display:flex;gap:8px;margin-top:12px"><input class="inp" id="coachSearch" placeholder="🔍 Search coaches by specialty or focus…"></div>
           <div class="hint" id="coachMatchHint" style="margin:10px 0 0"></div>
         </div>
@@ -986,7 +987,7 @@ $('#coachSearch')&&$('#coachSearch').addEventListener('input',renderCoaches);
 
 async function loadLeaderboard(){const {data}=await sb.from('leaderboard').select('*').order('gri',{ascending:false}).limit(50);const rows=data||[];const el=$('#leaderList');if(el){el.innerHTML=rows.slice(0,8).map((r,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><b style="width:24px;color:var(--forest)">${i+1}</b><span style="flex:1">${esc(r.name)}${r.id===user.id?' <span style="color:var(--green-d);font-weight:700">(you)</span>':''}</span><b style="color:var(--forest)">${Number(r.gri).toLocaleString()}</b></div>`).join('')||'<div class="hint" style="margin:0">No rankings yet.</div>';}const myi=rows.findIndex(r=>r.id===user.id);const mr=$('#myRank');if(mr)mr.textContent=myi>=0?('#'+(myi+1)+' of '+rows.length):'unranked';}
 function renderBadges(){const b=[];if(typeof streak!=='undefined'){if(streak>=1)b.push(['🔥','First streak']);if(streak>=7)b.push(['🗓','7-day streak']);}if(typeof gri!=='undefined'){if(gri>=100)b.push(['🌱','100 GRI']);if(gri>=1000)b.push(['🏆','1,000 GRI']);try{const t=tierOf(gri)[0];b.push(['🎖',t+' tier']);}catch(_){}}if(typeof todayCount!=='undefined'&&todayCount>=1)b.push(['✓','Habit done today']);const el=$('#badgeWrap');if(!el)return;el.innerHTML=b.length?b.map(x=>`<span style="display:inline-flex;align-items:center;gap:6px;background:var(--page);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--forest)">${x[0]} ${x[1]}</span>`).join(''):'<div class="hint" style="margin:0">Start logging to unlock badges.</div>';}
-$('#omgCoachNote')&&($('#omgCoachNote').onclick=()=>{const n=document.querySelector('[data-s="coaches"]');if(n)n.click();});
+$('#omgCoachNote')&&($('#omgCoachNote').onclick=()=>{window.open('https://www.mind.us/lets-talk','_blank','noopener');});
 </script>
 </body>
 </html>
