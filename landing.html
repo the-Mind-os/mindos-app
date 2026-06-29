@@ -9,7 +9,7 @@
 <meta property="og:description" content="Measure and grow every area of your life — with people who get it.">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#4DF28A;--forest:#173622;--page:#eaf6ee;--ink:#0c1a12;--muted:#5d6f64;--line:#dbe9e0;--radius:18px}
+:root{--green:#4DF28A;--green-d:#27c768;--forest:#173622;--page:#eaf6ee;--ink:#0c1a12;--muted:#5d6f64;--line:#dbe9e0;--radius:18px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var(--ink);-webkit-font-smoothing:antialiased}
 .wrap{max-width:960px;margin:0 auto;padding:0 18px}
@@ -37,13 +37,26 @@ header img{height:30px}
 .feat .ic{font-size:24px;display:block;margin-bottom:8px}
 .feat h3{font-size:15.5px;font-weight:700;margin-bottom:5px;color:var(--forest)}
 .feat p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.price{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 22px;box-shadow:0 3px 14px rgba(23,54,34,.05);position:relative}
+.price.hi{border:2px solid var(--green);box-shadow:0 12px 34px rgba(23,54,34,.13)}
+.pbadge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--forest);font-weight:800;font-size:11.5px;padding:5px 13px;border-radius:20px;white-space:nowrap}
+.pname{font-size:13px;font-weight:800;color:var(--forest);text-transform:uppercase;letter-spacing:.6px}
+.pcost{margin:10px 0 2px}.pcost b{font-size:40px;font-weight:800;color:var(--forest);line-height:1}.pcost span{font-size:14px;color:var(--muted);font-weight:600}
+.ptag{font-size:13px;color:var(--muted);margin-bottom:18px}
+.price ul{list-style:none;margin:0 0 22px;padding:0}
+.price li{font-size:13.5px;color:var(--ink);padding:8px 0 8px 24px;position:relative;border-top:1px solid var(--line)}
+.price li:first-child{border-top:none}
+.price li:before{content:"✓";position:absolute;left:0;color:var(--green-d);font-weight:800}
+.price .btn{width:100%;justify-content:center}
+.btn.outline{background:transparent;color:var(--forest);border:1.5px solid var(--line)}
 .cta{text-align:center;background:var(--forest);border-radius:24px;padding:48px 24px}
 .cta h2{color:#fff;font-size:26px;font-weight:800;margin-bottom:8px}
 .cta p{color:#9fc6ae;font-size:15px;margin-bottom:24px}
 .partners{text-align:center;font-size:14px;color:var(--muted);margin-top:24px}
 .partners a{color:var(--forest);font-weight:600}
 footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 0 40px}
-@media(max-width:760px){.pillars{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.hero h1{font-size:30px}.hero{padding:46px 0 44px}}
+@media(max-width:760px){.pillars{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.prices{grid-template-columns:1fr;gap:24px}.hero h1{font-size:30px}.hero{padding:46px 0 44px}}
 </style>
 </head>
 <body>
@@ -77,6 +90,35 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 0 40px
     <div class="feat"><span class="ic">◈</span><h3>Priorities &amp; your OMG</h3><p>Set your goals, rank them, and lock in your One Main Goal.</p></div>
     <div class="feat"><span class="ic">🤝</span><h3>Community &amp; matching</h3><p>Find an accountability partner or mentor — anonymously, with people on the same path.</p></div>
     <div class="feat"><span class="ic">🏅</span><h3>GRI &amp; rewards</h3><p>Earn points and climb tiers as you grow. Everyone helps everyone.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" style="padding-top:0"><div class="wrap">
+  <h2>Simple, honest pricing</h2>
+  <div class="sub">Start free and keep the whole tool. Upgrade when you want AI in your corner.</div>
+  <div class="prices">
+    <div class="price">
+      <div class="pname">Free</div>
+      <div class="pcost"><b>$0</b></div>
+      <div class="ptag">The full tool, yours to keep</div>
+      <ul><li>Q4Score™ and trends</li><li>Habits, streaks and GRI</li><li>Resilience, priorities and your OMG</li><li>Community and matching</li></ul>
+      <a class="btn outline" href="https://app.mind.us">Get started free</a>
+    </div>
+    <div class="price hi">
+      <div class="pbadge">14-day free trial</div>
+      <div class="pname">Advanced</div>
+      <div class="pcost"><b>$99</b><span>/year</span></div>
+      <div class="ptag">Your personal AI coach</div>
+      <ul><li>Everything in Free</li><li>Personalized AI coaching</li><li>AI-tailored skills for your resilience challenges</li><li>Accountability nudges and smart reminders</li></ul>
+      <a class="btn" href="https://app.mind.us">Start your free trial</a>
+    </div>
+    <div class="price">
+      <div class="pname">Community</div>
+      <div class="pcost"><b>$250</b><span>/month</span></div>
+      <div class="ptag">Coaching plus your people</div>
+      <ul><li>Everything in Advanced</li><li>A coach-led POD, your cohort</li><li>Accountability partners and community</li><li>Live group sessions</li></ul>
+      <a class="btn outline" href="https://app.mind.us">Join a POD</a>
+    </div>
   </div>
 </div></section>
 
