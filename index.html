@@ -790,6 +790,7 @@ async function boot(){
   const isNew=!m;
   if(isNew){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
   track('app_open',{returning:!isNew});if(isNew)track('signup',{});
+  if(isNew){var _pn='';try{_pn=localStorage.getItem('pendingName')||'';}catch(e){}fetch('https://zmiimkdyypnxekzoemxc.supabase.co/functions/v1/sync-member',{method:'POST',headers:{'content-type':'application/json','apikey':'sb_publishable_5BxmSPaJyaAIQAgp7_q7VQ_bvf3ooWz','authorization':'Bearer sb_publishable_5BxmSPaJyaAIQAgp7_q7VQ_bvf3ooWz'},body:JSON.stringify({email:user.email,first_name:_pn,member_id:user.id})}).catch(function(){});}
   const params=new URLSearchParams(location.search);let inv=params.get('invite');let ref=params.get('ref');try{inv=inv||localStorage.getItem('mos_invite');ref=ref||localStorage.getItem('mos_ref');}catch(e){}
   if(inv){const {data:r}=await sb.rpc('redeem_invite',{p_code:inv});if(r==='joined')toast('🎉 You joined a POD!');try{localStorage.removeItem('mos_invite');}catch(e){}}
   if(ref){const {data:rr}=await sb.rpc('redeem_referral',{p_code:ref});if(rr==='ok')toast('🎉 Welcome! +50 GRI for you and your friend');try{localStorage.removeItem('mos_ref');}catch(e){}}
