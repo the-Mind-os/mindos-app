@@ -785,7 +785,7 @@ sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 
 async function boot(){
   $('#gate').style.display='none';$('#app').style.display='grid';
-  loadEntitlement();
+  loadEntitlement();try{checkCheckoutReturn();}catch(e){}
   let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin,is_coach,age_bracket,star_sign,onboarding_completed,onboarding_step').eq('id',user.id).maybeSingle();
   const isNew=!m;
   if(isNew){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
@@ -1054,13 +1054,16 @@ window.startOnboarding=startOnboarding;
 window.startTrial=startTrial;
 async function redeemCoupon(btn){var inp=document.getElementById('couponInput');var code=((inp&&inp.value)||'').trim();if(!code){toast('Enter a coupon code first.');if(inp)inp.focus();return;}var orig=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='…';}try{const {data,error}=await sb.rpc('redeem_coupon',{p_code:code});if(error){toast('⚠️ '+(error.message||'Could not apply that code.'));if(btn){btn.disabled=false;btn.textContent=orig;}return;}if(!data||!data.ok){const m={invalid_code:"That code isn't valid.",coupon_inactive:"That code is no longer active.",coupon_expired:"That code has expired.",coupon_exhausted:"That code has been fully claimed.",not_authenticated:"Please sign in again."};toast(m[data&&data.error]||"Sorry, that code didn't work.");if(btn){btn.disabled=false;btn.textContent=orig;}return;}window._entitlement=data.plan;try{burst();}catch(e){}try{track('coupon_redeem',{plan:data.plan});}catch(e){}var pl=data.plan==='community'?'Advanced + Community':'Advanced';toast('🎉 '+pl+(data.already?' is already on your account':' unlocked')+'. Enjoy.');var row=document.getElementById('couponRow');if(row){row.innerHTML='<div style="flex:1;font-size:12.5px;color:var(--forest);font-weight:600">✓ '+pl+' unlocked on your account.</div>';}}catch(e){toast('⚠️ Something went wrong applying that code.');if(btn){btn.disabled=false;btn.textContent=orig;}}}
 window.redeemCoupon=redeemCoupon;
-async function goCheckout(plan,btn){var orig=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Opening secure checkout…';}try{const {data,error}=await sb.functions.invoke('airwallex-checkout',{body:{plan:plan||'advanced'}});if(error){toast('⚠️ '+(error.message||'Could not open checkout. Try again.'));if(btn){btn.disabled=false;btn.textContent=orig;}return;}if(!data||data.error||!data.checkout_url){toast('⚠️ '+((data&&data.error)||'Could not start checkout.'));if(btn){btn.disabled=false;btn.textContent=orig;}return;}try{track('checkout_open',{plan:data.plan});}catch(e){}location.href=data.checkout_url;}catch(e){toast('⚠️ Something went wrong opening checkout.');if(btn){btn.disabled=false;btn.textContent=orig;}}}
+async function goCheckout(plan,btn){var orig=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Opening secure checkout…';}try{const {data,error}=await sb.functions.invoke('airwallex-checkout',{body:{plan:plan||'advanced'}});if(error){toast('⚠️ '+(error.message||'Could not open checkout. Try again.'));if(btn){btn.disabled=false;btn.textContent=orig;}return;}if(!data||data.error||!data.checkout_url){toast('⚠️ '+((data&&data.error)||'Could not start checkout.'));if(btn){btn.disabled=false;btn.textContent=orig;}return;}try{track('checkout_open',{plan:data.plan});}catch(e){}try{localStorage.setItem('mos_pending_checkout',data.plan||'advanced');}catch(e){}location.href=data.checkout_url;}catch(e){toast('⚠️ Something went wrong opening checkout.');if(btn){btn.disabled=false;btn.textContent=orig;}}}
 window.goCheckout=goCheckout;
 window._billStatus='none';window._plan='free';
 async function loadEntitlement(){try{const {data}=await sb.from('member_billing').select('status,plan').eq('member_id',user.id).maybeSingle();window._billStatus=(data&&data.status)||'none';window._plan=(data&&data.plan)||'free';}catch(e){}}
 function isEntitled(){return ['trialing','active','comped'].includes(window._billStatus)||['advanced','community'].includes(window._entitlement);}
 function gateAdvanced(feat){toast('🔒 '+(feat||'This')+' is part of Advanced. Start your free 14-day trial in Settings → Plan & billing.');try{gotoScreen('settings');}catch(e){}}
 window.isEntitled=isEntitled;window.loadEntitlement=loadEntitlement;
+async function checkCheckoutReturn(retry){var pend=null;try{pend=localStorage.getItem('mos_pending_checkout');}catch(e){}if(!pend)return;await loadEntitlement();if(isEntitled()){try{localStorage.removeItem('mos_pending_checkout');}catch(e){}try{burst();}catch(e){}try{track('checkout_paid',{plan:window._plan});}catch(e){}var pl=(window._plan==='community')?'Advanced + Community':'Advanced';toast('🎉 Payment received, you’re on '+pl+' now. Enjoy.');var btn=document.querySelector('#couponRow');}else if(!retry){setTimeout(function(){checkCheckoutReturn(true);},5000);}}
+window.checkCheckoutReturn=checkCheckoutReturn;
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{checkCheckoutReturn();}catch(e){}}});
 window.show=show;window.hide=hide;window.openShare=openShare;window.openGri=openGri;window.gotoScreen=gotoScreen;window.toast=toast;
 
 // confetti
