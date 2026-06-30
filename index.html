@@ -1091,24 +1091,29 @@ var NTF_TYPES=[
 ];
 function ntfChMeta(k){return NTF_CH.find(function(x){return x.k===k;});}
 async function loadNotifPrefs(){if(!user)return;var tz='UTC';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';}catch(e){}try{var r=await sb.from('notification_prefs').select('*').eq('member_id',user.id).maybeSingle();window._ntf=(r&&r.data)?r.data:{push_enabled:false,email_enabled:true,whatsapp_enabled:false,type_prefs:{habit_accountability:{push:true},new_skills:{push:true},streak_risk:{push:true}},send_time_mode:'auto',quiet_hours_start:21,quiet_hours_end:8,timezone:tz};}catch(e){window._ntf={type_prefs:{}};}renderNotif();}
-function renderNotif(){var b=document.getElementById('ntfBody');if(!b)return;var p=window._ntf||{type_prefs:{}};var tp=p.type_prefs||{};var pushOn=(typeof Notification!=='undefined'&&Notification.permission==='granted');
- var h='<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px">';
- NTF_CH.forEach(function(c){h+='<span style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12.5px;font-weight:600;color:'+(c.live?'var(--forest)':'#9fb3a6')+'">'+c.ic+' '+c.label+(c.k==='push'?(pushOn?' · on':''):(c.live?'':' · soon'))+'</span>';});
- h+='</div>';
- if(!pushOn)h+='<button class="btn sm" id="ntfPushEnable" style="margin:4px 0 8px">Turn on push on this device</button>';
- h+='<div style="font-size:12.5px;font-weight:700;color:var(--forest);margin:12px 0 6px">What to send</div>';
+function ntfInjectCss(){if(document.getElementById('ntfcss'))return;var s=document.createElement('style');s.id='ntfcss';s.textContent='.ntfm{margin:12px 0 4px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm)}.ntfm-grid{display:grid;grid-template-columns:minmax(0,1fr) 50px 50px 50px}.ntfm-grid>div{padding:12px 7px;display:flex;align-items:center;justify-content:center;border-top:1px solid #eef5f0}.ntfm-grid>div.hd{border-top:none}.ntfm .hd{flex-direction:column;gap:1px;background:#f3faf5;font-size:10.5px;font-weight:700;color:var(--forest);text-align:center;line-height:1.1;padding-top:11px;padding-bottom:11px}.ntfm .hd .i{font-size:17px;margin-bottom:2px}.ntfm .hd.soon{color:#9fb3a6}.ntfm .hd .sn{font-size:8px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#bcd0c2;margin-top:1px}.ntfm .hd .sn.on{color:#27c768}.ntfm .lbl{justify-content:flex-start;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}.ntfm .lbl b{font-size:13px;font-weight:600;color:var(--forest);line-height:1.2}.ntfm .lbl small{font-size:11px;color:var(--muted);line-height:1.3}.ntfm .cell.off{color:#e0eae4;font-size:16px}.nfsw{position:relative;display:inline-block;width:38px;height:22px;flex:none}.nfsw input{opacity:0;width:0;height:0;position:absolute}.nfsw .tk{position:absolute;inset:0;background:#dbe9e0;border-radius:22px;transition:.2s;cursor:pointer}.nfsw .tk:before{content:\"\";position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(23,54,34,.25)}.nfsw input:checked+.tk{background:#27c768}.nfsw input:checked+.tk:before{transform:translateX(16px)}.nfsw input:disabled+.tk{background:#eef3f0;cursor:not-allowed;opacity:.6}';document.head.appendChild(s);}
+function renderNotif(){var b=document.getElementById('ntfBody');if(!b)return;ntfInjectCss();var p=window._ntf||{type_prefs:{}};var tp=p.type_prefs||{};var pushOn=(typeof Notification!=='undefined'&&Notification.permission==='granted');
+ var h='';
+ if(!pushOn)h+='<button class="btn sm" id="ntfPushEnable" style="margin:8px 0 2px;width:100%;justify-content:center">📲 Turn on push on this device</button>';
+ h+='<div class="ntfm"><div class="ntfm-grid">';
+ h+='<div class="hd"></div>';
+ NTF_CH.forEach(function(c){var sn=c.live?(c.k==='push'&&pushOn?'<span class="sn on">on</span>':''):'<span class="sn">soon</span>';h+='<div class="hd'+(c.live?'':' soon')+'"><span class="i">'+c.ic+'</span>'+c.label+sn+'</div>';});
  NTF_TYPES.forEach(function(t){
-   h+='<div style="border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px"><div style="font-weight:600;font-size:13.5px;color:var(--forest)">'+t.label+(t.adv?' <span style="font-size:10px;color:var(--green-d);font-weight:700">Advanced</span>':'')+'</div><div class="hint" style="margin:2px 0 8px">'+t.desc+'</div><div style="display:flex;gap:14px;flex-wrap:wrap">';
-   t.ch.forEach(function(ck){var cur=!!(tp[t.k]&&tp[t.k][ck]);var cm=ntfChMeta(ck);var live=cm&&cm.live;h+='<label style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:'+(live?'var(--ink)':'#b4c2b9')+'"><input type="checkbox" id="ntf_'+t.k+'_'+ck+'"'+(cur&&live?' checked':'')+(live?'':' disabled')+'> '+cm.ic+' '+cm.label+(live?'':' (soon)')+'</label>';});
-   h+='</div></div>';
+   h+='<div class="lbl"><b>'+t.label+(t.adv?' <span style="font-size:9px;color:var(--green-d);font-weight:800;vertical-align:middle">ADV</span>':'')+'</b><small>'+t.desc+'</small></div>';
+   NTF_CH.forEach(function(c){
+     if(t.ch.indexOf(c.k)<0){h+='<div class="cell off">·</div>';return;}
+     var cur=!!(tp[t.k]&&tp[t.k][c.k]),live=!!c.live;
+     h+='<div class="cell"><label class="nfsw"><input type="checkbox" id="ntf_'+t.k+'_'+c.k+'"'+(cur&&live?' checked':'')+(live?'':' disabled')+'><span class="tk"></span></label></div>';
+   });
  });
+ h+='</div></div>';
  var qs=(p.quiet_hours_start==null?21:p.quiet_hours_start),qe=(p.quiet_hours_end==null?8:p.quiet_hours_end),mode=p.send_time_mode||'auto';
  function hrOpts(sel){var o='';for(var i=0;i<24;i++){o+='<option value="'+i+'"'+(i===sel?' selected':'')+'>'+(i<10?'0':'')+i+':00</option>';}return o;}
- h+='<div style="font-size:12.5px;font-weight:700;color:var(--forest);margin:12px 0 6px">Timing</div>';
- h+='<label style="display:flex;align-items:center;gap:8px;font-size:12.5px;margin-bottom:8px"><input type="checkbox" id="ntfAuto"'+(mode==='auto'?' checked':'')+'> Send at my best time (we learn when you’re active)</label>';
+ h+='<div style="font-size:12.5px;font-weight:700;color:var(--forest);margin:16px 0 8px">Timing</div>';
+ h+='<label style="display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:12px"><span class="nfsw"><input type="checkbox" id="ntfAuto"'+(mode==='auto'?' checked':'')+'><span class="tk"></span></span> Send at my best time (we learn when you’re active)</label>';
  h+='<div style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted);flex-wrap:wrap">Quiet hours <select id="ntfQS" style="padding:7px;border:1px solid var(--line);border-radius:8px;font-family:inherit">'+hrOpts(qs)+'</select> to <select id="ntfQE" style="padding:7px;border:1px solid var(--line);border-radius:8px;font-family:inherit">'+hrOpts(qe)+'</select></div>';
- h+='<div class="hint" style="margin-top:8px">Timezone: '+(p.timezone||'UTC')+'</div>';
- h+='<button class="btn sm" id="ntfSave" style="margin-top:14px;width:100%;justify-content:center">Save notification settings</button>';
+ h+='<div class="hint" style="margin-top:8px">Your timezone: '+(p.timezone||'UTC')+'</div>';
+ h+='<button class="btn sm" id="ntfSave" style="margin-top:16px;width:100%;justify-content:center">Save notification settings</button>';
  b.innerHTML=h;
  var pe=document.getElementById('ntfPushEnable');if(pe)pe.onclick=async function(){await enablePush(pe);renderNotif();};
  var sv=document.getElementById('ntfSave');if(sv)sv.onclick=function(){saveNotifPrefs(sv);};
