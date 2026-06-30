@@ -549,6 +549,10 @@ select.inp{appearance:auto}
           <div class="hint">Choose what we send and how. We nudge you when it helps, never spam.</div>
           <div id="ntfBody" style="margin-top:6px"><div class="hint">Loading…</div></div>
         </div>
+        <div class="card"><h3>💡 Request a feature</h3>
+          <div class="hint">Got an idea for Mind OS? Tell us, and vote on what others want. We build by what matters most to you.</div>
+          <div style="margin-top:12px"><button class="btn sm" id="openFeatures">Open the feature board</button></div>
+        </div>
         <div class="card"><h3>📦 Your data</h3>
           <div class="hint">You own your data, export everything anytime, or delete your account.</div>
           <div style="margin-top:12px"><button class="btn sm" id="exportBtn">Export my data (JSON)</button></div>
@@ -570,6 +574,38 @@ select.inp{appearance:auto}
     <div style="background:rgba(255,255,255,.06);border-radius:15px;padding:16px"><h5 style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:#ff9e9e;margin-bottom:11px">✕ We cannot see</h5><p style="font-size:13px;margin-bottom:8px">🙈 Your name</p><p style="font-size:13px;margin-bottom:8px">🙈 Email &amp; photo</p><p style="font-size:13px">🙈 Anything identifying</p></div>
   </div>
   <div style="margin-top:16px;font-size:12px;color:#9fc6ae;text-align:center">You own your data, export or delete anytime.</div>
+</div></div>
+
+<!-- FEATURE REQUEST MODAL (#57) -->
+<div class="overlay" id="frM"><div class="modal" style="max-width:560px"><button class="x" onclick="hide('frM')">×</button>
+  <h3 style="margin-bottom:4px">💡 Feature board</h3>
+  <div class="hint" style="margin-bottom:12px">Suggest what you want next, and vote on others' ideas. We prioritise by what helps members most.</div>
+  <details id="frFormWrap" style="border:1px solid var(--line);border-radius:14px;padding:0;margin-bottom:14px;overflow:hidden">
+    <summary style="list-style:none;cursor:pointer;padding:13px 15px;font-weight:600;color:var(--forest);background:#f3faf5;font-size:14px">➕ Suggest a feature</summary>
+    <div style="padding:14px 15px 16px">
+      <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:4px">What would you like? *</label>
+      <input class="inp" id="frTitle" maxlength="140" placeholder="e.g. Let me snooze a reminder for an hour" style="margin-bottom:10px">
+      <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:4px">Any detail? (optional)</label>
+      <textarea class="inp" id="frDetail" maxlength="2000" rows="3" placeholder="What's the problem it solves, or how you'd use it." style="margin-bottom:10px;resize:vertical"></textarea>
+      <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:4px">Which part of Mind OS?</label>
+      <select class="inp" id="frTool" style="margin-bottom:12px">
+        <option value="">Pick one (optional)</option>
+        <option>My Growth / Q4</option>
+        <option>Habits &amp; reps</option>
+        <option>Resilience</option>
+        <option>Priorities</option>
+        <option>Potential</option>
+        <option>Community &amp; PODs</option>
+        <option>Coaching</option>
+        <option>Notifications</option>
+        <option>Account &amp; billing</option>
+        <option>Something else</option>
+      </select>
+      <button class="btn" id="frSubmit" style="width:100%">Send my idea</button>
+    </div>
+  </details>
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap" id="frFilters"></div>
+  <div id="frBoard"><div class="hint">Loading…</div></div>
 </div></div>
 
 <!-- SHARE MODAL -->
@@ -863,6 +899,7 @@ function initBrandLogo(){
   t.src=BRAND_LOGO_URL+'?v='+Date.now();
 }
 function initAdmin(m){
+  window._isAdmin=!!(m&&m.is_admin);
   if(!(m&&m.is_admin)) return;
   $('#adminLogoCard').style.display='';
   try{if(!document.getElementById('adminBillTest')){var bt=document.createElement('button');bt.id='adminBillTest';bt.textContent='$1 billing test';bt.title='Admin: run a real $1 charge to verify recurring billing';bt.style.cssText='position:fixed;left:12px;bottom:12px;z-index:9998;background:#173622;color:#fff;border:none;border-radius:10px;padding:9px 13px;font:600 12px Poppins,sans-serif;cursor:pointer;opacity:.85;box-shadow:0 4px 14px rgba(23,54,34,.25)';bt.onclick=function(){goEmbedCheckout('test',bt);};document.body.appendChild(bt);}}catch(e){}
@@ -1122,6 +1159,19 @@ function renderNotif(){var b=document.getElementById('ntfBody');if(!b)return;ntf
 }
 async function saveNotifPrefs(btn){if(!user)return;var o=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Saving…';}try{var tp={},aP=false,aE=false,aW=false;NTF_TYPES.forEach(function(t){tp[t.k]={};NTF_CH.forEach(function(c){var el=document.getElementById('ntf_'+t.k+'_'+c.k);var v=!!(el&&el.checked&&t.ch.indexOf(c.k)>=0);tp[t.k][c.k]=v;if(v&&c.k==='push')aP=true;if(v&&c.k==='email')aE=true;if(v&&c.k==='whatsapp')aW=true;});});var mode=(document.getElementById('ntfAuto')&&document.getElementById('ntfAuto').checked)?'auto':'fixed';var qs=parseInt(document.getElementById('ntfQS').value,10),qe=parseInt(document.getElementById('ntfQE').value,10);var tz='UTC';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';}catch(e){}await sb.from('notification_prefs').upsert({member_id:user.id,push_enabled:aP,email_enabled:aE,whatsapp_enabled:aW,type_prefs:tp,send_time_mode:mode,quiet_hours_start:qs,quiet_hours_end:qe,timezone:tz,updated_at:new Date().toISOString()},{onConflict:'member_id'});window._ntf=Object.assign(window._ntf||{},{type_prefs:tp,push_enabled:aP,email_enabled:aE,whatsapp_enabled:aW,send_time_mode:mode,quiet_hours_start:qs,quiet_hours_end:qe,timezone:tz});try{track('notif_prefs_save',{});}catch(e){}toast('✓ Notification settings saved.');}catch(e){toast('⚠️ Could not save your settings.');}if(btn){btn.disabled=false;btn.textContent=o;}}
 window.loadNotifPrefs=loadNotifPrefs;window.saveNotifPrefs=saveNotifPrefs;
+/* ---- Feature board (#57): member-submitted requests + one vote each + admin moderation ---- */
+var FR_STATUS={requested:['Requested','#5d6f64','#eef3f0'],under_review:['Under review','#1f6f43','#e3f4ea'],planned:['Planned','#0b5cab','#e1effb'],in_progress:['In progress','#9a6b00','#fcf1d6'],shipped:['Shipped','#1a7a3f','#d6f3e0'],declined:['Declined','#9a3b34','#fbeae7']};
+var FR_ORDER={in_progress:0,planned:1,under_review:2,requested:3,shipped:4,declined:5};
+var _frData=[],_frFilter='open';
+function frEsc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+async function loadFeatureBoard(){var el=document.getElementById('frBoard');if(!el)return;el.innerHTML='<div class="hint">Loading…</div>';try{var r=await sb.from('feature_requests_view').select('*');if(r&&r.error)throw r.error;_frData=(r&&r.data)||[];renderFeatureBoard();}catch(e){el.innerHTML='<div class="hint">Couldn’t load the board. Try again.</div>';}}
+function renderFeatureFilters(){var f=document.getElementById('frFilters');if(!f)return;var opts=[['open','Open'],['planned','Planned'],['in_progress','In progress'],['shipped','Shipped'],['all','All']];f.innerHTML=opts.map(function(o){var on=(_frFilter===o[0]);return '<button class="btn sm'+(on?'':' ghost')+'" data-frf="'+o[0]+'" style="padding:5px 11px;font-size:11.5px">'+o[1]+'</button>';}).join('');Array.prototype.forEach.call(f.querySelectorAll('[data-frf]'),function(b){b.onclick=function(){_frFilter=b.getAttribute('data-frf');renderFeatureBoard();};});}
+function renderFeatureBoard(){renderFeatureFilters();var el=document.getElementById('frBoard');if(!el)return;var isAdmin=!!window._isAdmin;var list=_frData.slice();if(_frFilter==='open')list=list.filter(function(x){return ['requested','under_review','planned','in_progress'].indexOf(x.status)>=0;});else if(_frFilter!=='all')list=list.filter(function(x){return x.status===_frFilter;});list.sort(function(a,b){var d=(FR_ORDER[a.status]-FR_ORDER[b.status]);if(d)return d;return (b.vote_count||0)-(a.vote_count||0);});if(!list.length){el.innerHTML='<div class="hint" style="text-align:center;padding:18px 0">No ideas here yet. Be the first ✨</div>';return;}el.innerHTML=list.map(function(x){var st=FR_STATUS[x.status]||FR_STATUS.requested;var voted=!!x.has_voted;var tool=x.tool?('<span style="font-size:10.5px;color:var(--muted);background:var(--page);border:1px solid var(--line);border-radius:20px;padding:2px 8px">'+frEsc(x.tool)+'</span>'):'';var note=x.admin_note?('<div style="font-size:12px;color:var(--green-d);background:#eef9f1;border-radius:9px;padding:7px 10px;margin-top:8px">💬 '+frEsc(x.admin_note)+'</div>'):'';var admin='';if(isAdmin){var sel=Object.keys(FR_STATUS).map(function(k){return '<option value="'+k+'"'+(k===x.status?' selected':'')+'>'+FR_STATUS[k][0]+'</option>';}).join('');admin='<div style="margin-top:8px"><select data-frset="'+x.id+'" class="inp" style="padding:6px 8px;font-size:12px;width:auto">'+sel+'</select></div>';}return '<div style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:9px"><button data-frvote="'+x.id+'" data-voted="'+(voted?1:0)+'" style="flex:none;width:46px;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid '+(voted?'var(--green)':'var(--line)')+';background:'+(voted?'var(--green)':'#fff')+';color:'+(voted?'#fff':'var(--forest)')+';border-radius:11px;padding:7px 0;cursor:pointer;font-family:inherit"><span style="font-size:13px;line-height:1">▲</span><b style="font-size:14px;line-height:1.1">'+(x.vote_count||0)+'</b></button><div style="flex:1;min-width:0"><b style="font-size:14px;color:var(--forest)">'+frEsc(x.title)+'</b><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:4px"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:'+st[1]+';background:'+st[2]+';border-radius:20px;padding:2px 8px">'+st[0]+'</span>'+tool+'</div>'+(x.detail?('<div style="font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45">'+frEsc(x.detail)+'</div>'):'')+note+admin+'</div></div>';}).join('');Array.prototype.forEach.call(el.querySelectorAll('[data-frvote]'),function(b){b.onclick=function(){toggleFeatureVote(b.getAttribute('data-frvote'),b.getAttribute('data-voted')==='1');};});Array.prototype.forEach.call(el.querySelectorAll('[data-frset]'),function(s){s.onchange=function(){adminSetFeatureStatus(s.getAttribute('data-frset'),s.value);};});}
+async function toggleFeatureVote(id,voted){try{if(voted){var d=await sb.from('feature_request_votes').delete().eq('request_id',id).eq('member_id',user.id);if(d&&d.error)throw d.error;}else{var r=await sb.from('feature_request_votes').insert({request_id:id});if(r&&r.error&&r.error.code!=='23505')throw r.error;}try{track('feature_vote',{voted:!voted});}catch(e){}await loadFeatureBoard();}catch(e){toast('⚠️ Couldn’t register your vote.');}}
+async function submitFeature(btn){var t=((document.getElementById('frTitle')||{}).value||'').trim();if(t.length<3){toast('Give your idea a short title first.');return;}var d=((document.getElementById('frDetail')||{}).value||'').trim();var tool=(document.getElementById('frTool')||{}).value||null;var o=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Sending…';}try{var r=await sb.from('feature_requests').insert({title:t,detail:d||null,tool:tool});if(r&&r.error)throw r.error;document.getElementById('frTitle').value='';document.getElementById('frDetail').value='';document.getElementById('frTool').value='';var fw=document.getElementById('frFormWrap');if(fw)fw.open=false;try{track('feature_submit',{tool:tool});}catch(e){}toast('✓ Thanks! Your idea is on the board.');await loadFeatureBoard();}catch(e){toast('⚠️ Couldn’t send that. Try again.');}if(btn){btn.disabled=false;btn.textContent=o;}}
+async function adminSetFeatureStatus(id,status){try{var r=await sb.from('feature_requests').update({status:status}).eq('id',id);if(r&&r.error)throw r.error;toast('✓ Status updated.');await loadFeatureBoard();}catch(e){toast('⚠️ Couldn’t update.');}}
+async function openFeatureBoard(){show('frM');await loadFeatureBoard();}
+window.openFeatureBoard=openFeatureBoard;
 window._billStatus='none';window._plan='free';
 async function loadEntitlement(){try{const {data}=await sb.from('member_billing').select('status,plan').eq('member_id',user.id).maybeSingle();window._billStatus=(data&&data.status)||'none';window._plan=(data&&data.plan)||'free';}catch(e){}}
 function isEntitled(){return ['trialing','active','comped'].includes(window._billStatus)||['advanced','community'].includes(window._entitlement);}
@@ -1145,6 +1195,8 @@ $('#copyRef').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText($(
 async function loadSettings(){var e=$('#setEmail');if(e)e.textContent=user.email;var a=$('#setAlias');if(a)a.textContent=$('#alias').value||',';}
 async function exportMyData(){toast('Preparing your export…');const tbls=['q4_scores','q4_snapshots','habits','habit_logs','resilience_entries','growth_items','potential','streaks','entry_events'];const out={exported_at:new Date().toISOString(),account:{email:user.email,alias:$('#alias').value}};for(const tb of tbls){const {data}=await sb.from(tb).select('*').eq('member_id',user.id);out[tb]=data||[];}const {data:refs}=await sb.from('referrals').select('*').eq('referrer_id',user.id);out.referrals=refs||[];const {data:me}=await sb.from('members').select('*').eq('id',user.id).maybeSingle();out.profile=me||{};const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mind-os-my-data.json';document.body.appendChild(a);a.click();a.remove();toast('Exported ✓');}
 $('#exportBtn')&&($('#exportBtn').onclick=exportMyData);
+$('#openFeatures')&&($('#openFeatures').onclick=openFeatureBoard);
+$('#frSubmit')&&($('#frSubmit').onclick=function(){submitFeature(this);});
 $('#setSignout')&&($('#setSignout').onclick=async()=>{await sb.auth.signOut();location.reload();});
 $('#setPrivacy')&&($('#setPrivacy').onclick=()=>$('#privM').classList.add('show'));
 $('#deleteAcct')&&($('#deleteAcct').onclick=async()=>{if(!confirm('Delete your account and ALL your data? This cannot be undone.'))return;if(!confirm('Are you absolutely sure? This permanently erases everything.'))return;const {error}=await sb.rpc('delete_my_account');if(error){toast('⚠️ '+error.message);return;}await sb.auth.signOut();alert('Your account and data have been deleted.');location.reload();});
