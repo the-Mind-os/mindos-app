@@ -319,7 +319,7 @@ select.inp{appearance:auto}
     <header class="top">
       <div><h1 id="ttl">My Growth</h1><div class="sub" id="sub">Your quality-of-life command center</div></div>
       <div class="tw">
-        <div class="vtoggle" title="Switch view"><span class="on">Personal</span><a href="coach.html">Coach</a></div>
+        <div class="vtoggle" id="viewToggle" title="Switch view" style="display:none"><span class="on">Personal</span><a href="coach.html">Coach</a></div>
         <button class="priv" onclick="show('privM')">🔒 Data Privacy</button>
         <div class="griH"><div class="n" id="griN">0</div><small>GRI</small></div>
         <span class="badge b-blue" id="tierBadge">Blue</span>
@@ -914,7 +914,7 @@ async function boot(){
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
   try{const _pg=localStorage.getItem('pendingGoal');if(_pg){const _pt=$('#prioTitle');if(_pt&&!_pt.value)_pt.value=_pg;localStorage.removeItem('pendingGoal');}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
-  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';isCoach=!!(m&&m.is_coach);try{var _bt=$('#brillText');if(_bt)_bt.textContent=AFFIRM[Math.random()*AFFIRM.length|0];}catch(e){}loadCompletion();loadGrowth();loadDailyRing();loadSkillData();
+  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';isCoach=!!(m&&m.is_coach);try{var _vt=$('#viewToggle');if(_vt)_vt.style.display=isCoach?'':'none';}catch(e){}try{var _bt=$('#brillText');if(_bt)_bt.textContent=AFFIRM[Math.random()*AFFIRM.length|0];}catch(e){}loadCompletion();loadGrowth();loadDailyRing();loadSkillData();
   drawRadar();
   await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods(),loadRefer(),loadSettings(),loadCoaches(),loadLeaderboard()]);
   initAvatar(m); initAdmin(m); initBrandLogo();
