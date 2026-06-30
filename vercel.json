@@ -1,5 +1,10 @@
 {
   "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "has": [{ "type": "host", "value": "coaches.mind.us" }], "destination": "/coaches.html" },
+    { "source": "/:a", "has": [{ "type": "host", "value": "coaches.mind.us" }], "destination": "/coaches.html" },
+    { "source": "/:a/:b", "has": [{ "type": "host", "value": "coaches.mind.us" }], "destination": "/coaches.html" }
+  ],
   "headers": [
     { "source": "/.well-known/apple-developer-merchantid-domain-association", "headers": [{ "key": "Content-Type", "value": "application/octet-stream" }] },
     { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate" }] },
