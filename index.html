@@ -1388,7 +1388,7 @@ function devImpersonating(){return devViewAs()!=='me';}
 function devWriteBlocked(){try{if(devImpersonating()){toast('👀 View-as is read-only. Reset to your account to make changes.');return true;}}catch(e){}return false;}
 window.effectivePlan=effectivePlan;window.effectiveRole=effectiveRole;window.featureVisible=featureVisible;window.isTestUser=isTestUser;window.devImpersonating=devImpersonating;window.devWriteBlocked=devWriteBlocked;
 /* One CSS rule hides in-test marketplace/POD entry points when the flag is off (dark-launch / rollback-via-flag). */
-try{var _dgs=document.createElement('style');_dgs.textContent='body.mos-hide-mkt [data-tab="coaches"],body.mos-hide-mkt .morelink[data-go="coaches"],body.mos-hide-mkt [data-go="pods"]{display:none!important}';document.head.appendChild(_dgs);}catch(e){}
+try{var _dgs=document.createElement('style');_dgs.textContent='body.mos-hide-mkt [data-tab="coaches"],body.mos-hide-mkt [data-tab="pods"],body.mos-hide-mkt .morelink[data-go="coaches"],body.mos-hide-mkt [data-go="pods"]{display:none!important}';document.head.appendChild(_dgs);}catch(e){}
 function applyDevGates(){
   try{var _vt=$('#viewToggle');if(_vt)_vt.style.display=(effectiveRole()==='coach')?'':'none';}catch(e){}
   try{document.body.classList.toggle('mos-hide-mkt',!featureVisible('marketplace'));}catch(e){}
