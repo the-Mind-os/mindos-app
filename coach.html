@@ -28,6 +28,8 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
 .kpi{font-size:30px;font-weight:800;color:var(--forest)}
 .calcrow{display:flex;align-items:center;gap:12px;margin:12px 0}.calcrow label{width:110px;font-size:13px}.calcrow input{flex:1}.calcrow b{width:56px;text-align:right;color:var(--forest)}
 .copy{display:flex;gap:8px;margin-top:10px}
+.flab{display:block;font-size:11.5px;font-weight:600;margin:12px 0 5px;color:var(--forest)}
+textarea.inp{resize:vertical}
 #app{display:none}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#173622;color:#4DF28A;padding:10px 17px;border-radius:30px;font-size:13px;font-weight:600;opacity:0;transition:.2s;z-index:50}
 </style>
@@ -62,12 +64,24 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
         <div id="cockpit"></div>
       </div>
       <div class="card" id="coacheePanel" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center"><h3 id="cName">Coachee</h3><button class="signout" id="cClose">Close</button></div><div class="hint">Their frameworks, Q4, priorities, resilience.</div><div id="cBody"></div></div>
-      <div class="card"><h3>◍ Your PODs</h3><div class="hint">Tap a POD to open its command center.</div><div id="podList"></div></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3>◍ Your PODs</h3><button class="btn sm" id="newPod">+ New POD</button></div><div class="hint">Tap a POD to open its command center. Publish a POD to list it in the marketplace, or save a draft to finish later.</div><div id="podList"></div></div>
       <div class="card" id="podCenter" style="display:none">
         <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="pcName">⌂ POD Command Center</h3><button class="signout" id="pcClose">Close</button></div>
         <div class="hint" id="pcSummary"></div>
         <div class="ckrow head" style="grid-template-columns:1.5fr 46px 56px 74px 100px"><span>Client</span><span>Q4</span><span>🔥</span><span>GRI</span><span>Status</span></div>
         <div id="pcList"></div>
+        <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="font-size:14px">📅 Sessions</h3><button class="btn sm" id="pcNewSession">+ Schedule</button></div>
+          <div class="hint">Set your live meetups. Members see them in their app, in their own timezone.</div>
+          <div id="pcSessForm" style="display:none;background:var(--page);border-radius:12px;padding:12px;margin-bottom:10px">
+            <input class="inp" id="ssTitle" placeholder="Session title (e.g. Weekly check-in)" style="margin-bottom:8px">
+            <div style="display:flex;gap:8px;margin-bottom:8px"><input class="inp" id="ssWhen" type="datetime-local" style="flex:1"><input class="inp" id="ssDur" type="number" min="15" step="15" value="60" style="width:88px" title="Minutes"></div>
+            <input class="inp" id="ssLink" placeholder="Meeting link (Zoom, Meet…)" style="margin-bottom:8px">
+            <div id="ssMsg" class="hint" style="margin:0 0 8px"></div>
+            <button class="btn sm" id="ssSave">Schedule session</button>
+          </div>
+          <div id="pcSessions"></div>
+        </div>
       </div>
       <div class="card"><h3>🎟 Invite your clients</h3><div class="hint">Share this link, your clients join your POD in one tap.</div>
         <div class="copy"><input class="inp" id="inviteLink" readonly><button class="btn" id="genInvite">Generate</button></div>
@@ -80,12 +94,45 @@ body{font-family:'Poppins',system-ui,sans-serif;background:var(--page);color:var
     </div>
   </div>
 </div>
+
+<div id="podModal" style="display:none;position:fixed;inset:0;background:rgba(12,26,18,.55);z-index:60;overflow:auto;padding:24px 14px">
+  <div class="card" style="max-width:520px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 id="pmTitle">Create a POD</h3><button class="signout" id="pmClose">Close</button></div>
+    <div class="hint">Set up a coach-led POD. Publish it to list it in the marketplace, or save a draft to finish later.</div>
+    <label class="flab" for="pmName">POD title</label>
+    <input class="inp" id="pmName" placeholder="e.g. Business Growth Circle">
+    <label class="flab" for="pmFocusType">Focus</label>
+    <select class="inp" id="pmFocusType"><option value="goal">Goal</option><option value="habit">Habit</option><option value="resilience">Resilience challenge</option></select>
+    <label class="flab" for="pmFocus">Focus area (short)</label>
+    <input class="inp" id="pmFocus" placeholder="e.g. Business growth, Fitness, Purpose">
+    <label class="flab" for="pmDesc">Description</label>
+    <textarea class="inp" id="pmDesc" rows="3" placeholder="What you'll work on together, who it's for, the outcome."></textarea>
+    <label class="flab" for="pmCadence">Cadence</label>
+    <input class="inp" id="pmCadence" placeholder="e.g. Weekly · Tuesdays 7pm">
+    <div style="display:flex;gap:10px">
+      <div style="flex:1"><label class="flab" for="pmStart">Start date</label><input class="inp" id="pmStart" type="date"></div>
+      <div style="width:100px"><label class="flab" for="pmSeats">Seats</label><input class="inp" id="pmSeats" type="number" min="1" max="14" value="14"></div>
+    </div>
+    <label class="flab" for="pmSlug">Link name (coaches.mind.us/you/…)</label>
+    <input class="inp" id="pmSlug" placeholder="business-growth">
+    <div style="background:var(--page);border-radius:12px;padding:10px 12px;margin:14px 0;font-size:12.5px;color:var(--muted)">Price is fixed at <b style="color:var(--forest)">$250/mo</b> per member. You keep 70%.</div>
+    <div id="pmMsg" class="hint" style="margin:0 0 8px"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" id="pmPublish">Publish POD</button>
+      <button class="btn" id="pmDraft" style="background:#fff;border:1px solid var(--line);color:var(--ink)">Save draft</button>
+      <button class="btn" id="pmDelete" style="background:#fdeaea;color:#d83a3a;display:none">Delete</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
 let user=null,myPods=[];
+let curPodId=null,editingPodId=null,slugTouched=false;
+const POD_COLS='id,name,focus_type,focus,description,cadence,start_date,seats,status,slug';
 const APP_URL='https://app.mind.us'; // custom domain (live)
 const $=s=>document.querySelector(s);
 const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -99,7 +146,7 @@ sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 async function boot(){
   $('#auth').style.display='none';$('#app').style.display='block';$('#who').textContent=user.email;
   const {data:m}=await sb.from('members').select('is_coach').eq('id',user.id).maybeSingle();
-  const {data:pods}=await sb.from('pods').select('id,name').eq('coach_id',user.id);
+  const {data:pods}=await sb.from('pods').select(POD_COLS).eq('coach_id',user.id).order('created_at');
   myPods=pods||[];
   if(!(m&&m.is_coach)&&!myPods.length){$('#notCoach').style.display='block';return;}
   $('#coachUI').style.display='block';
@@ -129,11 +176,20 @@ async function loadCockpit(){
   el.innerHTML=h;$('#kQ4').textContent=nQ?Math.round(totalQ/nQ):',';$('#kGri').textContent=totalG.toLocaleString();
   el.querySelectorAll('.ckrow[data-id]').forEach(r=>r.onclick=()=>openCoachee(r.dataset.id,r.dataset.alias));
 }
-async function loadPodsList(){const el=$('#podList');if(!el)return;if(!myPods.length){el.innerHTML='<div class="hint" style="margin:0">No POD yet.</div>';return;}const podIds=myPods.map(p=>p.id);const {data:mem}=await sb.from('pod_memberships').select('pod_id').in('pod_id',podIds).eq('status','active');const cnt={};(mem||[]).forEach(x=>cnt[x.pod_id]=(cnt[x.pod_id]||0)+1);el.innerHTML=myPods.map(p=>`<div class="ckrow" data-pod="${p.id}" data-name="${esc(p.name)}" style="grid-template-columns:1fr auto;cursor:pointer"><span>${esc(p.name)} ›</span><span class="qbadge">${cnt[p.id]||0} / 14 seats</span></div>`).join('');el.querySelectorAll('[data-pod]').forEach(r=>r.onclick=()=>openPodCenter(r.dataset.pod,r.dataset.name));}
+function podStatusBadge(s){return s==='listed'?'<span style="background:#e6f9ee;color:#1e9e54;padding:2px 8px;border-radius:20px;font-size:9.5px;font-weight:800;margin-left:4px">LISTED</span>':'<span style="background:#fff3e0;color:#e8852b;padding:2px 8px;border-radius:20px;font-size:9.5px;font-weight:800;margin-left:4px">DRAFT</span>';}
+async function loadPodsList(){const el=$('#podList');if(!el)return;if(!myPods.length){el.innerHTML='<div class="hint" style="margin:0">No POD yet. Tap <b>+ New POD</b> to create your first one.</div>';return;}const podIds=myPods.map(p=>p.id);const {data:mem}=await sb.from('pod_memberships').select('pod_id').in('pod_id',podIds).eq('status','active');const cnt={};(mem||[]).forEach(x=>cnt[x.pod_id]=(cnt[x.pod_id]||0)+1);el.innerHTML=myPods.map(p=>`<div class="ckrow" style="grid-template-columns:1fr auto auto;gap:8px;align-items:center"><span data-pod="${p.id}" data-name="${esc(p.name)}" style="cursor:pointer">${esc(p.name)} ›${podStatusBadge(p.status)}</span><span class="qbadge">${cnt[p.id]||0}/${p.seats||14}</span><button class="btn sm" data-edit="${p.id}" style="background:#fff;border:1px solid var(--line);color:var(--ink);padding:5px 10px">Edit</button></div>`).join('');el.querySelectorAll('[data-pod]').forEach(r=>r.onclick=()=>openPodCenter(r.dataset.pod,r.dataset.name));el.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const p=myPods.find(x=>x.id===b.dataset.edit);if(p)openPodBuilder(p);});}
+function slugify(s){return String(s||'').toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/[\s_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,50);}
+function openPodBuilder(pod){editingPodId=pod?pod.id:null;$('#pmTitle').textContent=pod?'Edit POD':'Create a POD';$('#pmName').value=pod?(pod.name||''):'';$('#pmFocusType').value=pod?(pod.focus_type||'goal'):'goal';$('#pmFocus').value=pod?(pod.focus||''):'';$('#pmDesc').value=pod?(pod.description||''):'';$('#pmCadence').value=pod?(pod.cadence||''):'';$('#pmStart').value=(pod&&pod.start_date)?pod.start_date:'';$('#pmSeats').value=(pod&&pod.seats)?pod.seats:14;$('#pmSlug').value=pod?(pod.slug||''):'';$('#pmMsg').textContent='';$('#pmDelete').style.display=pod?'inline-flex':'none';slugTouched=!!(pod&&pod.slug);$('#podModal').style.display='block';}
+async function savePod(publish){const name=$('#pmName').value.trim();if(!name){$('#pmMsg').textContent='⚠️ Give your POD a title.';return;}let slug=slugify($('#pmSlug').value||name)||null;const seats=Math.max(1,Math.min(14,parseInt($('#pmSeats').value,10)||14));const row={coach_id:user.id,name,focus_type:$('#pmFocusType').value,focus:$('#pmFocus').value.trim()||null,description:$('#pmDesc').value.trim()||null,cadence:$('#pmCadence').value.trim()||null,start_date:$('#pmStart').value||null,seats,slug,price_cents:25000,status:publish?'listed':'draft'};$('#pmMsg').textContent='Saving…';let res;if(editingPodId){res=await sb.from('pods').update(row).eq('id',editingPodId).select().single();}else{res=await sb.from('pods').insert(row).select().single();}if(res.error){let msg=res.error.message;if(/duplicate|unique/i.test(msg))msg='That link name is already used by one of your PODs, pick another.';$('#pmMsg').textContent='⚠️ '+msg;return;}$('#podModal').style.display='none';toast(publish?'POD published!':'Draft saved');await reloadPods();}
+async function deletePod(){if(!editingPodId)return;if(!confirm('Delete this POD? This cannot be undone.'))return;const {error}=await sb.from('pods').delete().eq('id',editingPodId);if(error){$('#pmMsg').textContent='⚠️ '+error.message;return;}$('#podModal').style.display='none';toast('POD deleted');$('#podCenter').style.display='none';await reloadPods();}
+async function reloadPods(){const {data:pods}=await sb.from('pods').select(POD_COLS).eq('coach_id',user.id).order('created_at');myPods=pods||[];loadCockpit();loadPodsList();}
+async function loadSessions(podId){const el=$('#pcSessions');if(!el)return;el.innerHTML='<div class="hint" style="margin:0">Loading…</div>';const {data,error}=await sb.from('pod_sessions').select('id,title,starts_at,duration_min,meeting_link,status').eq('pod_id',podId).order('starts_at');if(error){el.innerHTML='<div class="hint" style="margin:0">⚠️ '+esc(error.message)+'</div>';return;}const rows=(data||[]).filter(s=>s.status!=='cancelled');if(!rows.length){el.innerHTML='<div class="hint" style="margin:0">No sessions scheduled yet.</div>';return;}const now=Date.now();el.innerHTML=rows.map(s=>{const d=new Date(s.starts_at);const past=d.getTime()<now;const when=d.toLocaleString([],{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});return `<div class="ckrow" style="grid-template-columns:1fr auto;gap:8px;align-items:center;opacity:${past?'.55':'1'}"><span><b>${esc(s.title)}</b><div style="font-size:11px;color:var(--muted)">${when} · ${s.duration_min||60} min${s.meeting_link?' · <a href="'+esc(s.meeting_link)+'" target="_blank" rel="noopener" style="color:#1e9e54">link</a>':''}</div></span>${past?'<span class="hint" style="margin:0">done</span>':'<button class="btn sm" data-cancel="'+s.id+'" style="background:#fdeaea;color:#d83a3a;padding:5px 10px">Cancel</button>'}</div>`;}).join('');el.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>cancelSession(b.dataset.cancel,podId));}
+async function scheduleSession(podId){const title=$('#ssTitle').value.trim();const when=$('#ssWhen').value;if(!title){$('#ssMsg').textContent='⚠️ Add a title.';return;}if(!when){$('#ssMsg').textContent='⚠️ Pick a date and time.';return;}const dur=Math.max(15,parseInt($('#ssDur').value,10)||60);$('#ssMsg').textContent='Scheduling…';const {error}=await sb.from('pod_sessions').insert({pod_id:podId,coach_id:user.id,title,starts_at:new Date(when).toISOString(),duration_min:dur,meeting_link:$('#ssLink').value.trim()||null});if(error){$('#ssMsg').textContent='⚠️ '+error.message;return;}$('#ssTitle').value='';$('#ssWhen').value='';$('#ssLink').value='';$('#ssDur').value=60;$('#ssMsg').textContent='';$('#pcSessForm').style.display='none';toast('Session scheduled');loadSessions(podId);}
+async function cancelSession(id,podId){const {error}=await sb.from('pod_sessions').update({status:'cancelled'}).eq('id',id);if(error){toast('⚠️ '+error.message);return;}toast('Session cancelled');loadSessions(podId);}
 const PILLC={purpose:'Purpose & Meaning',relationships:'Relationships & Belonging',mind_body:'Mind & Body',money:'Money & Mastery'};
 function ragStyle(rag){return ({green:['#e6f9ee','#1e9e54','Thriving'],amber:['#fff3e0','#e8852b','Warming up'],red:['#fdeaea','#d83a3a','Needs you']})[rag||'red'];}
 function ragPill(rag){var c=ragStyle(rag);return '<span style="display:inline-flex;align-items:center;gap:6px;background:'+c[0]+';color:'+c[1]+';padding:5px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:'+c[1]+';box-shadow:0 0 0 3px '+c[0]+', 0 0 6px '+c[1]+'"></span>'+c[2]+'</span>';}
-async function openPodCenter(id,name){const pc=$('#podCenter');if(!pc)return;pc.style.display='block';$('#pcName').textContent='⌂ '+(name||'POD');const list=$('#pcList');list.innerHTML='<div class="hint">Loading…</div>';const {data,error}=await sb.rpc('pod_command_center',{p_pod:id});if(error){list.innerHTML='<div class="hint">⚠️ '+error.message+'</div>';return;}const mem=(data&&data.members)||[];const g=mem.filter(x=>x.rag==='green').length,a=mem.filter(x=>x.rag==='amber').length,r=mem.filter(x=>x.rag==='red').length;$('#pcSummary').innerHTML=mem.length+' clients · <b style="color:#1e9e54">'+g+' thriving</b> · <b style="color:#e8852b">'+a+' warming</b> · <b style="color:#d83a3a">'+r+' need you</b>';if(!mem.length){list.innerHTML='<div class="hint" style="margin:0">No clients in this POD yet, share your invite link.</div>';return;}list.innerHTML=mem.map(x=>`<div class="ckrow" data-id="${x.member_id}" data-alias="${esc(x.alias||'client')}" style="grid-template-columns:1.5fr 46px 56px 74px 100px;cursor:pointer;align-items:center"><span>${esc(x.alias||'client')} ›<div style="font-size:11px;color:var(--muted)">${esc(x.top_priority||'no priority yet')}</div></span><span class="qbadge">${x.q4||','}</span><span class="flame">🔥 ${x.streak||0}</span><span>${(x.gri||0).toLocaleString()}<div style="font-size:10px;color:${(x.recent_gri||0)>0?'#1e9e54':'var(--muted)'}">+${x.recent_gri||0}/wk</div></span><span>${ragPill(x.rag)}</span></div>`).join('');list.querySelectorAll('.ckrow').forEach(r=>r.onclick=()=>openCoachee(r.dataset.id,r.dataset.alias));}
+async function openPodCenter(id,name){const pc=$('#podCenter');if(!pc)return;pc.style.display='block';$('#pcName').textContent='⌂ '+(name||'POD');curPodId=id;loadSessions(id);const list=$('#pcList');list.innerHTML='<div class="hint">Loading…</div>';const {data,error}=await sb.rpc('pod_command_center',{p_pod:id});if(error){list.innerHTML='<div class="hint">⚠️ '+error.message+'</div>';return;}const mem=(data&&data.members)||[];const g=mem.filter(x=>x.rag==='green').length,a=mem.filter(x=>x.rag==='amber').length,r=mem.filter(x=>x.rag==='red').length;$('#pcSummary').innerHTML=mem.length+' clients · <b style="color:#1e9e54">'+g+' thriving</b> · <b style="color:#e8852b">'+a+' warming</b> · <b style="color:#d83a3a">'+r+' need you</b>';if(!mem.length){list.innerHTML='<div class="hint" style="margin:0">No clients in this POD yet, share your invite link.</div>';return;}list.innerHTML=mem.map(x=>`<div class="ckrow" data-id="${x.member_id}" data-alias="${esc(x.alias||'client')}" style="grid-template-columns:1.5fr 46px 56px 74px 100px;cursor:pointer;align-items:center"><span>${esc(x.alias||'client')} ›<div style="font-size:11px;color:var(--muted)">${esc(x.top_priority||'no priority yet')}</div></span><span class="qbadge">${x.q4||','}</span><span class="flame">🔥 ${x.streak||0}</span><span>${(x.gri||0).toLocaleString()}<div style="font-size:10px;color:${(x.recent_gri||0)>0?'#1e9e54':'var(--muted)'}">+${x.recent_gri||0}/wk</div></span><span>${ragPill(x.rag)}</span></div>`).join('');list.querySelectorAll('.ckrow').forEach(r=>r.onclick=()=>openCoachee(r.dataset.id,r.dataset.alias));}
 async function openCoachee(id,alias){const p=$('#coacheePanel');$('#cName').textContent=alias||'Coachee';p.style.display='block';p.scrollIntoView({behavior:'smooth'});const body=$('#cBody');body.innerHTML='<div class="hint">Loading…</div>';const [{data:q4},{data:res},{data:gi}]=await Promise.all([sb.from('q4_scores').select('pillar,score').eq('member_id',id),sb.from('resilience_entries').select('title,type,impact,sort_rank').eq('member_id',id).order('sort_rank',{nullsFirst:false}),sb.from('growth_items').select('title,kind,priority_rank').eq('member_id',id).order('priority_rank',{nullsFirst:false})]);const qm={};(q4||[]).forEach(r=>qm[r.pillar]=r.score);let h='<div style="font-weight:600;margin:10px 0 6px">Q4, Quality of Life</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+['purpose','relationships','mind_body','money'].map(k=>`<span style="background:var(--page);border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;color:var(--forest)">${PILLC[k]}: ${qm[k]==null?',':qm[k]}</span>`).join('')+'</div>';h+='<div style="font-weight:600;margin:16px 0 4px">Priorities (★ = OMG)</div>';h+=(gi&&gi.length)?gi.map((g,i)=>`<div class="ckrow" style="grid-template-columns:1fr auto"><span>${i===0?'★ ':''}${esc(g.title)}</span><span class="qbadge">${esc(g.kind)}</span></div>`).join(''):'<div class="hint" style="margin:0">None yet.</div>';h+='<div style="font-weight:600;margin:16px 0 4px">Resilience (BIT-N)</div>';h+=(res&&res.length)?res.map(r=>`<div class="ckrow" style="grid-template-columns:1fr auto auto"><span>${esc(r.title)}</span><span class="qbadge">${esc(r.type)}</span><span style="color:var(--muted)">impact ${r.impact==null?',':r.impact}</span></div>`).join(''):'<div class="hint" style="margin:0">None yet.</div>';body.innerHTML=h;}
 $('#cClose')&&($('#cClose').onclick=()=>{$('#coacheePanel').style.display='none';});
 $('#genInvite').onclick=async()=>{
@@ -145,6 +201,17 @@ $('#genInvite').onclick=async()=>{
   navigator.clipboard?.writeText($('#inviteLink').value);toast('Invite link copied!');
 };
 function calc(){const m=+$('#cmR').value,c=+$('#ccR').value;$('#cm').textContent=m;$('#cc').textContent=c;const mo=m*250*0.7*c;$('#cout').textContent='$'+mo.toLocaleString();$('#cyr').textContent='$'+(mo*12).toLocaleString()+' / year';}
+// POD builder (#41) + session scheduling (#43) wiring
+$('#newPod')&&($('#newPod').onclick=()=>openPodBuilder(null));
+$('#pmClose')&&($('#pmClose').onclick=()=>{$('#podModal').style.display='none';});
+$('#pmPublish')&&($('#pmPublish').onclick=()=>savePod(true));
+$('#pmDraft')&&($('#pmDraft').onclick=()=>savePod(false));
+$('#pmDelete')&&($('#pmDelete').onclick=deletePod);
+$('#pmName')&&($('#pmName').oninput=()=>{if(!slugTouched)$('#pmSlug').value=slugify($('#pmName').value);});
+$('#pmSlug')&&($('#pmSlug').oninput=()=>{slugTouched=true;});
+$('#podModal')&&($('#podModal').onclick=e=>{if(e.target===$('#podModal'))$('#podModal').style.display='none';});
+$('#pcNewSession')&&($('#pcNewSession').onclick=()=>{const f=$('#pcSessForm');f.style.display=(f.style.display==='none'||!f.style.display)?'block':'none';});
+$('#ssSave')&&($('#ssSave').onclick=()=>{if(curPodId)scheduleSession(curPodId);else toast('Open a POD first');});
 </script>
 </body>
 </html>
