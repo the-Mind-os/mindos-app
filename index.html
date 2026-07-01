@@ -13,6 +13,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mind OS">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});}</script>
+<!-- #68 Test Harness: staging preview URL. PLACEHOLDER — set the real staging Vercel preview URL here (logged in QUESTIONS-FOR-ARI). Empty = harness shows "not set yet". -->
+<script>window.MOS_STAGING_URL='';</script>
+<script src="dev-harness.js"></script>
 <style>
 :root{--green:#4DF28A;--green-d:#27c768;--forest:#173622;--forest2:#0e2417;--page:#EAF6EE;--cream:#F5F5EE;--ink:#0c1a12;--muted:#5d6f64;--line:#dbe9e0;--white:#fff;--shadow:0 10px 34px rgba(23,54,34,.10);--shadow-sm:0 3px 14px rgba(23,54,34,.07);--radius:20px;--t-blue:#4A90D9;--t-bronze:#C77B3B;--t-silver:#9AA7B4;--t-gold:#E3B23C}
 *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
@@ -905,7 +908,7 @@ sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 async function boot(){
   $('#gate').style.display='none';$('#app').style.display='grid';
   loadEntitlement();try{checkCheckoutReturn();}catch(e){}try{loadNotifPrefs();}catch(e){}
-  let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin,is_coach,age_bracket,star_sign,onboarding_completed,onboarding_step').eq('id',user.id).maybeSingle();
+  let {data:m}=await sb.from('members').select('id,alias,bio,passions,superpower,avatar_path,avatar_visibility,is_admin,is_coach,is_test_user,age_bracket,star_sign,onboarding_completed,onboarding_step').eq('id',user.id).maybeSingle();
   const isNew=!m;
   if(isNew){const al=genAlias();await sb.from('members').insert({id:user.id,alias:al});await sb.from('member_identities').insert({member_id:user.id,email:user.email});m={alias:al};}
   track('app_open',{returning:!isNew});if(isNew)track('signup',{});
@@ -918,10 +921,10 @@ async function boot(){
   try{const pq=localStorage.getItem('pendingQ4');if(pq){const v=pq.split('.').map(Number);const pl=['purpose','relationships','mind_body','money'];for(let k=0;k<4;k++){await sb.from('q4_scores').upsert({member_id:user.id,pillar:pl[k],score:v[k],updated_at:new Date().toISOString()},{onConflict:'member_id,pillar'});}const ov=Math.round(v.reduce((a,b)=>a+b,0)/4);await sb.from('q4_snapshots').insert({member_id:user.id,purpose:v[0],relationships:v[1],mind_body:v[2],money:v[3],overall:ov});localStorage.removeItem('pendingQ4');setTimeout(()=>toast('✨ Your quiz Q4 score is saved!'),800);}}catch(e){}
   try{const _pg=localStorage.getItem('pendingGoal');if(_pg){const _pt=$('#prioTitle');if(_pt&&!_pt.value)_pt.value=_pg;localStorage.removeItem('pendingGoal');}}catch(e){}
   $('#meAlias').textContent=m.alias||'member';$('#avatar').textContent=(m.alias||'M')[0].toUpperCase();$('#pphoto').textContent=(m.alias||'M')[0].toUpperCase();
-  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';isCoach=!!(m&&m.is_coach);try{var _vt=$('#viewToggle');if(_vt)_vt.style.display=isCoach?'':'none';}catch(e){}try{var _bt=$('#brillText');if(_bt)_bt.textContent=AFFIRM[Math.random()*AFFIRM.length|0];}catch(e){}loadCompletion();loadGrowth();loadDailyRing();loadSkillData();
+  $('#alias').value=m.alias||'';myAlias=m.alias||'';$('#bio').value=m.bio||'';$('#passions').value=m.passions||'';$('#sp').value=m.superpower||'';$('#ageBracket').value=m.age_bracket||'';$('#starSign').value=m.star_sign||'';isCoach=!!(m&&m.is_coach);window._isCoach=isCoach;try{var _bt=$('#brillText');if(_bt)_bt.textContent=AFFIRM[Math.random()*AFFIRM.length|0];}catch(e){}loadCompletion();loadGrowth();loadDailyRing();loadSkillData();
   drawRadar();
   await Promise.all([loadGri(),loadQ4(),loadHabits(),loadRes(),loadPrio(),loadPot(),loadProf(),loadPods(),loadRefer(),loadSettings(),loadCoaches(),loadLeaderboard(),loadPodSessions()]);
-  initAvatar(m); initAdmin(m); initBrandLogo();
+  initAvatar(m); initAdmin(m); initBrandLogo(); initDevHarness(m);
 }
 
 // ---- Profile photo (private, owner-only via signed URLs) ----
@@ -976,11 +979,7 @@ function initAdmin(m){
   if(!(m&&m.is_admin)) return;
   $('#adminLogoCard').style.display='';
   try{var _cac=document.getElementById('coachAdminCard');if(_cac)_cac.style.display='';}catch(e){}
-  try{if(!document.getElementById('adminBillTest')){var bt=document.createElement('button');bt.id='adminBillTest';bt.textContent='$1 billing test';bt.title='Admin: run a real $1 charge to verify recurring billing';bt.style.cssText='position:fixed;left:12px;bottom:12px;z-index:9998;background:#173622;color:#fff;border:none;border-radius:10px;padding:9px 13px;font:600 12px Poppins,sans-serif;cursor:pointer;opacity:.85;box-shadow:0 4px 14px rgba(23,54,34,.25)';bt.onclick=function(){goEmbedCheckout('test',bt);};document.body.appendChild(bt);}}catch(e){}
-  try{if(!document.getElementById('adminWaTest')){var wb=document.createElement('button');wb.id='adminWaTest';wb.textContent='WA test';wb.title='Admin: send yourself a test WhatsApp (Twilio sandbox)';wb.style.cssText='position:fixed;left:120px;bottom:12px;z-index:9998;background:#25D366;color:#fff;border:none;border-radius:10px;padding:9px 13px;font:600 12px Poppins,sans-serif;cursor:pointer;opacity:.9;box-shadow:0 4px 14px rgba(23,54,34,.25)';wb.onclick=async function(){var to=prompt('Send a test WhatsApp to (E.164 with country code, e.g. +15551234567):');if(!to)return;var o=wb.textContent;wb.disabled=true;wb.textContent='Sending…';try{var r=await sb.functions.invoke('whatsapp-send',{body:{to:to,body:'Mind OS ✅ Your WhatsApp is connected. This is your gym for your mind.'}});var d=r&&r.data;if(d&&d.ok){toast('✓ WhatsApp sent (sid '+(d.message_sid||'')+')');}else{toast('⚠️ '+((d&&(d.error_message||d.error))||(r&&r.error&&r.error.message)||'send failed'));}}catch(e){toast('⚠️ '+e);}wb.disabled=false;wb.textContent=o;};document.body.appendChild(wb);}}catch(e){}
-  try{if(!document.getElementById('adminPushTest')){var pbn=document.createElement('button');pbn.id='adminPushTest';pbn.textContent='🔔 Push';pbn.title='Admin: enable web push on this device';pbn.style.cssText='position:fixed;left:206px;bottom:12px;z-index:9998;background:#27c768;color:#fff;border:none;border-radius:10px;padding:9px 13px;font:600 12px Poppins,sans-serif;cursor:pointer;opacity:.9;box-shadow:0 4px 14px rgba(23,54,34,.25)';pbn.onclick=async function(){await enablePush(pbn);try{var r=await sb.functions.invoke('send-push',{body:{title:'Mind OS 🔔',body:'Push is working — we’ll nudge you at the best time.',url:'/'}});var d=r&&r.data;toast(d&&d.ok?('✓ Test push sent ('+d.sent+'/'+d.subscriptions+')'):('⚠️ '+((d&&d.error)||'send failed')));}catch(e){toast('⚠️ '+e);}};document.body.appendChild(pbn);}}catch(e){}
-  try{if(!document.getElementById('adminVerifyPay')){var vb=document.createElement('button');vb.id='adminVerifyPay';vb.textContent='✓ Verify pay';vb.title='Admin: check Airwallex charges + saved consents for this account';vb.style.cssText='position:fixed;left:300px;bottom:12px;z-index:9998;background:#4A90D9;color:#fff;border:none;border-radius:10px;padding:9px 13px;font:600 12px Poppins,sans-serif;cursor:pointer;opacity:.9;box-shadow:0 4px 14px rgba(23,54,34,.25)';vb.onclick=async function(){var o=vb.textContent;vb.disabled=true;vb.textContent='…';try{var r=await sb.functions.invoke('airwallex-admin-verify',{body:{}});var d=r&&r.data;if(d&&d.ok){var paid=(d.intents||[]).filter(function(x){return x.status==='SUCCEEDED';}).length;toast('Intents '+(d.intents||[]).length+' (paid '+paid+') · consents '+(d.consents||[]).length);alert(JSON.stringify(d,null,2));}else{toast('⚠️ '+((d&&d.error)||'verify failed'));alert(JSON.stringify(d));}}catch(e){toast('⚠️ '+e);}vb.disabled=false;vb.textContent=o;};document.body.appendChild(vb);}}catch(e){}
-  try{if(!document.getElementById('adminEmailTest')){var eb=document.createElement('button');eb.id='adminEmailTest';eb.textContent='✉️ Email';eb.title='Admin: send yourself the welcome-to-Advanced email (test)';eb.style.cssText='position:fixed;left:404px;bottom:12px;z-index:9998;background:#C77B3B;color:#fff;border:none;border-radius:10px;padding:9px 13px;font:600 12px Poppins,sans-serif;cursor:pointer;opacity:.9;box-shadow:0 4px 14px rgba(23,54,34,.25)';eb.onclick=async function(){var o=eb.textContent;eb.disabled=true;eb.textContent='…';try{var r=await sb.functions.invoke('send-membership-email',{body:{test:true,plan:'advanced'}});var d=r&&r.data;toast(d&&d.ok?('✓ Welcome email sent to '+(d.sent_to||'you')):('⚠️ '+((d&&(d.error||d.detail))||'send failed')));}catch(e){toast('⚠️ '+e);}eb.disabled=false;eb.textContent=o;};document.body.appendChild(eb);}}catch(e){}
+  // #68: the 5 fixed-position admin test buttons were consolidated into the "🛠 Dev" popout (initDevHarness). Handlers live there now.
   $('#logoBtn').onclick=()=>$('#logoFile').click();
   $('#logoFile').onchange=async e=>{
     const f=e.target.files[0]; if(!f) return;
@@ -1084,6 +1083,7 @@ function gotoScreen(s){if(s==='coaches'){var c=document.querySelector('#nav a[da
 async function loadPodSessions(){
   var card=$('#podSessionCard'),list=$('#podSessionList');
   if(!card||!list)return;
+  if(!featureVisible('podScheduling')){card.style.display='none';list.innerHTML='';return;}/* #68: in-test until #43 approved to Live */
   var rows;
   try{var r=await sb.rpc('my_upcoming_pod_sessions');rows=(r&&r.data)||[];}catch(e){rows=[];}
   if(!rows.length){card.style.display='none';list.innerHTML='';return;}
@@ -1369,6 +1369,60 @@ async function loadEntitlement(){try{const {data}=await sb.from('member_billing'
 function isEntitled(){return ['trialing','active','comped'].includes(window._billStatus)||['advanced','community'].includes(window._entitlement);}
 function gateAdvanced(feat){toast('🔒 '+(feat||'This')+' is part of Advanced. Start your free 14-day trial in Settings → Plan & billing.');try{gotoScreen('settings');}catch(e){}}
 window.isEntitled=isEntitled;window.loadEntitlement=loadEntitlement;
+/* ===== #68 Test Harness: central gating helpers + feature registries (single source of truth) ===== */
+/* Registries mirror MIND-OS-DEV-STAGES.md. When a feature is approved to Live, move its key
+   from IN_TEST to LIVE_RELEASED and it becomes always-visible. */
+window._isTestUser=false;window._isCoach=window._isCoach||false;
+const IN_TEST={marketplace:'#65',coachesPublic:'#9/#39',podBuilder:'#41',podScheduling:'#43',emailChannel:'#61',resilienceDeepLog:'#66'};
+const LIVE_RELEASED={};
+function devEnv(){try{return (window.MindOSDevHarness&&window.MindOSDevHarness.env&&window.MindOSDevHarness.env())||'live';}catch(e){return 'live';}}
+function devViewAs(){try{return (window.MindOSDevHarness&&window.MindOSDevHarness.viewAs&&window.MindOSDevHarness.viewAs())||'me';}catch(e){return 'me';}}
+function isTestUser(){return !!window._isTestUser;}
+function featureVisible(key){if(Object.prototype.hasOwnProperty.call(LIVE_RELEASED,key))return true;return devEnv()==='test'&&isTestUser();}
+function realPlan(){if(['advanced','community'].includes(window._entitlement))return window._entitlement;if(['trialing','active','comped'].includes(window._billStatus))return (window._plan&&window._plan!=='free')?window._plan:'advanced';return window._plan||'free';}
+function realRole(){if(window._isAdmin)return 'admin';if(window._isCoach)return 'coach';return 'member';}
+const _PLAN_VIEWS={free:1,advanced:1,community:1},_ROLE_VIEWS={coach:1,leader:1,admin:1};
+function effectivePlan(){var v=devViewAs();return _PLAN_VIEWS[v]?v:realPlan();}
+function effectiveRole(){var v=devViewAs();return _ROLE_VIEWS[v]?v:realRole();}
+function devImpersonating(){return devViewAs()!=='me';}
+function devWriteBlocked(){try{if(devImpersonating()){toast('👀 View-as is read-only. Reset to your account to make changes.');return true;}}catch(e){}return false;}
+window.effectivePlan=effectivePlan;window.effectiveRole=effectiveRole;window.featureVisible=featureVisible;window.isTestUser=isTestUser;window.devImpersonating=devImpersonating;window.devWriteBlocked=devWriteBlocked;
+/* One CSS rule hides in-test marketplace/POD entry points when the flag is off (dark-launch / rollback-via-flag). */
+try{var _dgs=document.createElement('style');_dgs.textContent='body.mos-hide-mkt [data-tab="coaches"],body.mos-hide-mkt .morelink[data-go="coaches"],body.mos-hide-mkt [data-go="pods"]{display:none!important}';document.head.appendChild(_dgs);}catch(e){}
+function applyDevGates(){
+  try{var _vt=$('#viewToggle');if(_vt)_vt.style.display=(effectiveRole()==='coach')?'':'none';}catch(e){}
+  try{document.body.classList.toggle('mos-hide-mkt',!featureVisible('marketplace'));}catch(e){}
+  try{if(!featureVisible('podScheduling')){var _pc=$('#podSessionCard');if(_pc)_pc.style.display='none';}}catch(e){}
+}
+window.applyDevGates=applyDevGates;
+/* Read-only guard while impersonating: intercept mutating supabase calls (DRY — one guard covers all writes).
+   Fails open (never blocks) unless a test user is actively viewing-as another identity. */
+(function(){try{if(window._sbGuarded||typeof sb==='undefined'||!sb.from)return;window._sbGuarded=true;
+  var _from=sb.from.bind(sb);
+  function roStub(){var res={data:null,error:{message:'view-as read-only'}};var p=Promise.resolve(res);
+    var stub=new Proxy(function(){},{get:function(_t,prop){
+      if(prop==='then')return p.then.bind(p);
+      if(prop==='catch')return p.catch.bind(p);
+      if(prop==='finally')return p.finally.bind(p);
+      if(prop==='single'||prop==='maybeSingle'||prop==='csv')return function(){return p;};
+      return function(){return stub;};
+    }});return stub;}
+  sb.from=function(t){var q=_from(t);['insert','update','delete','upsert'].forEach(function(op){if(typeof q[op]!=='function')return;var _o=q[op].bind(q);q[op]=function(){if(devImpersonating()){try{toast('👀 View-as is read-only. Reset to your account to save.');}catch(e){}return roStub();}return _o.apply(this,arguments);};});return q;};
+}catch(e){}})();
+function initDevHarness(m){
+  window._isTestUser=!!(m&&(m.is_admin||m.is_test_user));
+  window._isCoach=!!(m&&m.is_coach);
+  applyDevGates();
+  if(!window._isTestUser)return;
+  var A=[
+    {label:'$1 billing test',bg:'#173622',title:'Run a real $1 charge to verify recurring billing',onClick:function(b){goEmbedCheckout('test',b);}},
+    {label:'WA test',bg:'#25D366',title:'Send yourself a test WhatsApp',onClick:async function(b){var to=prompt('Send a test WhatsApp to (E.164, e.g. +15551234567):');if(!to)return;var o=b.textContent;b.disabled=true;b.textContent='…';try{var r=await sb.functions.invoke('whatsapp-send',{body:{to:to,body:'Mind OS ✅ Your WhatsApp is connected. This is your gym for your mind.'}});var d=r&&r.data;toast(d&&d.ok?('✓ WhatsApp sent (sid '+(d.message_sid||'')+')'):('⚠️ '+((d&&(d.error_message||d.error))||(r&&r.error&&r.error.message)||'send failed')));}catch(e){toast('⚠️ '+e);}b.disabled=false;b.textContent=o;}},
+    {label:'🔔 Push',bg:'#27c768',title:'Enable web push + send a test',onClick:async function(b){await enablePush(b);try{var r=await sb.functions.invoke('send-push',{body:{title:'Mind OS 🔔',body:'Push is working — we’ll nudge you at the best time.',url:'/'}});var d=r&&r.data;toast(d&&d.ok?('✓ Test push sent ('+d.sent+'/'+d.subscriptions+')'):('⚠️ '+((d&&d.error)||'send failed')));}catch(e){toast('⚠️ '+e);}}},
+    {label:'✓ Verify pay',bg:'#4A90D9',title:'Check Airwallex charges + saved consents',onClick:async function(b){var o=b.textContent;b.disabled=true;b.textContent='…';try{var r=await sb.functions.invoke('airwallex-admin-verify',{body:{}});var d=r&&r.data;if(d&&d.ok){var paid=(d.intents||[]).filter(function(x){return x.status==='SUCCEEDED';}).length;toast('Intents '+(d.intents||[]).length+' (paid '+paid+') · consents '+(d.consents||[]).length);alert(JSON.stringify(d,null,2));}else{toast('⚠️ '+((d&&d.error)||'verify failed'));alert(JSON.stringify(d));}}catch(e){toast('⚠️ '+e);}b.disabled=false;b.textContent=o;}},
+    {label:'✉️ Email',bg:'#C77B3B',title:'Send yourself the welcome email',onClick:async function(b){var o=b.textContent;b.disabled=true;b.textContent='…';try{var r=await sb.functions.invoke('send-membership-email',{body:{test:true,plan:'advanced'}});var d=r&&r.data;toast(d&&d.ok?('✓ Welcome email sent to '+(d.sent_to||'you')):('⚠️ '+((d&&(d.error||d.detail))||'send failed')));}catch(e){toast('⚠️ '+e);}b.disabled=false;b.textContent=o;}}
+  ];
+  try{MindOSDevHarness.init({isTestUser:true,testActions:A,stagingUrl:(window.MOS_STAGING_URL||''),viewAs:true,onEnvChange:function(){applyDevGates();},onViewChange:function(){applyDevGates();}});}catch(e){}
+}
 async function checkCheckoutReturn(retry){var pend=null;try{pend=localStorage.getItem('mos_pending_checkout');}catch(e){}if(!pend)return;await loadEntitlement();if(isEntitled()){try{localStorage.removeItem('mos_pending_checkout');}catch(e){}try{burst();}catch(e){}try{track('checkout_paid',{plan:window._plan});}catch(e){}var pl=(window._plan==='community')?'Advanced + Community':'Advanced';toast('🎉 Payment received, you’re on '+pl+' now. Enjoy.');var btn=document.querySelector('#couponRow');}else if(!retry){setTimeout(function(){checkCheckoutReturn(true);},5000);}}
 window.checkCheckoutReturn=checkCheckoutReturn;
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{checkCheckoutReturn();}catch(e){}}});

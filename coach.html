@@ -127,6 +127,9 @@ textarea.inp{resize:vertical}
 
 <div class="toast" id="toast"></div>
 
+<!-- #68 Test Harness (shared component, DRY with the member app) -->
+<script>window.MOS_STAGING_URL='';</script>
+<script src="dev-harness.js"></script>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://hrftsfjjtaclqnmaurfd.supabase.co','sb_publishable_ieqRtgpUZQXOwuaVQ6GNkQ_lS727Rtz');
@@ -145,9 +148,10 @@ sb.auth.onAuthStateChange((_e,s)=>{if(s&&!user){user=s.user;boot();}});
 
 async function boot(){
   $('#auth').style.display='none';$('#app').style.display='block';$('#who').textContent=user.email;
-  const {data:m}=await sb.from('members').select('is_coach').eq('id',user.id).maybeSingle();
+  const {data:m}=await sb.from('members').select('is_coach,is_admin,is_test_user').eq('id',user.id).maybeSingle();
   const {data:pods}=await sb.from('pods').select(POD_COLS).eq('coach_id',user.id).order('created_at');
   myPods=pods||[];
+  try{if(m&&(m.is_admin||m.is_test_user)&&window.MindOSDevHarness){MindOSDevHarness.init({isTestUser:true,testActions:[],stagingUrl:(window.MOS_STAGING_URL||''),viewAs:false});}}catch(e){}
   if(!(m&&m.is_coach)&&!myPods.length){$('#notCoach').style.display='block';return;}
   $('#coachUI').style.display='block';
   loadCockpit();loadPodsList();if(myPods.length)openPodCenter(myPods[0].id,myPods[0].name);
