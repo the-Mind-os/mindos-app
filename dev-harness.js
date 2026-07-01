@@ -210,4 +210,32 @@
     viewAs:function(){ return state.view; },
     impersonating:function(){ return state.view!=='me'; }
   };
+
+  /* --------------------------------------------------------------
+     Always-on "TEST ENV" marker. Shows for ANYONE on the test site
+     (not gated to admins), so you always know where you are. Purely
+     hostname-based, so it NEVER appears on Live (app.mind.us). Placed
+     top-centre with pointer-events:none, so it can never cover or block
+     any tool, button, or control (clicks pass straight through).
+     -------------------------------------------------------------- */
+  function isTestHost(){
+    var h=(location.hostname||'').toLowerCase();
+    return h==='test.mind.us' || h==='staging.mind.us' || h.indexOf('-git-staging-')>-1;
+  }
+  function mountEnvTag(){
+    if(!isTestHost() || document.getElementById('mosEnvTag')) return;
+    if(!document.getElementById('mosEnvTagCss')){
+      var css='#mosEnvTag{position:fixed;top:0;left:50%;transform:translateX(-50%);'
+        +'z-index:2147482998;pointer-events:none;background:#F2C14D;color:#3a2c07;'
+        +'font:700 11px/1 Poppins,system-ui,sans-serif;letter-spacing:1.5px;'
+        +'padding:4px 14px 5px;border-radius:0 0 11px 11px;'
+        +'box-shadow:0 2px 8px rgba(0,0,0,.18);opacity:.92;white-space:nowrap}';
+      var s=document.createElement('style');s.id='mosEnvTagCss';s.textContent=css;
+      document.head.appendChild(s);
+    }
+    var t=document.createElement('div');t.id='mosEnvTag';t.textContent='TEST ENV';
+    document.body.appendChild(t);
+  }
+  if(document.body){ mountEnvTag(); }
+  else { document.addEventListener('DOMContentLoaded', mountEnvTag); }
 })();
